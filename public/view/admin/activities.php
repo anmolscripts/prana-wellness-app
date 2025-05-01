@@ -23,6 +23,31 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
     <script src="../public/assets/vendor/js/helpers.js"></script>
     <script src="../public/assets/js/config.js"></script>
+
+    <style>
+        .alert-container {
+            top: -5rem;
+            animation: slideIn 3s ease 1 forwards;            
+        }
+
+        @keyframes slideIn {
+            0% {
+                top: -5rem;
+            }
+
+            15% {
+                top: 0px;
+            }
+
+            85% {
+                top: 0px;
+            }
+
+            100% {
+                top: -5rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -326,6 +351,10 @@
         </div>
     </div>
 
+    <div id="aleartContainer"  class="position-fixed d-flex justify-content-center w-100 pt-5 alert-container d-none" style="z-index: 9999;">
+        <div class="alert alert-primary shadow-lg" role="alert">This is a primary alert — check it out!</div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker@2.0.1/dist/mdtimepicker.js"></script>
     <script src="../public/assets/vendor/libs/jquery/jquery.js"></script>
@@ -376,6 +405,7 @@
             const minTime = document.getElementById('minTime');
             const maxTime = document.getElementById('maxTime');
             const type = document.getElementById('type');
+            const aleartContainer = document.getElementById('aleartContainer');
             if (name.value === '') {
                 name.classList.add('is-invalid');
                 return;
@@ -426,17 +456,22 @@
                     spinner.classList.add('d-none');
                     text.classList.remove('d-none');
                     if (data.success) {
-                        alert(data.message);
-                        location.reload();
+                        const aleart = aleartContainer.querySelector('[role="alert"]');
+                        aleart.innerText = 'Activity added successfully!';
+                        aleartContainer.classList.remove('d-none');
                     } else {
-                        alert(data.message);
+
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
+
+                }).finally(() => {
                     spinner.classList.add('d-none');
-                    text.classList.remove('d-none');
-                });
+            text.classList.remove('d-none');
+                }
+                    
+                );
         }
     </script>
 </body>
