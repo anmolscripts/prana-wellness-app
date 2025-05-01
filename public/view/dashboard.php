@@ -22,7 +22,7 @@
     href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="public/assets/vendor/fonts/iconify-icons.css" />    
+  <link rel="stylesheet" href="public/assets/vendor/fonts/iconify-icons.css" />
 
   <!-- Core CSS -->
   <!-- build:css public/assets/vendor/css/theme.css  -->
@@ -57,11 +57,11 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-        <a href="index" class="app-brand-link gap-2">
-                                            <span class="app-brand-logo demo">
-                                                <img src="public/assets/img/logo.png" alt="" class="w-50 h-auto">
-                                            </span>
-                                        </a>
+          <a href="index" class="app-brand-link gap-2">
+            <span class="app-brand-logo demo">
+              <img src="public/assets/img/logo.png" alt="" class="w-50 h-auto">
+            </span>
+          </a>
 
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
             <i class="bx bx-chevron-left d-block d-xl-none align-middle"></i>
@@ -119,7 +119,7 @@
           </li>
 
           <!-- Front Pages -->
-          
+
 
           <!-- Apps & Pages -->
           <!-- Pages -->
@@ -146,8 +146,8 @@
               </li>
             </ul>
           </li>
-          
-          
+
+
         </ul>
       </aside>
       <!-- / Menu -->
@@ -327,6 +327,181 @@
                   </div>
                 </div>
               </div> -->
+
+              <!-- my activity -->
+
+              <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+                  <div class="card">
+                    <div class="d-flex justify-content-between align-items-center pe-5">
+                      <h5 class="card-header">Activities Table</h5>
+
+                      <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#addActiviteModal">
+                        <span class="icon-base bx bx-plus icon-sm me-2"></span>Add Activite
+
+                      </button>
+
+                    </div>
+                    <div class="table-responsive text-nowrap">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>S No.</th>
+                            <th>Activite</th>
+                            <th>Min Duration</th>
+                            <th>Max Duration</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                          <tr>
+                            <td>
+                              <span>Angular Project</span>
+                            </td>
+                            <td>Albert Cook</td>
+                            <td>10:00</td>
+                            <td>
+                              20:00
+                              <!-- <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
+                                                        aria-label="Lilian Fuller"
+                                                        data-bs-original-title="Lilian Fuller">
+                                                        <img src="../public/assets/img/avatars/1.png" alt="Avatar"
+                                                            class="rounded-circle">
+                                                    </li>
+                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
+                                                        aria-label="Sophia Wilkerson"
+                                                        data-bs-original-title="Sophia Wilkerson">
+                                                        <img src="../public/assets/img/avatars/2.png" alt="Avatar"
+                                                            class="rounded-circle">
+                                                    </li>
+                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
+                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
+                                                        aria-label="Christina Parker"
+                                                        data-bs-original-title="Christina Parker">
+                                                        <img src="../public/assets/img/avatars/3.png" alt="Avatar"
+                                                            class="rounded-circle">
+                                                    </li>
+                                                </ul> -->
+                            </td>
+                            <td><span class="badge bg-label-primary me-1">Active</span></td>
+                            <td>
+                              <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                  data-bs-toggle="dropdown"><i
+                                    class="icon-base bx bx-dots-vertical-rounded"></i></button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="javascript:void(0);"><i
+                                      class="icon-base bx bx-edit-alt me-1"></i> Edit</a>
+                                  <a class="dropdown-item" href="javascript:void(0);"><i
+                                      class="icon-base bx bx-trash me-1"></i> Delete</a>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <footer class="content-footer footer bg-footer-theme">
+                  <div class="container-xxl">
+                    <div
+                      class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                      <div class="mb-2 mb-md-0">&#169;
+                        <script>
+                          document.write(new Date().getFullYear());
+                        </script>, made with ❤️ by <a href="https://themeselection.com" target="_blank"
+                          class="footer-link">ThemeSelection</a>
+                      </div>
+                      <div class="d-none d-lg-inline-block"><a
+                          href="https://themeselection.com/item/category/admin-templates/" target="_blank"
+                          class="footer-link me-4">Admin Templates</a><a
+                          href="https://themeselection.com/license/" class="footer-link me-4"
+                          target="_blank">License</a><a
+                          href="https://themeselection.com/item/category/bootstrap-admin-templates/"
+                          target="_blank" class="footer-link me-4">Bootstrap Dashboard</a><a
+                          href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
+                          target="_blank" class="footer-link me-4">Documentation</a><a
+                          href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free/issues"
+                          target="_blank" class="footer-link">Support</a></div>
+                    </div>
+                  </div>
+                </footer>
+                <div class="content-backdrop fade"></div>
+              </div>
+
+              <div class="modal fade" id="addActiviteModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel3">Add Activity</h5>
+                      <button type="button" class="btn-close  text-white bg-dark" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col mb-6">
+                          <label for="activitySelect" class="form-label">Activity Name</label>
+                          <select id="activitySelect" class="form-control">
+                            <option value="">Select Activity</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <!-- <div class="col-md-8 mb-6">
+                          <label for="status" class="form-label">Type of Activity</label>
+                          <select onchange="showTimeOption(this);" class="form-select" id="type"
+                            aria-label="Default select example">
+                            <option value="time">Time Based (Min/Day)</option>
+                            <option selected="" value="boolean">Yes/No questions</option>
+                          </select>
+                        </div> -->
+                        <div style="display: none;" id="yesNoBox" class="col-md-4 mb-6">
+                          <label for="status" class="form-label">Select Yes Or No</label>
+                          <select class="form-select" id="status" aria-label="Default select example">
+                            <option selected="" value="active">Yes</option>
+                            <option value="inactive">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div id="timeOptionContainer" style="display:none;">
+                        <div class="row align-items-center">
+                          <div class="col-md-6 mb-6">
+                            <label for="minTime" class="form-label">Min Time</label>
+                            <input type="number" id="minTime" class="form-control" placeholder="Enter Name" />
+                            <!-- <input type="text" id="minDuration" class="form-control" placeholder="Enter Min Duration" /> -->
+                          </div>
+                          <div class="col-md-6 mb-6">
+                            <label for="minTime" class="form-label">Max Time</label>
+                            <input type="number" id="maxTime" class="form-control" placeholder="Enter Name" />
+                            <!-- <input type="text" id="minDuration" class="form-control" placeholder="Enter Min Duration" /> -->
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
+                        Close
+                      </button>
+                      <button type="button" onclick="addActivity(this)" class="btn btn-primary d-grid w-25">
+                        <div class="spinner-border text-light d-none" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="text">Add</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
               <!-- Total Revenue -->
               <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6 total-revenue">
                 <div class="card">
@@ -801,6 +976,9 @@
   <!-- / Layout wrapper -->
 
 
+
+
+
   <!-- Core JS -->
 
   <script src="public/assets/vendor/libs/jquery/jquery.js"></script>
@@ -830,11 +1008,11 @@
   <script>
     const logout = () => {
       fetch('api/auth/logout.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
-        },
-      })
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
+          },
+        })
         .then(response => response.json()) // or response.text() if PHP returns plain text
         .then(data => {
           console.log('Success:', data);
@@ -844,6 +1022,56 @@
           console.error('Error:', error);
         });
     }
+
+    // fetch Activities
+    const select = document.getElementById('activitySelect');
+    const timeOptionContainer = document.getElementById("timeOptionContainer")
+    const yesNoBox = document.getElementById("yesNoBox")
+    const fetchAllActvity = async () => {
+
+      try {
+        let allActvity = await fetch("api/activities/get.php")
+        allActvity = await allActvity.json()
+        allActvity = allActvity.activity
+
+        // console.log(allActvity , select)
+        // debugger;
+
+        let options = '';
+        allActvity.map(activity => {
+          options += `<option type = "${activity.type}"  value="${activity.id}">${activity.name}</option>`;
+        });
+
+        select.innerHTML += options;
+      } catch (error) {
+
+        console.log("error", error)
+
+      }
+    }
+
+    fetchAllActvity()
+
+
+    select.addEventListener("change", () => {
+      let selectedValue = select.value;
+
+      // Get the selected <option> element
+      let selectedOption = select.options[select.selectedIndex];
+
+      // Example: Get custom attributes (like data-type, data-state)
+      let type = selectedOption.getAttribute('type');
+
+      if (type == "time") {
+        timeOptionContainer.style.display = "block"
+        yesNoBox.style.display = "none"
+      } else {
+        yesNoBox.style.display = "block"
+        timeOptionContainer.style.display = "none"
+      }
+
+
+    });
   </script>
 </body>
 
