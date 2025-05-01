@@ -14,40 +14,53 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 require_once '../../functions/db.php';
 
 
-echo json_encode($_POST);
-exit;
+// echo json_encode($_POST);
+// exit;
 
 
 // Validate input
-$email = trim($_POST['email'] ?? '');
+$name = trim($_POST['name'] ?? '');
+$type = trim($_POST['type'] ?? '');
+$status = trim($_POST['status'] ?? '');
+$minTime = trim($_POST['minTime'] ?? '');
+$maxTime = trim($_POST['maxTime'] ?? '');
 
-if (empty($email)) {
-    echo json_encode(['success' => false, 'message' => 'Email and password are required.']);
+if (empty($name)) {
+    echo json_encode(['success' => false, 'message' => 'Name is required.']);
     exit;
 }
 
-$otp = rand(100000, 999999);
+if (empty($type)) {
+    echo json_encode(['success' => false, 'message' => 'Type is required.']);
+    exit;
+}
+
+if($type == 'time') {
+    if (empty($minTime)) {
+        echo json_encode(['success' => false, 'message' => 'Min time is required.']);
+        exit;
+    }
+    if (empty($maxTime)) {
+        echo json_encode(['success' => false, 'message' => 'Max time is required.']);
+        exit;
+    }
+}
+
 
 try {
     $conn->exec("USE $dbname");
-
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(mode: PDO::FETCH_ASSOC);
-    if ($user) {
-        $updateStmt = $conn->prepare("UPDATE users SET otp = ? WHERE id = ?");
-        $insertOtp = $updateStmt->execute([$otp,$user['id']]);
-        if ($insertOtp) {
-            // Send OTP to email (pseudo code)
-            // mail($email, "Your OTP", "Your OTP is: $otp");
-            echo json_encode(['success' => true, 'message' => 'OTP sent to your email.']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to send OTP.']);
-        }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Email not registered.']);
-        exit;
-    }
+    $datetime = date('Y-m-d H:i:s');
+    $stmt = $conn->prepare("INSERT INTO activity (name, type, state, min_duration, max_duration, created_at) VALUES (:name, :type, :status, :min_duration, :max_duration, :created_at)");
+    $stmt->execute([
+        'name'     => $name,
+        'type'    => $type,
+        'status' => $status,
+        'min_duration' => $minTime,
+        'max_duration' => $maxTime,
+        'created_at' => $datetime
+    ]);
+    $lastId = $conn->lastInsertId();
+    echo json_encode(['success' => true, 'id' => $lastId]);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
