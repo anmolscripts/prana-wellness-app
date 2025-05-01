@@ -1,0 +1,18 @@
+RewriteEngine On
+RewriteBase /prana-wellness-app/
+
+# Redirect base URL to public/view/
+RewriteCond %{REQUEST_URI} ^/prana-wellness-app/?$
+RewriteRule ^$ public/view/ [L]
+
+# If the requested file exists (HTML, CSS, JS, images), do nothing
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Try to serve PHP files inside public/view/
+RewriteCond %{DOCUMENT_ROOT}/prana-wellness-app/public/view/$1.php -f
+RewriteRule ^(.*)$ public/view/$1.php [L]
+
+# Finally, serve normal public/view/ files (non-PHP)
+RewriteRule ^(.*)$ public/view/$1 [L]
