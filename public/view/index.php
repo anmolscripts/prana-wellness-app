@@ -17,6 +17,6 @@ requireLogin();
 # User Login check and redirect to dashboard if already logged in
 if (checkLogin()) {
     header("Location: dashboard");
-    exit;
+    exit;    
 }
 ?>
