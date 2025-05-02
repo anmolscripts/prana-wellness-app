@@ -24,6 +24,9 @@
     <script src="../public/assets/vendor/js/helpers.js"></script>
     <script src="../public/assets/js/config.js"></script>
 
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css" />
+
     <style>
         .alert-container {
             top: -5rem;
@@ -190,20 +193,23 @@
                                 </button>
 
                             </div>
-                            <div class="table-responsive text-nowrap">
-                                <table class="table">
+                            <div id="activitesTable" class="table-responsive text-nowrap">
+                                <table  class="table">
                                     <thead>
                                         <tr>
                                             <th>S No.</th>
                                             <th>Activite</th>
+                                            <th>Type</th>
+                                            <th>State</th>
                                             <th>Min Duration</th>
                                             <th>Max Duration</th>
-                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="table-border-bottom-0">
-                                        <tr>
+                                    <tbody id="actiityTbody" class="table-border-bottom-0">
+                                    <!-- <tr>
                                             <td>
                                                 <span>Angular Project</span>
                                             </td>
@@ -211,29 +217,7 @@
                                             <td>10:00</td>
                                             <td>
                                                 20:00
-                                                <!-- <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
-                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                        aria-label="Lilian Fuller"
-                                                        data-bs-original-title="Lilian Fuller">
-                                                        <img src="../public/assets/img/avatars/1.png" alt="Avatar"
-                                                            class="rounded-circle">
-                                                    </li>
-                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                        aria-label="Sophia Wilkerson"
-                                                        data-bs-original-title="Sophia Wilkerson">
-                                                        <img src="../public/assets/img/avatars/2.png" alt="Avatar"
-                                                            class="rounded-circle">
-                                                    </li>
-                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                        aria-label="Christina Parker"
-                                                        data-bs-original-title="Christina Parker">
-                                                        <img src="../public/assets/img/avatars/3.png" alt="Avatar"
-                                                            class="rounded-circle">
-                                                    </li>
-                                                </ul> -->
+                                                
                                             </td>
                                             <td><span class="badge bg-label-primary me-1">Active</span></td>
                                             <td>
@@ -247,6 +231,13 @@
                                                         <a class="dropdown-item" href="javascript:void(0);"><i
                                                                 class="icon-base bx bx-trash me-1"></i> Delete</a>
                                                     </div>
+                                                </div>
+                                            </td>
+                                        </tr> -->
+                                        <tr>
+                                            <td colspan="9" class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -367,6 +358,8 @@
     <script src="../public/assets/js/dashboards-analytics.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
+    <script src="/prana-wellness-app/public/js/bindActivitys.js"></script>
 
 
 
@@ -378,6 +371,9 @@
         });
     </script> -->
     <script>
+        $(document).ready( function () {
+    // $('#activitesTable').DataTable();
+} );
         const logout = () => {
             fetch('api/auth/logout.php', {
                 method: 'POST',
@@ -459,6 +455,7 @@
                         const aleart = aleartContainer.querySelector('[role="alert"]');
                         aleart.innerText = 'Activity added successfully!';
                         aleartContainer.classList.remove('d-none');
+                        location.reload();
                     } else {
 
                     }
@@ -473,6 +470,42 @@
                     
                 );
         }
+
+
+
+
+        const activities = {
+            getAll: () => {
+                fetch('../api/activities/get.php', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        if (data.success ) {
+                            bindActivitys(data.activity, document.getElementById('actiityTbody'));
+                            const aleart = aleartContainer.querySelector('[role="alert"]');
+                            aleart.innerText = 'Activity added successfully!';
+                            aleartContainer.classList.remove('d-none');
+                            // location.reload();
+                        } else {
+
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                    });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize DataTable
+            activities.getAll();
+        });
     </script>
 </body>
 
