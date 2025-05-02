@@ -444,56 +444,60 @@
                         aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <div class="row">
+                      <div style="display: flex; column-gap: 2rem;">
+
+                        <!-- <div class="row"> -->
                         <div class="col mb-6">
                           <label for="activitySelect" class="form-label">Activity Name</label>
                           <select id="activitySelect" class="form-control">
-                            <option value="">Select Activity</option>
+                            <option value="none">Select Activity</option>
                           </select>
                         </div>
-                      </div>
-                      <div class="row">
-                        <!-- <div class="col-md-8 mb-6">
-                          <label for="status" class="form-label">Type of Activity</label>
-                          <select onchange="showTimeOption(this);" class="form-select" id="type"
-                            aria-label="Default select example">
-                            <option value="time">Time Based (Min/Day)</option>
-                            <option selected="" value="boolean">Yes/No questions</option>
-                          </select>
-                        </div> -->
+                        <!-- </div> -->
+
+
                         <div style="display: none;" id="yesNoBox" class="col-md-4 mb-6">
                           <label for="status" class="form-label">Select Yes Or No</label>
                           <select class="form-select" id="status" aria-label="Default select example">
-                            <option selected="" value="active">Yes</option>
-                            <option value="inactive">No</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
                           </select>
                         </div>
-                      </div>
-                      <div id="timeOptionContainer" style="display:none;">
-                        <div class="row align-items-center">
-                          <div class="col-md-6 mb-6">
-                            <label for="minTime" class="form-label">Min Time</label>
-                            <input type="number" id="minTime" class="form-control" placeholder="Enter Name" />
-                            <!-- <input type="text" id="minDuration" class="form-control" placeholder="Enter Min Duration" /> -->
-                          </div>
-                          <div class="col-md-6 mb-6">
-                            <label for="minTime" class="form-label">Max Time</label>
-                            <input type="number" id="maxTime" class="form-control" placeholder="Enter Name" />
-                            <!-- <input type="text" id="minDuration" class="form-control" placeholder="Enter Min Duration" /> -->
-                          </div>
 
+
+                        <div id="timeOptionContainer" style="display:none;">
+                          <div class="col-md-6 mb-6">
+                            <label for="minTime" class="form-label">Time Duration</label>
+                            <input type="number" id="minTime" class="form-control" placeholder="Enter Time Duration" />
+                          </div>
                         </div>
+
                       </div>
+
+                      <div style="display: none;" id="addActivity">
+
+                        <button type="button" onclick="addActivity(this)" class="btn btn-primary d-grid w-25">
+                          <span class="text">Add</span>
+                        </button>
+
+                      </div>
+
+
+                      <div style="margin-top: 2rem;" id="userAddedActivity">
+
+                      </div>
+
+
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
                         Close
                       </button>
-                      <button type="button" onclick="addActivity(this)" class="btn btn-primary d-grid w-25">
+                      <button type="button" onclick="activitySubmit(this)" class="btn btn-primary d-grid w-25">
                         <div class="spinner-border text-light d-none" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
-                        <span class="text">Add</span>
+                        <span class="text">Submit</span>
                       </button>
                     </div>
                   </div>
@@ -1027,6 +1031,14 @@
     const select = document.getElementById('activitySelect');
     const timeOptionContainer = document.getElementById("timeOptionContainer")
     const yesNoBox = document.getElementById("yesNoBox")
+    const addActivityBtn = document.getElementById("addActivity")
+
+    const activityTime = document.getElementById("minTime")
+    const activityYesNo = document.getElementById("status").value
+
+
+
+
     const fetchAllActvity = async () => {
 
       try {
@@ -1053,25 +1065,76 @@
     fetchAllActvity()
 
 
+
     select.addEventListener("change", () => {
-      let selectedValue = select.value;
 
-      // Get the selected <option> element
+
+
       let selectedOption = select.options[select.selectedIndex];
-
-      // Example: Get custom attributes (like data-type, data-state)
       let type = selectedOption.getAttribute('type');
+      let selectedOptionValue = selectedOption.value
 
-      if (type == "time") {
-        timeOptionContainer.style.display = "block"
-        yesNoBox.style.display = "none"
+      if (selectedOptionValue != "none") {
+        if (type == "time") {
+          timeOptionContainer.style.display = "block"
+          yesNoBox.style.display = "none"
+          addActivityBtn.style.display = "block"
+
+        } else {
+          yesNoBox.style.display = "block"
+          timeOptionContainer.style.display = "none"
+          addActivityBtn.style.display = "block"
+
+        }
       } else {
-        yesNoBox.style.display = "block"
         timeOptionContainer.style.display = "none"
+        yesNoBox.style.display = "none"
+        addActivityBtn.style.display = "none"
       }
 
-
     });
+
+    const userAddedActivity = document.getElementById("userAddedActivity")
+    const addActivity = () => {
+      let selectedOption = select.options[select.selectedIndex];
+      let type = selectedOption.getAttribute('type');
+      let activityName = selectedOption.innerHTML;
+      let activityValue = selectedOption.value;
+
+      let activityTypeValue = ""
+      let activitydata
+      if (type == "time") {
+        let value = activityTime.value
+        activityTypeValue = `<input type="text"  id="${activityValue}" class="form-control me-2"  value="${value}" readonly />`
+        activitydata = value
+      } else {
+
+        activityTypeValue = `<input type="text" id="${activityValue}" value="${activityYesNo}" class="form-control me-2" readonly />`;
+        activitydata = activityYesNo
+      }
+
+      userAddedActivity.innerHTML += `
+  <div class="d-flex align-items-center mb-3">
+    <input type="text" data-activity = "${activitydata}" id="${activityValue}" value="${activityName}" class="form-control me-2 userAddedActivities" readonly />
+    ${activityTypeValue}
+  </div>`;
+
+
+
+    }
+
+    const activitySubmit = () => {
+      const inputs = document.querySelectorAll('input.userAddedActivities');
+
+      const result = Array.from(inputs).map(input => ({
+        activity: input.getAttribute('data-activity'),
+        id: input.id,
+        value: input.value
+      }));
+
+      console.log(result);
+
+    }
   </script>
 </body>
 
