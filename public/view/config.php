@@ -4,7 +4,7 @@
  */
 ?>
 
-<?php   
+<?php
 require_once '../../functions/db.php';
 
 try {
@@ -19,7 +19,6 @@ try {
         $conn->exec($sql);
         echo "Database checked/created successfully \n";
 
-        // Now connect to the DB
         $conn->exec("USE `$dbname`");
     }
 } catch (PDOException $e) {
@@ -96,6 +95,45 @@ try {
         ";
         $conn->exec($createActivitySQL);
         echo "<br>✅ Table '$activityTable' created successfully.\n";
+    }
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    exit;
+}
+
+// -- USER_ACTIVITIES TABLE
+$userActivitiesTable = "user_activities";
+try {
+    $stmt = $conn->prepare("
+        SELECT TABLE_NAME 
+        FROM INFORMATION_SCHEMA.TABLES 
+        WHERE TABLE_SCHEMA = :dbname 
+          AND TABLE_NAME = :table
+    ");
+    $stmt->execute([
+        ':dbname' => $dbname,
+        ':table' => $userActivitiesTable
+    ]);
+
+    if ($stmt->rowCount() > 0) {
+        echo "<br>✅ Table '$userActivitiesTable' exists in database '$dbname'. \n";
+    } else {
+        echo "<br>❌ Table '$userActivitiesTable' does not exist in database '$dbname'. \n";
+        $createUserActivitiesSQL = "
+            CREATE TABLE `$userActivitiesTable` (
+                record_id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                activity_id INT(3) ZEROFILL NOT NULL,
+                logged_duration INT NULL,
+                logged_value BOOLEAN NULL,
+                score INT NULL,
+                activity_date DATE NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES `$userTable`(id) ON DELETE CASCADE,
+                FOREIGN KEY (activity_id) REFERENCES `$activityTable`(id) ON DELETE CASCADE
+            );
+        ";
+        $conn->exec($createUserActivitiesSQL);
+        echo "<br>✅ Table '$userActivitiesTable' created successfully.\n";
     }
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
