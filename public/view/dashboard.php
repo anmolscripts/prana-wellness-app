@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 
 <html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="public/assets/"
@@ -1034,7 +1035,7 @@
     const addActivityBtn = document.getElementById("addActivity")
 
     const activityTime = document.getElementById("minTime")
-    const activityYesNo = document.getElementById("status").value
+   
 
 
 
@@ -1097,6 +1098,7 @@
     const userAddedActivity = document.getElementById("userAddedActivity")
     const addActivity = () => {
       let selectedOption = select.options[select.selectedIndex];
+      const activityYesNo = document.getElementById("status").value
       let type = selectedOption.getAttribute('type');
       let activityName = selectedOption.innerHTML;
       let activityValue = selectedOption.value;
@@ -1123,19 +1125,60 @@
 
     }
 
-    const activitySubmit = () => {
+    const activitySubmit = async() => {
       const inputs = document.querySelectorAll('input.userAddedActivities');
-
-      const result = Array.from(inputs).map(input => ({
+      const session = <?php echo json_encode($_SESSION['user']); ?>;
+      const userAddedActivity = Array.from(inputs).map(input => ({
         activity: input.getAttribute('data-activity'),
         id: input.id,
-        value: input.value
+        value: input.value ,
+        userId : session.id ,
       }));
 
-      console.log(result);
+
+
+      
+    
+      
+
+      try {
+        let result = await fetch("api/activities/addUser.php" ,
+        {
+          method : 'POST' ,
+          headers : {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          } ,
+          body : new URLSearchParams({
+
+           
+            userAddedActivity: JSON.stringify(userAddedActivity)
+
+          })
+        })
+
+        result  = await result.json()
+        console.log(result);
+
+      } catch (error) {
+        
+      }
+
+     
 
     }
   </script>
 </body>
 
 </html>
+
+method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    name: name.value,
+                    type: typeValue,
+                    status: status.value,
+                    minTime: minTime.value,
+                    maxTime: maxTime.value,
+                })
