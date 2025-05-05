@@ -1010,175 +1010,200 @@
   <!-- Place this tag before closing body tag for github widget button. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-  <script>
-    const logout = () => {
-      fetch('api/auth/logout.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
-          },
-        })
-        .then(response => response.json()) // or response.text() if PHP returns plain text
-        .then(data => {
-          console.log('Success:', data);
-          window.location.href = '/prana-wellness-app'; // Redirect to index.php after logout
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+
+</body>
+
+<script>
+  const logout = () => {
+    fetch('api/auth/logout.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
+        },
+      })
+      .then(response => response.json()) // or response.text() if PHP returns plain text
+      .then(data => {
+        console.log('Success:', data);
+        window.location.href = '/prana-wellness-app'; // Redirect to index.php after logout
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+  // fetch Activities
+  const select = document.getElementById('activitySelect');
+  const timeOptionContainer = document.getElementById("timeOptionContainer")
+  const yesNoBox = document.getElementById("yesNoBox")
+  const addActivityBtn = document.getElementById("addActivity")
+
+  const activityTime = document.getElementById("minTime")
+
+  const fetchAllActvity = async () => {
+
+    try {
+      let allActvity = await fetch("api/activities/get.php")
+      allActvity = await allActvity.json()
+      allActvity = allActvity.activity
+
+      let options = '';
+      allActvity.map(activity => {
+        options += `<option type = "${activity.type}"  value="${activity.id}">${activity.name}</option>`;
+      });
+
+      select.innerHTML += options;
+    } catch (error) {
+
+      console.log("error", error)
+
     }
+  }
 
-    // fetch Activities
-    const select = document.getElementById('activitySelect');
-    const timeOptionContainer = document.getElementById("timeOptionContainer")
-    const yesNoBox = document.getElementById("yesNoBox")
-    const addActivityBtn = document.getElementById("addActivity")
-
-    const activityTime = document.getElementById("minTime")
-   
+  fetchAllActvity()
 
 
 
-
-    const fetchAllActvity = async () => {
-
-      try {
-        let allActvity = await fetch("api/activities/get.php")
-        allActvity = await allActvity.json()
-        allActvity = allActvity.activity
-
-        // console.log(allActvity , select)
-        // debugger;
-
-        let options = '';
-        allActvity.map(activity => {
-          options += `<option type = "${activity.type}"  value="${activity.id}">${activity.name}</option>`;
-        });
-
-        select.innerHTML += options;
-      } catch (error) {
-
-        console.log("error", error)
-
-      }
-    }
-
-    fetchAllActvity()
+  select.addEventListener("change", () => {
 
 
 
-    select.addEventListener("change", () => {
+    let selectedOption = select.options[select.selectedIndex];
+    let type = selectedOption.getAttribute('type');
+    let selectedOptionValue = selectedOption.value
 
-
-
-      let selectedOption = select.options[select.selectedIndex];
-      let type = selectedOption.getAttribute('type');
-      let selectedOptionValue = selectedOption.value
-
-      if (selectedOptionValue != "none") {
-        if (type == "time") {
-          timeOptionContainer.style.display = "block"
-          yesNoBox.style.display = "none"
-          addActivityBtn.style.display = "block"
-
-        } else {
-          yesNoBox.style.display = "block"
-          timeOptionContainer.style.display = "none"
-          addActivityBtn.style.display = "block"
-
-        }
-      } else {
-        timeOptionContainer.style.display = "none"
-        yesNoBox.style.display = "none"
-        addActivityBtn.style.display = "none"
-      }
-
-    });
-
-    const userAddedActivity = document.getElementById("userAddedActivity")
-    const addActivity = () => {
-      let selectedOption = select.options[select.selectedIndex];
-      const activityYesNo = document.getElementById("status").value
-      let type = selectedOption.getAttribute('type');
-      let activityName = selectedOption.innerHTML;
-      let activityValue = selectedOption.value;
-
-      let activityTypeValue = ""
-      let activitydata
+    if (selectedOptionValue != "none") {
       if (type == "time") {
-        let value = activityTime.value
-        activityTypeValue = `<input type="text"  id="${activityValue}" class="form-control me-2"  value="${value}" readonly />`
-        activitydata = value
+        timeOptionContainer.style.display = "block"
+        yesNoBox.style.display = "none"
+        addActivityBtn.style.display = "block"
+
       } else {
+        yesNoBox.style.display = "block"
+        timeOptionContainer.style.display = "none"
+        addActivityBtn.style.display = "block"
 
-        activityTypeValue = `<input type="text" id="${activityValue}" value="${activityYesNo}" class="form-control me-2" readonly />`;
-        activitydata = activityYesNo
       }
+    } else {
+      timeOptionContainer.style.display = "none"
+      yesNoBox.style.display = "none"
+      addActivityBtn.style.display = "none"
+    }
 
-      userAddedActivity.innerHTML += `
-  <div class="d-flex align-items-center mb-3">
-    <input type="text" data-activity = "${activitydata}" id="${activityValue}" value="${activityName}" class="form-control me-2 userAddedActivities" readonly />
-    ${activityTypeValue}
+  });
+
+  const userAddedActivity = document.getElementById("userAddedActivity")
+  const addActivity = () => {
+    let selectedOption = select.options[select.selectedIndex];
+    const activityYesNo = document.getElementById("status").value
+    let type = selectedOption.getAttribute('type');
+    let activityName = selectedOption.innerHTML;
+    let activityId = selectedOption.value;
+
+    let activityTypeValue = ""
+    let activitydata
+    let actvityType = ""
+    if (type == "time") {
+      let value = activityTime.value
+      activityTypeValue = `<input type="text"   activity-id="${activityId}" class="form-control me-2"  value="${value}" readonly />`
+      activitydata = value
+      actvityType = "time"
+    } else {
+
+      activityTypeValue = `<input type="text"  activity-id="${activityId}" value="${activityYesNo}" class="form-control me-2" readonly />`;
+      activitydata = activityYesNo
+      actvityType = "boolean"
+    }
+
+    userAddedActivity.innerHTML += `
+  <div data-activityId = "${activityId}" class="d-flex align-items-center column-gap-4 mb-3">
+  <div>
+  <input type="text" activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control me-2 userAddedActivities" readonly /> 
+  </div>
+  <div> 
+  ${activityTypeValue}
+  </div>
+
+  <div class="d-flex align-items-center" > 
+ 
+  <i activityId="${activityId}" class='bx bx-checkbox-minus minusBtn' style="font-size: 36px;"></i>
+
+  </div>
+    
+    
   </div>`;
 
 
+    const valueToRemove = activityId; // replace with the value you want to remove
 
+    const optionToRemove = Array.from(select.options).find(option => option.value === valueToRemove);
+
+    if (optionToRemove) {
+      select.removeChild(optionToRemove);
     }
 
-    const activitySubmit = async() => {
-      const inputs = document.querySelectorAll('input.userAddedActivities');
-      const session = <?php echo json_encode($_SESSION['user']); ?>;
-      const userAddedActivity = Array.from(inputs).map(input => ({
-        activity: input.getAttribute('data-activity'),
-        id: input.id,
-        value: input.value ,
-        userId : session.id ,
-      }));
+  }
+
+  const activitySubmit = async () => {
+    const inputs = document.querySelectorAll('input.userAddedActivities');
+    const session = <?php echo json_encode($_SESSION['user']); ?>;
+    const userAddedActivity = Array.from(inputs).map(input => ({
+      activity: input.getAttribute('data-activity'),
+      id: input.id,
+      value: input.value,
+      userId: session.id,
+    }));
+
+    try {
+      let result = await fetch("api/activities/addUser.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
 
 
+          userAddedActivity: JSON.stringify(userAddedActivity)
 
-      
-    
-      
-
-      try {
-        let result = await fetch("api/activities/addUser.php" ,
-        {
-          method : 'POST' ,
-          headers : {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          } ,
-          body : new URLSearchParams({
-
-           
-            userAddedActivity: JSON.stringify(userAddedActivity)
-
-          })
         })
+      })
 
-        result  = await result.json()
-        console.log(result);
+      result = await result.json()
+      console.log(result);
 
-      } catch (error) {
-        
-      }
-
-     
+    } catch (error) {
 
     }
-  </script>
-</body>
+
+
+  }
+
+
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('.minusBtn')) {
+      const icon = e.target;
+      const activityId = icon.getAttribute('activityId');
+      const parentDiv = document.querySelector(`[data-activityId="${activityId}"]`);
+      if (parentDiv) {
+
+        // console.log(parentDiv)
+
+        const activityId = parentDiv.getAttribute('data-activityId');
+        const input = document.getElementById(activityId);
+        const activityType = input.getAttribute('activity-type');
+        const id = input.id;
+        const value = input.value;
+        console.log(input)
+
+        let options  = `<option type = "${activityType}"  value="${id}">${value}</option>`
+        select.innerHTML += options;
+
+        parentDiv.remove();
+        console.log(`Removed div with activityId: ${activityId}`);
+      } else {
+        console.log(`No matching div found for activityId: ${activityId}`);
+      }
+    }
+  });
+</script>
 
 </html>
-
-method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    name: name.value,
-                    type: typeValue,
-                    status: status.value,
-                    minTime: minTime.value,
-                    maxTime: maxTime.value,
-                })
