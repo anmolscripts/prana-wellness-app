@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+
+?>
+
 <!doctype html>
 <html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="../../public/assets/"
     data-template="vertical-menu-template-free">
@@ -25,6 +31,7 @@
 </head>
 
 <body>
+
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
@@ -155,13 +162,23 @@
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
                             <div class="col-xxl-12 mb-6 order-0">
+
                                 <div class="card">
                                     <div class="d-flex align-items-start row">
                                         <div class="col-sm-7">
                                             <div class="card-body">
-                                                <h5 class="card-title text-primary mb-3">Congratulations John! 🎉</h5><a
-                                                    href="javascript:;" class="btn btn-sm btn-outline-primary">View
-                                                    Badges</a>
+                                                <h5 class="card-title text-primary mb-3">Welcome back <span
+                                                        class="text-uppercase"><?php print_r($_SESSION['user']['name']); ?></span>
+                                                    🎉</h5>
+                                                <div class="row">
+
+                                                    <div class="col-12">
+                                                        <div class="card-body ps-0 pb-4">
+                                                            <span class="d-block fw-medium mb-1 fs-5">Total Users </span>
+                                                            <h4 class="card-title mb-0 text-warning fs-1">276</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-5 text-center text-sm-left">
@@ -172,28 +189,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6 total-revenue">
+                            <div class="col-12 col-xxl-12 order-2 order-md-3 order-xxl-2 mb-6 total-revenue">
                                 <div class="card">
                                     <div class="row row-bordered g-0">
-                                        <div class="col-lg-8">
+                                        <div class="col-lg-12">
                                             <div class="card-header d-flex align-items-center justify-content-between">
                                                 <div class="card-title mb-0">
-                                                    <h5 class="m-0 me-2">Total Revenue</h5>
-                                                </div>
-                                                <div class="dropdown"><button class="btn p-0" type="button"
-                                                        id="totalRevenue" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false"><i
-                                                            class="icon-base bx bx-dots-vertical-rounded icon-lg text-body-secondary"></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"
-                                                        aria-labelledby="totalRevenue"><a class="dropdown-item"
-                                                            href="javascript:void(0);">Select All</a><a
-                                                            class="dropdown-item"
-                                                            href="javascript:void(0);">Refresh</a><a
-                                                            class="dropdown-item" href="javascript:void(0);">Share</a>
-                                                    </div>
+                                                    <h5 class="m-0 me-2">Total Activites Added</h5>
                                                 </div>
                                             </div>
-                                            <div id="totalRevenueChart" class="px-3"></div>
+                                            <div id="yearlyActivityChart" class="px-3"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div cclass="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-5 ">
+                                <div class="card">
+                                    <div class="row row-bordered g-0">
+                                        <div class="col-lg-4">
+                                            <div class="card-body">
+                                                <div class="demo-inline-spacing mt-4">
+                                                    <ul class="list-group list-group-timeline">
+                                                        <li class="list-group-item list-group-timeline-primary">Bear claw cake biscuit</li>
+                                                        <li class="list-group-item list-group-timeline-success">Soufflé pastry pie ice</li>
+                                                        <li class="list-group-item list-group-timeline-warning">Tart tiramisu cake</li>
+                                                        <li class="list-group-item list-group-timeline-info">Dragée tootsie roll</li>
+                                                        <li class="list-group-item list-group-timeline-danger">Bonbon toffee muffin</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="card-body">
+                                                <div id="activityDonutChart"></div>
+                                            </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="card-body px-xl-9 py-12 d-flex align-items-center flex-column">
@@ -201,7 +231,7 @@
                                                     <div class="btn-group"><button type="button"
                                                             class="btn btn-outline-primary">
                                                             <script>
-                                                            document.write(new Date().getFullYear() - 1);
+                                                                document.write(new Date().getFullYear() - 1);
                                                             </script>
                                                         </button><button type="button"
                                                             class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
@@ -228,7 +258,7 @@
                                                         </div>
                                                         <div class="d-flex flex-column"><small>
                                                                 <script>
-                                                                document.write(new Date().getFullYear() - 1);
+                                                                    document.write(new Date().getFullYear() - 1);
                                                                 </script>
                                                             </small>
                                                             <h6 class="mb-0">$32.5k</h6>
@@ -241,7 +271,7 @@
                                                         </div>
                                                         <div class="d-flex flex-column"><small>
                                                                 <script>
-                                                                document.write(new Date().getFullYear() - 2);
+                                                                    document.write(new Date().getFullYear() - 2);
                                                                 </script>
                                                             </small>
                                                             <h6 class="mb-0">$41.2k</h6>
@@ -253,6 +283,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-12 col-md-8 col-lg-12 col-xxl-4 order-3 order-md-2 profile-report">
                                 <div class="row">
                                     <div class="col-6 mb-6 payments">
@@ -589,7 +620,7 @@
                                 class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
                                 <div class="mb-2 mb-md-0">&#169;
                                     <script>
-                                    document.write(new Date().getFullYear());
+                                        document.write(new Date().getFullYear());
                                     </script>, made with ❤️ by <a href="https://themeselection.com" target="_blank"
                                         class="footer-link">ThemeSelection</a>
                                 </div>
@@ -624,20 +655,146 @@
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <?php
+
+    require_once '../../../functions/db.php';
+    require_once '../../../functions/activity_added_chart.php';
+    $pdo = getConnection();
+    $result = getMonthlyActivityAdditions($pdo);
+
+    $getActivityUsageData = getActivityUsageData($pdo);
+    ?>
+
+
     <script>
-    const logout = () => {
-        fetch('api/auth/logout.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+        const chartData = <?php echo json_encode($result); ?>;
+
+
+        let cardColor, headingColor, legendColor, labelColor, shadeColor, borderColor, fontFamily;
+        cardColor = config.colors.cardColor;
+        headingColor = config.colors.headingColor;
+        legendColor = config.colors.bodyColor;
+        labelColor = config.colors.textMuted;
+        borderColor = config.colors.borderColor;
+        fontFamily = config.fontFamily;
+        const totalRevenueChartEl = document.querySelector('#yearlyActivityChart');
+        const last12Months = chartData.labels;
+        const activityData = chartData.data; // Or fetched from DB via AJAX
+
+        const totalRevenueChartOptions = {
+            series: [{
+                name: 'Activity Score',
+                data: activityData
+            }],
+            chart: {
+                height: 300,
+                stacked: true,
+                type: 'bar',
+                toolbar: {
+                    show: false
+                }
             },
-        }).then(response => response.json()).then(data => {
-            console.log('Success:', data);
-            window.location.href = '/prana-wellness-app';
-        }).catch(error => {
-            console.error('Error:', error);
-        });
-    }
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '30%',
+                    borderRadius: 8
+                }
+            },
+            colors: [config.colors.primary],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 6,
+                lineCap: 'round',
+                colors: [cardColor]
+            },
+            legend: {
+                show: true,
+                horizontalAlign: 'left',
+                position: 'top',
+                labels: {
+                    colors: legendColor
+                }
+            },
+            grid: {
+                strokeDashArray: 7,
+                borderColor: borderColor
+            },
+            xaxis: {
+                categories: last12Months,
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: fontFamily,
+                        colors: labelColor
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: fontFamily,
+                        colors: labelColor
+                    }
+                }
+            }
+        };
+
+        if (totalRevenueChartEl !== null) {
+            const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
+            totalRevenueChart.render();
+        }
+    </script>
+
+
+    <script>
+        const getActivityUsageData = <?php echo json_encode($getActivityUsageData); ?>;
+        var options = {
+            chart: {
+                type: 'donut',
+                height: 350
+            },
+            series: getActivityUsageData.data,
+            labels: getActivityUsageData.labels,
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 300
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }],
+            legend: {
+                show: false
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
+        chart.render();
+    </script>
+
+    <script>
+        const logout = () => {
+            fetch('api/auth/logout.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }).then(response => response.json()).then(data => {
+                console.log('Success:', data);
+                window.location.href = '/prana-wellness-app';
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
     </script>
 </body>
 

@@ -111,3 +111,8 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+
+.max-h-30 {
+  max-height: 30rem !important;
+}
