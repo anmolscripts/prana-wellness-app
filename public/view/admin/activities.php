@@ -30,7 +30,7 @@
     <style>
         .alert-container {
             top: -5rem;
-            animation: slideIn 3s ease 1 forwards;            
+            animation: slideIn 3s ease 1 forwards;
         }
 
         @keyframes slideIn {
@@ -182,6 +182,7 @@
                 </nav>
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
+
                         <div class="card">
                             <div class="d-flex justify-content-between align-items-center pe-5">
                                 <h5 class="card-header">Activities Table</h5>
@@ -193,9 +194,9 @@
                                 </button>
 
                             </div>
-                            <div id="activitesTable" class="table-responsive text-nowrap">
-                                <table  class="table">
-                                    <thead>
+                            <div id="activitesTable" class="table-responsive text-nowrap max-h-30 ">
+                                <table class="table table-borderless">
+                                    <thead class="position-sticky top-0 table-dark ">
                                         <tr>
                                             <th>S No.</th>
                                             <th>Activite</th>
@@ -209,34 +210,9 @@
                                         </tr>
                                     </thead>
                                     <tbody id="actiityTbody" class="table-border-bottom-0">
-                                    <!-- <tr>
-                                            <td>
-                                                <span>Angular Project</span>
-                                            </td>
-                                            <td>Albert Cook</td>
-                                            <td>10:00</td>
-                                            <td>
-                                                20:00
-                                                
-                                            </td>
-                                            <td><span class="badge bg-label-primary me-1">Active</span></td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                        data-bs-toggle="dropdown"><i
-                                                            class="icon-base bx bx-dots-vertical-rounded"></i></button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                class="icon-base bx bx-edit-alt me-1"></i> Edit</a>
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                class="icon-base bx bx-trash me-1"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr> -->
                                         <tr>
                                             <td colspan="9" class="text-center">
-                                            <div class="spinner-border text-primary" role="status">
+                                                <div class="spinner-border text-primary" role="status">
                                                     <span class="visually-hidden">Loading...</span>
                                                 </div>
                                             </td>
@@ -245,32 +221,39 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-xxl">
-                            <div
-                                class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">&#169;
-                                    <script>
-                                        document.write(new Date().getFullYear());
-                                    </script>, made with ❤️ by <a href="https://themeselection.com" target="_blank"
-                                        class="footer-link">ThemeSelection</a>
+
+
+                        <!-- <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6 total-revenue mt-5">
+                            <div class="card">
+                                <div class="row row-bordered g-0">
+                                    <div class="col-lg-8">
+                                        <div class="card-header d-flex align-items-center justify-content-between">
+                                            <div class="card-title mb-0">
+                                                <h5 class="m-0 me-2">Activity Used</h5>
+                                            </div>
+                                            <div class="dropdown"><button class="btn p-0" type="button"
+                                                    id="totalRevenue" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false"><i
+                                                        class="icon-base bx bx-dots-vertical-rounded icon-lg text-body-secondary"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-end"
+                                                    aria-labelledby="totalRevenue"><a class="dropdown-item"
+                                                        href="javascript:void(0);">Select All</a><a
+                                                        class="dropdown-item" href="javascript:void(0);">Refresh</a><a
+                                                        class="dropdown-item" href="javascript:void(0);">Share</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card-body px-xl-9 py-12 d-flex align-items-center flex-column">
+                                            <canvas id="activityChart"></canvas>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="d-none d-lg-inline-block"><a
-                                        href="https://themeselection.com/item/category/admin-templates/" target="_blank"
-                                        class="footer-link me-4">Admin Templates</a><a
-                                        href="https://themeselection.com/license/" class="footer-link me-4"
-                                        target="_blank">License</a><a
-                                        href="https://themeselection.com/item/category/bootstrap-admin-templates/"
-                                        target="_blank" class="footer-link me-4">Bootstrap Dashboard</a><a
-                                        href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-                                        target="_blank" class="footer-link me-4">Documentation</a><a
-                                        href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free/issues"
-                                        target="_blank" class="footer-link">Support</a></div>
                             </div>
-                        </div>
-                    </footer>
-                    <div class="content-backdrop fade"></div>
+                        </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -342,7 +325,8 @@
         </div>
     </div>
 
-    <div id="aleartContainer"  class="position-fixed d-flex justify-content-center w-100 pt-5 alert-container d-none" style="z-index: 9999;">
+    <div id="aleartContainer" class="position-fixed d-flex justify-content-center w-100 pt-5 alert-container d-none"
+        style="z-index: 9999;">
         <div class="alert alert-primary shadow-lg" role="alert">This is a primary alert — check it out!</div>
     </div>
 
@@ -359,9 +343,106 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
+
+    <script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
+"></script>
+
     <script src="/prana-wellness-app/public/js/bindActivitys.js"></script>
 
 
+
+    <script>
+        async function loadActivityChart() {
+            const res = await fetch('../api/activities/getUser.php');
+            const data = await res.json();
+            console.log(data);
+            if (data.error) {
+                alert('Error fetching data: ' + data.error);
+                return;
+            }
+           let activityes = data.activity;
+            const labels = activityes.map(item => item.name);
+            const counts = activityes.map(item => item.total_logs);
+
+            const colors = labels.map((_, i) =>
+                `hsl(${(i * 360 / labels.length)}, 70%, 60%)`
+            );
+
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Logged Activities',
+                        data: counts,
+                        backgroundColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Activity Usage Summary'
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        loadActivityChart();
+    </script>
+
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('dounatChat').getContext('2d');
+            const data = {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    label: 'Votes',
+                    data: [300, 50, 100],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Doughnut Chart Example'
+                        }
+                    }
+                },
+            };
+
+            const myDoughnutChart = new Chart(ctx, config);
+        });
+
+
+    </script> -->
 
     <!-- <script>
         mdtimepicker('#timepicker');
@@ -371,9 +452,9 @@
         });
     </script> -->
     <script>
-        $(document).ready( function () {
-    // $('#activitesTable').DataTable();
-} );
+        $(document).ready(function () {
+            // $('#activitesTable').DataTable();
+        });
         const logout = () => {
             fetch('api/auth/logout.php', {
                 method: 'POST',
@@ -465,9 +546,9 @@
 
                 }).finally(() => {
                     spinner.classList.add('d-none');
-            text.classList.remove('d-none');
+                    text.classList.remove('d-none');
                 }
-                    
+
                 );
         }
 
@@ -485,7 +566,7 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('Success:', data);
-                        if (data.success ) {
+                        if (data.success) {
                             bindActivitys(data.activity, document.getElementById('actiityTbody'));
                             const aleart = aleartContainer.querySelector('[role="alert"]');
                             aleart.innerText = 'Activity added successfully!';

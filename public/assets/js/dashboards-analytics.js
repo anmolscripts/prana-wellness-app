@@ -108,243 +108,115 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
-  const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
-    totalRevenueChartOptions = {
-      series: [
-        {
-          name: new Date().getFullYear() - 1,
-          data: [18, 7, 15, 29, 18, 12, 9]
-        },
-        {
-          name: new Date().getFullYear() - 2,
-          data: [-13, -18, -9, -14, -8, -17, -15]
-        }
-      ],
-      chart: {
-        height: 300,
-        stacked: true,
-        type: 'bar',
-        toolbar: { show: false }
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '30%',
-          borderRadius: 8,
-          startingShape: 'rounded',
-          endingShape: 'rounded',
-          borderRadiusApplication: 'around'
-        }
-      },
-      colors: [config.colors.primary, config.colors.info],
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: 'smooth',
-        width: 6,
-        lineCap: 'round',
-        colors: [cardColor]
-      },
-      legend: {
-        show: true,
-        horizontalAlign: 'left',
-        position: 'top',
-        markers: {
-          size: 4,
-          radius: 12,
-          shape: 'circle',
-          strokeWidth: 0
-        },
-        fontSize: '13px',
-        fontFamily: fontFamily,
-        fontWeight: 400,
-        labels: {
-          colors: legendColor,
-          useSeriesColors: false
-        },
-        itemMargin: {
-          horizontal: 10
-        }
-      },
-      grid: {
-        strokeDashArray: 7,
-        borderColor: borderColor,
-        padding: {
-          top: 0,
-          bottom: -8,
-          left: 20,
-          right: 20
-        }
-      },
-      fill: {
-        opacity: [1, 1]
-      },
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        labels: {
-          style: {
-            fontSize: '13px',
-            fontFamily: fontFamily,
-            colors: labelColor
-          }
-        },
-        axisTicks: {
-          show: false
-        },
-        axisBorder: {
-          show: false
-        }
-      },
-      yaxis: {
-        labels: {
-          style: {
-            fontSize: '13px',
-            fontFamily: fontFamily,
-            colors: labelColor
-          }
-        }
-      },
-      responsive: [
-        {
-          breakpoint: 1700,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 10,
-                columnWidth: '35%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 1440,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 12,
-                columnWidth: '43%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 1300,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 11,
-                columnWidth: '45%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 1200,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 11,
-                columnWidth: '37%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 1040,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 12,
-                columnWidth: '45%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 991,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 12,
-                columnWidth: '33%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 11,
-                columnWidth: '28%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 640,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 11,
-                columnWidth: '30%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 576,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 10,
-                columnWidth: '38%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 440,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 10,
-                columnWidth: '50%'
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 380,
-          options: {
-            plotOptions: {
-              bar: {
-                borderRadius: 9,
-                columnWidth: '60%'
-              }
-            }
-          }
-        }
-      ],
-      states: {
-        hover: {
-          filter: {
-            type: 'none'
-          }
-        },
-        active: {
-          filter: {
-            type: 'none'
-          }
-        }
-      }
-    };
-  if (typeof totalRevenueChartEl !== undefined && totalRevenueChartEl !== null) {
-    const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
-    totalRevenueChart.render();
+
+
+  function getLast12Months() {
+    const labels = [];
+    const now = new Date();
+    now.setMonth(now.getMonth() + 1); // Move one month forward to include current month
+  
+    for (let i = 0; i < 12; i++) {
+      now.setMonth(now.getMonth() - 1);
+      const monthName = now.toLocaleString('default', { month: 'short' });
+      const year = now.getFullYear();
+      labels.unshift(`${monthName} ${year}`);
+    }
+  
+    return labels;
   }
+
+
+
+  function getDummyActivityData(labels) {
+    // Example: Make dummy data with some zeros
+    return labels.map((label, index) => {
+      if (index % 3 === 0) return 0; // Just as an example
+      return Math.floor(Math.random() * 50 + 5);
+    });
+  }
+
+
+
+
+
+
+
+//   const totalRevenueChartEl = document.querySelector('#totalRevenueChart');
+// const last12Months = getLast12Months();
+// const activityData = getDummyActivityData(last12Months); // Or fetched from DB via AJAX
+
+// const totalRevenueChartOptions = {
+//   series: [
+//     {
+//       name: 'Activity Score',
+//       data: activityData
+//     }
+//   ],
+//   chart: {
+//     height: 300,
+//     stacked: true,
+//     type: 'bar',
+//     toolbar: { show: false }
+//   },
+//   plotOptions: {
+//     bar: {
+//       horizontal: false,
+//       columnWidth: '30%',
+//       borderRadius: 8
+//     }
+//   },
+//   colors: [config.colors.primary],
+//   dataLabels: {
+//     enabled: false
+//   },
+//   stroke: {
+//     curve: 'smooth',
+//     width: 6,
+//     lineCap: 'round',
+//     colors: [cardColor]
+//   },
+//   legend: {
+//     show: true,
+//     horizontalAlign: 'left',
+//     position: 'top',
+//     labels: {
+//       colors: legendColor
+//     }
+//   },
+//   grid: {
+//     strokeDashArray: 7,
+//     borderColor: borderColor
+//   },
+//   xaxis: {
+//     categories: last12Months,
+//     labels: {
+//       style: {
+//         fontSize: '13px',
+//         fontFamily: fontFamily,
+//         colors: labelColor
+//       }
+//     }
+//   },
+//   yaxis: {
+//     labels: {
+//       style: {
+//         fontSize: '13px',
+//         fontFamily: fontFamily,
+//         colors: labelColor
+//       }
+//     }
+//   }
+// };
+
+// if (totalRevenueChartEl !== null) {
+//   const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
+//   totalRevenueChart.render();
+// }
+
+  // if (typeof totalRevenueChartEl !== undefined && totalRevenueChartEl !== null) {
+  //   const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
+  //   totalRevenueChart.render();
+  // }
 
   // Growth Chart - Radial Bar Chart
   // --------------------------------------------------------------------

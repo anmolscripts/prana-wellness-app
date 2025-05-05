@@ -24,6 +24,7 @@ const bindActivitys = (activitys, tbody) => {
   
   tbody.innerHTML = "";
   if (activitys.length !== 0) {
+    
     activitys.forEach((element, index) => {
         let tr = document.createElement("tr");
       const { date, time } = extractDateAndTime(element.created_at);
