@@ -20,7 +20,7 @@ const extractDateAndTime = (datetimeStr) => {
 
 const bindActivitys = (activitys, tbody) => {
     // activitys = [];
-  console.log("activity", activitys);
+  // console.log("activity", activitys);
   
   tbody.innerHTML = "";
   if (activitys.length !== 0) {
@@ -58,7 +58,7 @@ const bindActivitys = (activitys, tbody) => {
                </td>
             `;
       tbody.appendChild(tr);
-      console.log(element);
+      // console.log(element);
     });
   } else {
     let tr = document.createElement("tr");

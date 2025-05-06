@@ -344,63 +344,26 @@
                       </button>
 
                     </div>
-                    <div class="table-responsive text-nowrap">
-                      <table class="table">
-                        <thead>
+                    <div id="activitesTable" class="table-responsive text-nowrap max-h-30 ">
+                      <table class="table table-borderless">
+                        <thead class="position-sticky top-0 table-dark ">
                           <tr>
                             <th>S No.</th>
-                            <th>Activite</th>
-                            <th>Min Duration</th>
-                            <th>Max Duration</th>
-                            <th>Status</th>
+                            <th>Activite Name</th>
+                            <th>Type</th>
+                            <th>Time Duration</th>
+                            <th>Yes/No</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                            <th>Time</th>
                             <th>Actions</th>
                           </tr>
                         </thead>
-                        <tbody class="table-border-bottom-0">
+                        <tbody id="actiityTbody" class="table-border-bottom-0">
                           <tr>
-                            <td>
-                              <span>Angular Project</span>
-                            </td>
-                            <td>Albert Cook</td>
-                            <td>10:00</td>
-                            <td>
-                              20:00
-                              <!-- <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
-                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                        aria-label="Lilian Fuller"
-                                                        data-bs-original-title="Lilian Fuller">
-                                                        <img src="../public/assets/img/avatars/1.png" alt="Avatar"
-                                                            class="rounded-circle">
-                                                    </li>
-                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                        aria-label="Sophia Wilkerson"
-                                                        data-bs-original-title="Sophia Wilkerson">
-                                                        <img src="../public/assets/img/avatars/2.png" alt="Avatar"
-                                                            class="rounded-circle">
-                                                    </li>
-                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                        data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                        aria-label="Christina Parker"
-                                                        data-bs-original-title="Christina Parker">
-                                                        <img src="../public/assets/img/avatars/3.png" alt="Avatar"
-                                                            class="rounded-circle">
-                                                    </li>
-                                                </ul> -->
-                            </td>
-                            <td><span class="badge bg-label-primary me-1">Active</span></td>
-                            <td>
-                              <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                  data-bs-toggle="dropdown"><i
-                                    class="icon-base bx bx-dots-vertical-rounded"></i></button>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="javascript:void(0);"><i
-                                      class="icon-base bx bx-edit-alt me-1"></i> Edit</a>
-                                  <a class="dropdown-item" href="javascript:void(0);"><i
-                                      class="icon-base bx bx-trash me-1"></i> Delete</a>
-                                </div>
+                            <td colspan="9" class="text-center">
+                              <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                               </div>
                             </td>
                           </tr>
@@ -1009,6 +972,7 @@
 
   <!-- Place this tag before closing body tag for github widget button. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script src="/prana-wellness-app/public/js/userBindActivity.js"></script>
 
 
 </body>
@@ -1023,7 +987,7 @@
       })
       .then(response => response.json()) // or response.text() if PHP returns plain text
       .then(data => {
-        console.log('Success:', data);
+        // console.log('Success:', data);
         window.location.href = '/prana-wellness-app'; // Redirect to index.php after logout
       })
       .catch(error => {
@@ -1039,12 +1003,17 @@
 
   const activityTime = document.getElementById("minTime")
 
+  let allactivityNames = "";
+
   const fetchAllActvity = async () => {
 
     try {
       let allActvity = await fetch("api/activities/get.php")
       allActvity = await allActvity.json()
+
       allActvity = allActvity.activity
+      allactivityNames =  allActvity
+      
 
       let options = '';
       allActvity.map(activity => {
@@ -1102,6 +1071,7 @@
     let activityTypeValue = ""
     let activitydata
     let actvityType = ""
+
     if (type == "time") {
       let value = activityTime.value
       activityTypeValue = `<input type="text"   activity-id="${activityId}" class="form-control me-2"  value="${value}" readonly />`
@@ -1168,7 +1138,7 @@
       })
 
       result = await result.json()
-      console.log(result);
+      // console.log(result);
 
     } catch (error) {
 
@@ -1192,9 +1162,9 @@
         const activityType = input.getAttribute('activity-type');
         const id = input.id;
         const value = input.value;
-        console.log(input)
+        // console.log(input)
 
-        let options  = `<option type = "${activityType}"  value="${id}">${value}</option>`
+        let options = `<option type = "${activityType}"  value="${id}">${value}</option>`
         select.innerHTML += options;
 
         parentDiv.remove();
@@ -1203,6 +1173,65 @@
         console.log(`No matching div found for activityId: ${activityId}`);
       }
     }
+  });
+
+
+  const userId = <?php echo json_encode($_SESSION['user']); ?>;
+
+  const activities = {
+
+    getAll: () => {
+      fetch('api/activities/userAddedActivity.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+
+          body: new URLSearchParams({
+            userId: userId.id
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          
+
+          // console.log('Data',data);
+          userSavedActivity = data.activity
+
+          const merged = userSavedActivity.map(itemB => {
+            const match = allactivityNames.find(itemA => itemA.id == itemB.activity_id);
+            return {
+              ...itemB,
+              name: match ? match.name : null ,
+              type:match ? match.type : null
+
+
+            };
+          });
+
+
+          console.log(merged , "merged")
+
+          if (data.success) {
+            bindActivitys(merged, document.getElementById('actiityTbody'));
+            const aleart = aleartContainer.querySelector('[role="alert"]');
+            aleart.innerText = 'Activity added successfully!';
+            aleartContainer.classList.remove('d-none');
+            // location.reload();
+          } else {
+
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+
+        });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize DataTable
+    activities.getAll();
   });
 </script>
 

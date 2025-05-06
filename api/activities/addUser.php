@@ -77,20 +77,18 @@ try {
             if ($activityValue == "yes" ) {
                 $logged_value = true;
                 $score = 4;
-
+                $logged_duration = "";
             } 
-
             elseif ($activityValue ==  "no")
             {
                 $logged_value = false;
                 $score = 5; 
+                $logged_duration = "";
             }
-
-        
-            
             else {
                 $logged_duration = $activityValue;
                 $score = 6;
+                $logged_value = "";
             }
     
             $datetime = date('Y-m-d H:i:s');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configuration file
  */
@@ -116,6 +117,11 @@ try {
     ]);
 
     if ($stmt->rowCount() > 0) {
+        $alterDB = "ALTER TABLE `$userActivitiesTable`
+MODIFY COLUMN activity_date DATETIME NOT NULL;";
+        $conn->exec($alterDB);
+        echo "<br>✅ Table '$userActivitiesTable' Alter successfully.\n";
+
         echo "<br>✅ Table '$userActivitiesTable' exists in database '$dbname'. \n";
     } else {
         echo "<br>❌ Table '$userActivitiesTable' does not exist in database '$dbname'. \n";
@@ -127,7 +133,7 @@ try {
                 logged_duration INT NULL,
                 logged_value BOOLEAN NULL,
                 score INT NULL,
-                activity_date DATE NOT NULL,
+                activity_date DATETIME NOT NULL,
                 FOREIGN KEY (user_id) REFERENCES `$userTable`(id) ON DELETE CASCADE,
                 FOREIGN KEY (activity_id) REFERENCES `$activityTable`(id) ON DELETE CASCADE
             );
