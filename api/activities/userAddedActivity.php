@@ -26,6 +26,8 @@ require_once '../../functions/db.php';
 
 // $otp = rand(100000, 999999);
 
+
+
 try {
     $conn->exec("USE $dbname");
 

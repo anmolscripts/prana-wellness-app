@@ -28,7 +28,7 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Demo: Dashboard - Analytics | Sneat - Bootstrap Dashboard FREE</title>
+    <title>Prana Wellness App</title>
     <meta name="description" content="" />
     <link rel="icon" type="image/x-icon" href="../public/assets/img/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

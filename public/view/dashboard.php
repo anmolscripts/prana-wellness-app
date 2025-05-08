@@ -469,6 +469,73 @@
               </div>
 
 
+              <!-- delete pop up show -->
+
+              <div class="col-lg-4 col-md-6">
+                <small class="fw-medium">Toggle Between Modals</small>
+                <div class="mt-4">
+                  <!-- <button
+                              type="button"
+                              class="btn btn-primary"
+                             
+                              >
+                              Launch modal
+                            </button> -->
+
+                  <!-- Modal 1-->
+                  <div
+                    class="modal fade"
+                    id="modalToggle"
+                    aria-labelledby="modalToggleLabel"
+                    tabindex="-1"
+                    style="display: none"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content ">
+                        <div class="modal-header">
+
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                        </div>
+                        <div class="pb-12" style="display: flex; flex-direction: column; justify-content: center;  align-items: center; ">
+                          <div class="modal-body fs-5">
+                            Are You sure , You want to delete activity ?
+                          </div>
+
+                          <div style="column-gap: 2rem;" class="d-flex ">
+                            <div class="">
+                              <button onclick="deleteUserActivity()"
+                                class="btn btn-danger deleteButton"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">
+                                Delete
+                              </button>
+                            </div>
+                            <div class="">
+                              <button
+                                class="btn btn-primary"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Modal 2-->
+
+                </div>
+              </div>
+
+
 
               <!-- Total Revenue -->
               <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6 total-revenue">
@@ -1012,8 +1079,8 @@
       allActvity = await allActvity.json()
 
       allActvity = allActvity.activity
-      allactivityNames =  allActvity
-      
+      allactivityNames = allActvity
+
 
       let options = '';
       allActvity.map(activity => {
@@ -1192,24 +1259,24 @@
         })
         .then(response => response.json())
         .then(data => {
-          
 
-          // console.log('Data',data);
+
+
           userSavedActivity = data.activity
 
           const merged = userSavedActivity.map(itemB => {
             const match = allactivityNames.find(itemA => itemA.id == itemB.activity_id);
             return {
               ...itemB,
-              name: match ? match.name : null ,
-              type:match ? match.type : null
+              name: match ? match.name : null,
+              type: match ? match.type : null
 
 
             };
           });
 
 
-          console.log(merged , "merged")
+          // console.log(merged , "merged")
 
           if (data.success) {
             bindActivitys(merged, document.getElementById('actiityTbody'));
@@ -1230,19 +1297,23 @@
 
 
 
+  let activity_id_delete = ""
+  document.addEventListener("click", function(e) {
+    const deleteBtn = e.target.closest("button[activity-id]");
 
-  document.addEventListener('click', function (event) {
-  const anchor = event.target.closest('a[data-operation="delete"]');
-  if (!anchor) return; 
-  
-  console.log("Clicked anchor:", anchor);
-  console.log("Activity ID:", anchor.dataset.id);
+    if (deleteBtn) {
+      activity_id_delete = deleteBtn.getAttribute("activity-id");
 
-  // deleteUserActivity(anchor); 
-});
+      // deleteUserActivity(activityId);
+    }
+  });
 
-  const deleteUserActivity = async()=>
-  {
+  const deleteUserActivity = async () => {
+
+    if (activity_id_delete == "") {
+      alert("something went wrong")
+      return;
+    }
 
     try {
       let result = await fetch("api/activities/deleteUserActivity.php", {
@@ -1251,16 +1322,16 @@
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-          userId: userId.id
-
-
-          // userAddedActivity: JSON.stringify(userAddedActivity)
+          userId: userId.id,
+          activityId: activity_id_delete
 
         })
       })
 
       result = await result.json()
-      // console.log(result);
+      console.log(result);
+      window.location.reload()
+
 
     } catch (error) {
 

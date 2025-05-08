@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Demo: Dashboard - Analytics | Sneat - Bootstrap Dashboard FREE</title>
+    <title>Prana Wellness App</title>
     <meta name="description" content="" />
     <link rel="icon" type="image/x-icon" href="../public/assets/img/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -332,7 +332,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
         async function loadActivityChart() {
             const res = await fetch('../api/activities/getUser.php');
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             if (data.error) {
                 alert('Error fetching data: ' + data.error);
                 return;

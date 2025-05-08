@@ -26,17 +26,20 @@ require_once '../../functions/db.php';
 
 // $otp = rand(100000, 999999);
 
+
+
+
 try {
     $conn->exec("USE $dbname");
 
-    $user_Id = $_POST['userId']; 
+    $user_Id = $_POST['userId'];
+    $activity_Id = $_POST['activityId']; // Make sure this comes from your JS fetch request
+    $stmt = $conn->prepare("DELETE FROM user_activities WHERE user_id = ? AND activity_id = ?");
+    $success = $stmt->execute([$user_Id, $activity_Id]);
 
-    $stmt = $conn->prepare("SELECT * FROM user_activities WHERE user_Id = ?");
-    $stmt->execute([$user_Id]);
-    $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if ($activity) {
 
-        echo json_encode(['success' => true, 'activity' => $activity]);
+    if ($success) {
+        echo json_encode(['success' => true, 'activity' => $success]);
     } else {
         echo json_encode(['success' => false, 'message' => 'no activity found']);
         exit;
