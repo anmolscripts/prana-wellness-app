@@ -56,7 +56,7 @@
 <body>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo"><a href="index" class="app-brand-link gap-2"><span
                             class="app-brand-logo demo"><img src="../public/assets/img/logo.png" alt=""
                                 class="w-50 h-auto"></span></a><a href="javascript:void(0);"
@@ -65,7 +65,7 @@
                 <div class="menu-divider mt-0"></div>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                    <li class="menu-item "><a href="javascript:void(0);" class="menu-link"><i
+                    <li class="menu-item "><a href="dashboard" class="menu-link"><i
                                 class="menu-icon tf-icons bx bx-home-smile"></i>
                             <div class="text-truncate" data-i18n="Dashboards">Dashboards</div><span
                                 class="badge rounded-pill bg-danger ms-auto">5</span>
@@ -75,41 +75,17 @@
                             <div class="text-truncate" data-i18n="Dashboards">Activities</div><span
                                 class="badge rounded-pill bg-danger ms-auto">5</span>
                         </a></li>
-                    <li class="menu-item"><a href="javascript:void(0);" class="menu-link menu-toggle"><i
-                                class="menu-icon tf-icons bx bx-layout"></i>
-                            <div class="text-truncate" data-i18n="Layouts">Layouts</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item"><a href="layouts-without-menu.html" class="menu-link">
-                                    <div class="text-truncate" data-i18n="Without menu">Without menu</div>
-                                </a></li>
-                            <li class="menu-item"><a href="layouts-without-navbar.html" class="menu-link">
-                                    <div class="text-truncate" data-i18n="Without navbar">Without navbar</div>
-                                </a></li>
-                            <li class="menu-item"><a href="layouts-fluid.html" class="menu-link">
-                                    <div class="text-truncate" data-i18n="Fluid">Fluid</div>
-                                </a></li>
-                            <li class="menu-item"><a href="layouts-container.html" class="menu-link">
-                                    <div class="text-truncate" data-i18n="Container">Container</div>
-                                </a></li>
-                            <li class="menu-item"><a href="layouts-blank.html" class="menu-link">
-                                    <div class="text-truncate" data-i18n="Blank">Blank</div>
-                                </a></li>
-                        </ul>
-                    </li>
+                    
                     <li class="menu-item"><a href="javascript:void(0);" class="menu-link menu-toggle"><i
                                 class="menu-icon tf-icons bx bx-dock-top"></i>
                             <div class="text-truncate" data-i18n="Account Settings">Account Settings</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item"><a href="pages-account-settings-account.html" class="menu-link">
+                            <li class="menu-item"><a href="account" class="menu-link">
                                     <div class="text-truncate" data-i18n="Account">Account</div>
                                 </a></li>
-                            <li class="menu-item"><a href="pages-account-settings-notifications.html" class="menu-link">
+                            <li class="menu-item"><a href="notification" class="menu-link">
                                     <div class="text-truncate" data-i18n="Notifications">Notifications</div>
-                                </a></li>
-                            <li class="menu-item"><a href="pages-account-settings-connections.html" class="menu-link">
-                                    <div class="text-truncate" data-i18n="Connections">Connections</div>
                                 </a></li>
                         </ul>
                     </li>
