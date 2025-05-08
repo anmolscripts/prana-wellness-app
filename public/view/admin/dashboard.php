@@ -252,18 +252,7 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
                                         <div class="card-header d-flex justify-content-between">
                                             <div class="card-title mb-0">
                                                 <h5 class="mb-1 me-2">Weakly Report</h5>
-                                                <!-- <p class="card-subtitle">42.82k Total Sales</p> -->
                                             </div>
-                                            <!-- <div class="dropdown"><button class="btn text-body-secondary p-0" type="button"
-                                                    id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false"><i
-                                                        class="icon-base bx bx-dots-vertical-rounded icon-lg"></i></button>
-                                                <div class="dropdown-menu dropdown-menu-end"
-                                                    aria-labelledby="orederStatistics"><a class="dropdown-item"
-                                                        href="javascript:void(0);">Select All</a><a class="dropdown-item"
-                                                        href="javascript:void(0);">Refresh</a><a class="dropdown-item"
-                                                        href="javascript:void(0);">Share</a></div>
-                                            </div> -->
                                         </div>
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center mb-6">
@@ -272,17 +261,18 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
                                                 </div>
                                                 <div id="orderStatisticsChart"></div>
                                             </div>
-                                            <?php if(isset($getActivityUsageStatsWeekly['activities']) && !empty($getActivityUsageStatsWeekly['activities'])): ?>
-                                            <div class="list-group list-group-flush">
-                                                <?php foreach($getActivityUsageStatsWeekly['activities'] as $activity): ?>
-                                                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-grow-1">
-                                                    <span>
-                                                        <?= $activity['activity_name']; ?>
-                                                    </span>
-                                                    <span class="badge rounded-pill bg-label-primary ms-auto"><?= $activity['usage_count']; ?></span>
+                                            <?php if (isset($getActivityUsageStatsWeekly['activities']) && !empty($getActivityUsageStatsWeekly['activities'])): ?>
+                                                <div class="list-group list-group-flush gap-2">
+                                                    <?php foreach ($getActivityUsageStatsWeekly['activities'] as $activity): ?>
+                                                        <button type="button" class="btn btn-outline-primary d-flex justify-content-between align-items-center flex-grow-1 text-start gap-3 px-2">
+                                                            <span>
+                                                                <?= $activity['activity_name']; ?>
+                                                            </span>
+                                                            <span class="badge"><?= $activity['usage_count']; ?></span>
+                                                        </button>
+
+                                                    <?php endforeach; ?>
                                                 </div>
-                                                <?php endforeach; ?>
-                                            </div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
