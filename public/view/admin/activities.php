@@ -56,7 +56,7 @@
 <body>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo"><a href="index" class="app-brand-link gap-2"><span
                             class="app-brand-logo demo"><img src="../public/assets/img/logo.png" alt=""
                                 class="w-50 h-auto"></span></a><a href="javascript:void(0);"
@@ -75,7 +75,7 @@
                             <div class="text-truncate" data-i18n="Dashboards">Activities</div><span
                                 class="badge rounded-pill bg-danger ms-auto">5</span>
                         </a></li>
-                    
+
                     <li class="menu-item"><a href="javascript:void(0);" class="menu-link menu-toggle"><i
                                 class="menu-icon tf-icons bx bx-dock-top"></i>
                             <div class="text-truncate" data-i18n="Account Settings">Account Settings</div>
@@ -290,11 +290,35 @@
                     <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" onclick="addActivity(this)" class="btn btn-primary d-grid w-25">
+                    <button type="button" onclick="activities.add(this)" class="btn btn-primary d-grid w-25">
                         <div class="spinner-border text-light d-none" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                         <span class="text">Add</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Model -->
+    <div class="modal fade" id="deleteModel" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalToggleLabel">Delete</h5>
+                    <button type="button" class="btn-close  text-white bg-dark" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you shure you want to delete <strong>
+                    `<span id="deleteActiviteName" class="text-danger"></span>`
+                    </strong> activity? <br>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button id="deleteBtn" onclick="activities.delete(this)" class="btn btn-primary" data-bs-dismiss="modal">
+                        Delete
                     </button>
                 </div>
             </div>
@@ -337,7 +361,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
                 alert('Error fetching data: ' + data.error);
                 return;
             }
-           let activityes = data.activity;
+            let activityes = data.activity;
             const labels = activityes.map(item => item.name);
             const counts = activityes.map(item => item.total_logs);
 
@@ -428,17 +452,22 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
         });
     </script> -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // $('#activitesTable').DataTable();
         });
         const logout = () => {
             fetch('api/auth/logout.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            })
-                .then(response => response.json()).then(data => { console.log('Success:', data); window.location.href = '/prana-wellness-app'; }).catch(error => { console.error('Error:', error); });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                .then(response => response.json()).then(data => {
+                    console.log('Success:', data);
+                    window.location.href = '/prana-wellness-app';
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         const showTimeOption = (select) => {
@@ -452,114 +481,11 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
         }
 
 
-        const addActivity = (btn) => {
-            const name = document.getElementById('nameLarge');
-            const status = document.getElementById('status');
-            const minTime = document.getElementById('minTime');
-            const maxTime = document.getElementById('maxTime');
-            const type = document.getElementById('type');
-            const aleartContainer = document.getElementById('aleartContainer');
-            if (name.value === '') {
-                name.classList.add('is-invalid');
-                return;
-            } else {
-                name.classList.remove('is-invalid');
-            }
-
-            const typeValue = type.value;
-            if (typeValue === 'time') {
-
-                if (minTime.value === '') {
-                    minTime.classList.add('is-invalid');
-                    return;
-                } else {
-                    minTime.classList.remove('is-invalid');
-                }
-
-                if (maxTime.value === '') {
-                    maxTime.classList.add('is-invalid');
-                    return;
-                } else {
-                    maxTime.classList.remove('is-invalid');
-                }
-            }
-            const spinner = btn.querySelector('.spinner-border');
-            const text = btn.querySelector('.text');
-
-
-
-            spinner.classList.remove('d-none');
-            text.classList.add('d-none');
-            fetch('../api/activities/add.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    name: name.value,
-                    type: typeValue,
-                    status: status.value,
-                    minTime: minTime.value,
-                    maxTime: maxTime.value,
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-                    spinner.classList.add('d-none');
-                    text.classList.remove('d-none');
-                    if (data.success) {
-                        const aleart = aleartContainer.querySelector('[role="alert"]');
-                        aleart.innerText = 'Activity added successfully!';
-                        aleartContainer.classList.remove('d-none');
-                        location.reload();
-                    } else {
-
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-
-                }).finally(() => {
-                    spinner.classList.add('d-none');
-                    text.classList.remove('d-none');
-                }
-
-                );
-        }
 
 
 
 
-        const activities = {
-            getAll: () => {
-                fetch('../api/activities/get.php', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-                        if (data.success) {
-                            bindActivitys(data.activity, document.getElementById('actiityTbody'));
-                            const aleart = aleartContainer.querySelector('[role="alert"]');
-                            aleart.innerText = 'Activity added successfully!';
-                            aleartContainer.classList.remove('d-none');
-                            // location.reload();
-                        } else {
-
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-
-                    });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize DataTable
             activities.getAll();
         });
