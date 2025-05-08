@@ -408,19 +408,19 @@
                         aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <div style="display: flex; column-gap: 2rem;">
+                      <div class="d-flex gap-2 mb-3">
 
                         <!-- <div class="row"> -->
-                        <div class="col mb-6">
+                        <div class="w-100">
                           <label for="activitySelect" class="form-label">Activity Name</label>
-                          <select id="activitySelect" class="form-control">
+                          <select id="activitySelect" class="form-control w-100">
                             <option value="none">Select Activity</option>
                           </select>
                         </div>
                         <!-- </div> -->
 
 
-                        <div style="display: none;" id="yesNoBox" class="col-md-4 mb-6">
+                        <div style="display: none;" id="yesNoBox" class="w-25">
                           <label for="status" class="form-label">Select Yes Or No</label>
                           <select class="form-select" id="status" aria-label="Default select example">
                             <option value="yes">Yes</option>
@@ -429,8 +429,8 @@
                         </div>
 
 
-                        <div id="timeOptionContainer" style="display:none;">
-                          <div class="col-md-6 mb-6">
+                        <div class="w-25" id="timeOptionContainer" style="display:none;">
+                          <div class="">
                             <label for="minTime" class="form-label">Time Duration</label>
                             <input type="number" id="minTime" class="form-control" placeholder="Enter Time Duration" />
                           </div>
@@ -1085,17 +1085,16 @@
     }
 
     userAddedActivity.innerHTML += `
-  <div data-activityId = "${activityId}" class="d-flex align-items-center column-gap-4 mb-3">
-  <div>
-  <input type="text" activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control me-2 userAddedActivities" readonly /> 
+  <div data-activityId = "${activityId}" class="row w-100 mb-2">
+  <div class="col-9">
+    <input  type="text" activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control  me-2 userAddedActivities" readonly /> 
   </div>
-  <div> 
+  <div class="col-2"> 
   ${activityTypeValue}
   </div>
 
-  <div class="d-flex align-items-center" > 
- 
-  <i activityId="${activityId}" class='bx bx-checkbox-minus minusBtn' style="font-size: 36px;"></i>
+  <div class="col-1" > 
+  <button activityId="${activityId}" class="btn btn-danger minusBtn"><i class='bx bxs-trash-alt text-white fs-5 pe-none'></i></button>
 
   </div>
     
@@ -1227,6 +1226,46 @@
 
         });
     }
+  }
+
+
+
+
+  document.addEventListener('click', function (event) {
+  const anchor = event.target.closest('a[data-operation="delete"]');
+  if (!anchor) return; 
+  
+  console.log("Clicked anchor:", anchor);
+  console.log("Activity ID:", anchor.dataset.id);
+
+  // deleteUserActivity(anchor); 
+});
+
+  const deleteUserActivity = async()=>
+  {
+
+    try {
+      let result = await fetch("api/activities/deleteUserActivity.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          userId: userId.id
+
+
+          // userAddedActivity: JSON.stringify(userAddedActivity)
+
+        })
+      })
+
+      result = await result.json()
+      // console.log(result);
+
+    } catch (error) {
+
+    }
+
   }
 
   document.addEventListener('DOMContentLoaded', function() {

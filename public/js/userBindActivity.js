@@ -75,11 +75,11 @@ const bindActivitys = (activitys, tbody) => {
                           <i class="icon-base bx bx-dots-vertical-rounded"></i>
                       </button>
                       <div class="dropdown-menu">
-                          <a data-id="${element.id}" data-operation="delete" class="dropdown-item" href="javascript:void(0);">
+                          <a data-id="${element.activity_id}" data-operation="delete" class="dropdown-item" href="javascript:void(0);">
                               <i class="icon-base bx bx-edit-alt me-1"></i> 
                               Edit
                           </a>
-                          <a data-id="${element.id}" data-operation="delete" class="dropdown-item" href="javascript:void(0);">
+                          <a  data-id="${element.activity_id}" data-operation="delete" class="dropdown-item" href="javascript:void(0);">
                               <i class="icon-base bx bx-trash me-1"></i> 
                               Delete
                           </a>
