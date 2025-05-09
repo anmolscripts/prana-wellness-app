@@ -194,3 +194,4 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
 
                     });
                 </script>
+                
