@@ -247,7 +247,7 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
 
 
                             <div class="row mt-5">
-                                <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-6">
+                                <div class="col-md-12 col-lg-12 col-xl-12 order-0 mb-6">
                                     <div class="card h-100">
                                         <div class="card-header d-flex justify-content-between">
                                             <div class="card-title mb-0">
@@ -277,7 +277,7 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6 order-1 mb-6">
+                                <!-- <div class="col-md-6 col-lg-6 order-1 mb-6">
                                     <div class="card h-100">
                                         <div class="card-header nav-align-top">
                                             <ul class="nav nav-pills flex-wrap row-gap-2" role="tablist">
@@ -325,7 +325,7 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
 
