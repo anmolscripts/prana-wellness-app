@@ -45,77 +45,52 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
           </div>
         </div>
       </div>
-     
+
 
       <!-- my activity -->
 
-      <div class="content-wrapper">
-        <div class="container-xxl flex-grow-1 container-p-y">
-          <div class="card">
-            <div class="d-flex justify-content-between align-items-center pe-5">
-              <h5 class="card-header">Activities Table</h5>
+      <div class="col-xxl-12 mb-6 order-0">
+        <div class="card">
+          <div class="d-flex justify-content-between align-items-center pe-5">
+            <h5 class="card-header">Activities Table</h5>
 
-              <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal"
-                data-bs-target="#addActiviteModal">
-                <span class="icon-base bx bx-plus icon-sm me-2"></span>Add Activite
+            <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal"
+              data-bs-target="#addActiviteModal">
+              <span class="icon-base bx bx-plus icon-sm me-2"></span>Add Activite
 
-              </button>
+            </button>
 
-            </div>
-            <div id="activitesTable" class="table-responsive text-nowrap max-h-30 ">
-              <table class="table table-borderless">
-                <thead class="position-sticky top-0 table-dark ">
-                  <tr>
-                    <th>S No.</th>
-                    <th>Activite Name</th>
-                    <th>Type</th>
-                    <th>Time Duration</th>
-                    <th>Yes/No</th>
-                    <th>Score</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="actiityTbody" class="table-border-bottom-0">
-                  <tr>
-                    <td colspan="9" class="text-center">
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          </div>
+          <div id="activitesTable" class="table-responsive text-nowrap max-h-30 ">
+            <table class="table table-borderless">
+              <thead class="position-sticky top-0 table-dark ">
+                <tr>
+                  <th>S No.</th>
+                  <th>Activite Name</th>
+                  <th>Type</th>
+                  <th>Time Duration</th>
+                  <th>Yes/No</th>
+                  <th>Score</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="actiityTbody" class="table-border-bottom-0">
+                <tr>
+                  <td colspan="9" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <footer class="content-footer footer bg-footer-theme">
-          <div class="container-xxl">
-            <div
-              class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-              <div class="mb-2 mb-md-0">&#169;
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>, made with ❤️ by <a href="https://themeselection.com" target="_blank"
-                  class="footer-link">ThemeSelection</a>
-              </div>
-              <div class="d-none d-lg-inline-block"><a
-                  href="https://themeselection.com/item/category/admin-templates/" target="_blank"
-                  class="footer-link me-4">Admin Templates</a><a
-                  href="https://themeselection.com/license/" class="footer-link me-4"
-                  target="_blank">License</a><a
-                  href="https://themeselection.com/item/category/bootstrap-admin-templates/"
-                  target="_blank" class="footer-link me-4">Bootstrap Dashboard</a><a
-                  href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-                  target="_blank" class="footer-link me-4">Documentation</a><a
-                  href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free/issues"
-                  target="_blank" class="footer-link">Support</a></div>
-            </div>
-          </div>
-        </footer>
-        <div class="content-backdrop fade"></div>
       </div>
+
+
 
       <div class="modal fade" id="addActiviteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -188,71 +163,6 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
 
 
       <!-- delete pop up show -->
-
-      <div class="col-lg-4 col-md-6">
-        <small class="fw-medium">Toggle Between Modals</small>
-        <div class="mt-4">
-          <!-- <button
-                              type="button"
-                              class="btn btn-primary"
-                             
-                              >
-                              Launch modal
-                            </button> -->
-
-          <!-- Modal 1-->
-          <div
-            class="modal fade"
-            id="modalToggle"
-            aria-labelledby="modalToggleLabel"
-            tabindex="-1"
-            style="display: none"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content ">
-                <div class="modal-header">
-
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-                </div>
-                <div class="pb-12" style="display: flex; flex-direction: column; justify-content: center;  align-items: center; ">
-                  <div class="modal-body fs-5">
-                    Are You sure , You want to delete activity ?
-                  </div>
-
-                  <div style="column-gap: 2rem;" class="d-flex ">
-                    <div class="">
-                      <button onclick="deleteUserActivity()"
-                        class="btn btn-danger deleteButton"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                        Delete
-                      </button>
-                    </div>
-                    <div class="">
-                      <button
-                        class="btn btn-primary"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-
-
-              </div>
-            </div>
-          </div>
-          <!-- Modal 2-->
-
-        </div>
-      </div>
-
 
       <!-- aactvitity histrory -->
 
