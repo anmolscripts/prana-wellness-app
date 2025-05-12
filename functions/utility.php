@@ -126,6 +126,27 @@ function getActivityUsageStatsWeekly(PDO $pdo, string $dbname, string $userActiv
 }
 
 
+function getAllActivityes(PDO $pdo, string $dbname, string $activityTable = 'activity'): array
+{
+    // Check if the activity table exists
+    $checkStmt = $pdo->prepare("
+        SELECT TABLE_NAME
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE TABLE_SCHEMA = :dbname AND TABLE_NAME = :table
+    ");
+    $checkStmt->execute([
+        ':dbname' => $dbname,
+        ':table' => $activityTable
+    ]);
+
+    if ($checkStmt->rowCount() === 0) {
+        return ['error' => "Table '$activityTable' does not exist in database '$dbname'"];
+    }
+
+    // Get all activities
+    $stmt = $pdo->query("SELECT * FROM `$activityTable`");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 

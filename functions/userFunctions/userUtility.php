@@ -64,5 +64,55 @@ function getActivityUsageStats(PDO $pdo, string $dbname, string $userActivitiesT
 }
 
 
+function getAllActivityes(PDO $pdo, string $dbname, int $user_id, string $activityTable = 'activity'): array
+{
+    // Check if the activity table exists
+    $checkStmt = $pdo->prepare("
+        SELECT TABLE_NAME 
+        FROM INFORMATION_SCHEMA.TABLES 
+        WHERE TABLE_SCHEMA = :dbname 
+          AND TABLE_NAME = :table
+    ");
+    $checkStmt->execute([
+        ':dbname' => $dbname,
+        ':table' => $activityTable
+    ]);
 
-?>
+    if ($checkStmt->rowCount() === 0) {
+        return ['error' => "Table '$activityTable' does not exist in database '$dbname'"];
+    }
+
+    // Fetch activities with goal status and done status
+    $query = "
+        SELECT 
+            a.id AS activity_id,
+            a.name AS activity_name,
+            a.type,
+            a.state,
+            CASE 
+                WHEN g.goal_id IS NOT NULL THEN TRUE
+                ELSE FALSE
+            END AS is_goal_set,
+            CASE 
+                WHEN ua.record_id IS NOT NULL THEN TRUE
+                ELSE FALSE
+            END AS is_done_today
+        FROM `$activityTable` a
+        LEFT JOIN goals g 
+            ON g.activity_id = a.id 
+            AND g.user_id = :user_id
+            AND DATE(g.goal_date) = CURDATE()
+        LEFT JOIN user_activities ua 
+            ON ua.activity_id = a.id 
+            AND ua.user_id = :user_id
+            AND DATE(ua.activity_date) = CURDATE()
+        GROUP BY a.id
+        ORDER BY a.id
+    ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([':user_id' => $user_id]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
