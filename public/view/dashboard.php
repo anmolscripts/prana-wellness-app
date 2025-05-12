@@ -392,7 +392,7 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
                     </div>
                   </div>
                 </div>
-                <footer class="content-footer footer bg-footer-theme">
+                <!-- <footer class="content-footer footer bg-footer-theme">
                   <div class="container-xxl">
                     <div
                       class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
@@ -415,7 +415,7 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
                           target="_blank" class="footer-link">Support</a></div>
                     </div>
                   </div>
-                </footer>
+                </footer> -->
                 <div class="content-backdrop fade"></div>
               </div>
 
@@ -492,7 +492,7 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
               <!-- delete pop up show -->
 
               <div class="col-lg-4 col-md-6">
-                <small class="fw-medium">Toggle Between Modals</small>
+                <!-- <small class="fw-medium">Toggle Between Modals</small> -->
                 <div class="mt-4">
                   <!-- <button
                               type="button"
