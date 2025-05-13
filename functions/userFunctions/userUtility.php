@@ -46,14 +46,13 @@ function getActivityUsageStats(PDO $pdo, string $dbname, string $userActivitiesT
         a.type AS activity_type,
         COUNT(u.activity_id) AS usage_count,
         MAX(u.activity_date) AS last_used,
-        MAX(u.activity_date) AS user_activity_date
+        MAX(u.userActivityDate) AS user_activity_date
     FROM `$userActivitiesTable` u
     JOIN `$activityTable` a ON u.activity_id = a.id
     WHERE u.user_id = :user_id
     GROUP BY a.id, a.name, a.type
     ORDER BY usage_count DESC
 ";
-
 
 
     $stmt = $pdo->prepare($sql);
