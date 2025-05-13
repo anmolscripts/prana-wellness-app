@@ -24,6 +24,7 @@
     $status = trim($_POST['status'] ?? '');
     $minTime = trim($_POST['minTime'] ?? '');
     $maxTime = trim($_POST['maxTime'] ?? '');
+    $description = trim($_POST['description'] ?? '');
 
     if (empty($name)) {
         echo json_encode(['success' => false, 'message' => 'Name is required.']);
@@ -50,14 +51,16 @@
     try {
         $conn->exec("USE $dbname");
         $datetime = date('Y-m-d H:i:s');
-        $stmt = $conn->prepare("INSERT INTO activity (name, type, state, min_duration, max_duration, created_at) VALUES (:name, :type, :status, :min_duration, :max_duration, :created_at)");
+        $stmt = $conn->prepare("INSERT INTO activity (name, type, state, min_duration, max_duration, created_at, description, modified_datetime) VALUES (:name, :type, :status, :min_duration, :max_duration, :created_at, :description, :modified_datetime)");
         $stmt->execute([
             'name'     => $name,
             'type'    => $type,
             'status' => $status,
             'min_duration' => $minTime,
             'max_duration' => $maxTime,
-            'created_at' => $datetime
+            'created_at' => $datetime,
+            'description' => $description,
+            'modified_datetime' => $datetime
         ]);
         $lastId = $conn->lastInsertId();
         echo json_encode(['success' => true, 'id' => $lastId]);

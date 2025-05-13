@@ -83,17 +83,60 @@ try {
 
     if ($stmt->rowCount() > 0) {
         echo "<br>✅ Table '$activityTable' exists in database '$dbname'. \n";
+
+        // Check for 'description' column
+        $checkDesc = $conn->prepare(
+            "SELECT COLUMN_NAME 
+             FROM INFORMATION_SCHEMA.COLUMNS 
+             WHERE TABLE_SCHEMA = :dbname 
+               AND TABLE_NAME = :table 
+               AND COLUMN_NAME = 'description'"
+        );
+        $checkDesc->execute([
+            ':dbname' => $dbname,
+            ':table' => $activityTable
+        ]);
+
+        if ($checkDesc->rowCount() === 0) {
+            $conn->exec("ALTER TABLE `$activityTable` ADD COLUMN `description` TEXT NULL AFTER `name`");
+            echo "<br>🆕 Column `description` added to `$activityTable`.\n";
+        } else {
+            echo "<br>✅ Column `description` already exists in `$activityTable`.\n";
+        }
+
+        // Check for 'modified_datetime' column
+        $checkModified = $conn->prepare(
+            "SELECT COLUMN_NAME 
+             FROM INFORMATION_SCHEMA.COLUMNS 
+             WHERE TABLE_SCHEMA = :dbname 
+               AND TABLE_NAME = :table 
+               AND COLUMN_NAME = 'modified_datetime'"
+        );
+        $checkModified->execute([
+            ':dbname' => $dbname,
+            ':table' => $activityTable
+        ]);
+
+        if ($checkModified->rowCount() === 0) {
+            $conn->exec("ALTER TABLE `$activityTable` ADD COLUMN `modified_datetime` DATETIME NULL AFTER `created_at`");
+            echo "<br>🆕 Column `modified_datetime` added to `$activityTable`.\n";
+        } else {
+            echo "<br>✅ Column `modified_datetime` already exists in `$activityTable`.\n";
+        }
+
     } else {
         echo "<br>❌ Table '$activityTable' does not exist in database '$dbname'. \n";
         $createActivitySQL = "
             CREATE TABLE `$activityTable` (
                 id INT(3) ZEROFILL PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(255) NOT NULL,
+                description TEXT NULL,
                 type ENUM('time', 'boolean') NOT NULL,
                 state ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
                 min_duration INT NULL,
                 max_duration INT NULL,
-                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                modified_datetime DATETIME NULL
             ) ENGINE=InnoDB
               DEFAULT CHARSET=utf8mb4
               COLLATE=utf8mb4_unicode_ci;
@@ -105,6 +148,7 @@ try {
     echo "Connection failed: " . $e->getMessage();
     exit;
 }
+
 
 // -- USER_ACTIVITIES TABLE
 $userActivitiesTable = "user_activities";
@@ -133,7 +177,7 @@ try {
              FROM INFORMATION_SCHEMA.COLUMNS
              WHERE TABLE_SCHEMA = :schema
                AND TABLE_NAME   = :table
-               AND COLUMN_NAME  = 'activity_date'"
+               AND COLUMN_NAME  = 'userActivityDate'"
         );
         $checkCol->execute([
             ':schema' => $dbname,
@@ -144,11 +188,11 @@ try {
             // add missing column
             $conn->exec(
                 "ALTER TABLE `$userActivitiesTable`
-                 ADD COLUMN `activity_date` DATETIME NOT NULL AFTER `score`"
+                 ADD COLUMN `userActivityDate` DATETIME NULL AFTER `score`"
             );
-            echo "<br>🆕 Column `activity_date` added to `$userActivitiesTable`.\n";
+            echo "<br>🆕 Column `userActivityDate` added to `$userActivitiesTable`.\n";
         } else {
-            echo "<br>✅ Column `activity_date` already exists in `$userActivitiesTable`.\n";
+            echo "<br>✅ Column `userActivityDate` already exists in `$userActivitiesTable`.\n";
         }
 
     } else {

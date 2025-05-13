@@ -1,3 +1,5 @@
+<?php session_start();   ?>
+
 <!doctype html>
 
 <html
@@ -272,8 +274,8 @@
                             type="text"
                             id="email"
                             name="email"
-                            value=""
-                            placeholder="john.doe@example.com" />
+                            value="<?= $_SESSION['user']['email']; ?>"
+                            placeholder="john.doe@example.com" readonly />
                         </div>
 
                         <div class="col-md-6">
