@@ -21,7 +21,7 @@ const extractDateAndTime = (datetimeStr) => {
 
 const bindActivitys = (activitys, tbody) => {
     // activitys = [];
-    console.log("activity", activitys);
+    // console.log("activity", activitys);
 
     tbody.innerHTML = "";
     if (activitys.length !== 0) {
@@ -33,6 +33,8 @@ const bindActivitys = (activitys, tbody) => {
             const { date, time } = extractDateAndTime(element.activity_date);
             const stateBadge = element.state === "active" ? "bg-label-primary" : "bg-label-danger";
             const typeBadge = element.type === "time" ? "bg-label-warning" : "bg-label-info";
+
+            console.log(element.userActivityDate)
 
             let type = ""
             let logged_duration = ""
@@ -67,6 +69,7 @@ const bindActivitys = (activitys, tbody) => {
                   <td class="text-center"><span class="badge ${stateBadge} me-1">${logged_duration}</span></td>
                   <td>${logged_value}</td>
                   <td>${element.score}</td>
+                  <td>${element.userActivityDate}</td>
                   <td>${date}</td>
                   <td>${time}</td>
                   <td>
@@ -81,7 +84,7 @@ const bindActivitys = (activitys, tbody) => {
                  </td>
               `;
             tbody.appendChild(tr);
-            console.log(element);
+           
         });
     } else {
         let tr = document.createElement("tr");

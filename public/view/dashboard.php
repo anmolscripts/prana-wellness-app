@@ -71,6 +71,7 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
                   <th>Time Duration</th>
                   <th>Yes/No</th>
                   <th>Score</th>
+                  <th>Activity Perform  Date</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Actions</th>
@@ -126,6 +127,15 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
                   <div class="">
                     <label for="minTime" class="form-label">Time Duration</label>
                     <input type="number" id="minTime" class="form-control" placeholder="Enter Time Duration" />
+                  </div>
+                </div>
+
+
+
+                <div class="w-25" id="actvityDateContainer" style="display:none;">
+                  <div class="">
+                    <label for="activityDate" class="form-label">Date</label>
+                    <input type="Date" id="activityDate" class="form-control" placeholder="Enter Date" />
                   </div>
                 </div>
 
@@ -256,6 +266,8 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
     const timeOptionContainer = document.getElementById("timeOptionContainer")
     const yesNoBox = document.getElementById("yesNoBox")
     const addActivityBtn = document.getElementById("addActivity")
+    const actvityDateContainer = document.getElementById("actvityDateContainer")
+
 
     const activityTime = document.getElementById("minTime")
 
@@ -311,12 +323,16 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
           yesNoBox.style.display = "block"
           timeOptionContainer.style.display = "none"
           addActivityBtn.style.display = "block"
-
         }
+
+        actvityDateContainer.style.display = "block"
+
       } else {
         timeOptionContainer.style.display = "none"
         yesNoBox.style.display = "none"
         addActivityBtn.style.display = "none"
+        actvityDateContainer.style.display = "none"
+
 
       }
 
@@ -332,16 +348,19 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
 
       }
 
-
-
-
       const activityYesNo = document.getElementById("status").value
       let type = selectedOption.getAttribute('type');
       let activityName = selectedOption.innerHTML;
       let activityId = selectedOption.value;
 
+      let activityDate = document.getElementById("activityDate").value
+      if (!activityDate) {
+        alert("Please select a date.");
+        return;
+      }
+
       let activityTypeValue = ""
-      let activitydata
+      let activitydata = ""
       let actvityType = ""
 
       if (type == "time") {
@@ -349,7 +368,6 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
           alert("Please enter activity duration")
           return
         }
-
 
         let value = activityTime.value
         activityTypeValue = `<input type="text"   activity-id="${activityId}" class="form-control me-2"  value="${value}" readonly />`
@@ -362,13 +380,19 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
         actvityType = "boolean"
       }
 
+      let readonlyInputDate = `<input type="text" class="form-control" value=" ${activityDate}" readonly />`;
       userAddedActivity.innerHTML += `
   <div data-activityId = "${activityId}" class="row w-100 mb-2">
-  <div class="col-9">
-    <input  type="text" activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control  me-2 userAddedActivities" readonly /> 
+  <div class="col-6">
+    <input  type="text" activity-add-date = ${activityDate} activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control  me-2 userAddedActivities" readonly /> 
   </div>
   <div class="col-2"> 
   ${activityTypeValue}
+  </div>
+  <div class="col-3"> 
+ 
+  ${readonlyInputDate}
+   
   </div>
 
   <div class="col-1" > 
@@ -390,6 +414,7 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
 
       timeOptionContainer.style.display = "none"
       yesNoBox.style.display = "none"
+      actvityDateContainer.style.display = "none"
 
     }
 
@@ -398,10 +423,13 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
       const session = <?php echo json_encode($_SESSION['user']); ?>;
       const userAddedActivity = Array.from(inputs).map(input => ({
         activity: input.getAttribute('data-activity'),
+        actvityDate: input.getAttribute("activity-add-date") ,
         id: input.id,
         value: input.value,
         userId: session.id,
       }));
+
+      console.log(userAddedActivity)
 
       try {
         let result = await fetch("api/activities/addUser.php", {
@@ -418,11 +446,14 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
         })
 
         result = await result.json()
+        console.log(result);
         alert("actvity successfully added")
-        window.location.reload()
-        // console.log(result);
+        // window.location.reload()
+        // 
 
       } catch (error) {
+
+        console.log(error)
 
       }
 
@@ -565,7 +596,6 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
 
   <!-- activity uses -->
   <script>
-    console.log('testing', <?= json_encode($getActivityUsageData) ?>);
     const getActivityUsageData = <?php echo json_encode($getActivityUsageData); ?>;
     var options = {
       chart: {
@@ -590,6 +620,14 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
       }
     };
 
+
+    // document.addEventListener('DOMContentLoaded', function () {
+    //   var elems = document.querySelectorAll('#activityDate');
+    //   M.Datepicker.init(elems, {
+    //     format: 'yyyy-mm-dd', // you can customize this
+    //     autoClose: true
+    //   });
+    // });
     var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
     chart.render();
   </script>

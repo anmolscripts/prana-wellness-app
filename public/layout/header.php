@@ -35,6 +35,9 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
     <link rel="stylesheet" href="<?= $publicPath ?>/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="<?= $publicPath ?>/assets/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css" />
+
+    <!-- date picker -->
+     
     <script src="<?= $publicPath ?>/assets/vendor/js/helpers.js"></script>
     <script src="<?= $publicPath ?>/assets/js/config.js"></script>
 

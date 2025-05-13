@@ -24,19 +24,36 @@ function getActivityUsageStats(PDO $pdo, string $dbname, string $userActivitiesT
     $totalUsage = (int)$totalResult['total'];
 
     // Step 3: Get usage stats joined with activity table for this user
+    // $sql = "
+    //     SELECT 
+    //         a.id AS activity_id,
+    //         a.name AS activity_name,
+    //         a.type AS activity_type,
+
+    //         COUNT(u.activity_id) AS usage_count,
+    //         MAX(u.activity_date) AS last_used
+    //     FROM `$userActivitiesTable` u
+    //     JOIN `$activityTable` a ON u.activity_id = a.id
+    //     WHERE u.user_id = :user_id
+    //     GROUP BY a.id, a.name, a.type
+    //     ORDER BY usage_count DESC
+    // ";
+
     $sql = "
-        SELECT 
-            a.id AS activity_id,
-            a.name AS activity_name,
-            a.type AS activity_type,
-            COUNT(u.activity_id) AS usage_count,
-            MAX(u.activity_date) AS last_used
-        FROM `$userActivitiesTable` u
-        JOIN `$activityTable` a ON u.activity_id = a.id
-        WHERE u.user_id = :user_id
-        GROUP BY a.id, a.name, a.type
-        ORDER BY usage_count DESC
-    ";
+    SELECT 
+        a.id AS activity_id,
+        a.name AS activity_name,
+        a.type AS activity_type,
+        COUNT(u.activity_id) AS usage_count,
+        MAX(u.activity_date) AS last_used,
+        MAX(u.userActivityDate) AS user_activity_date
+    FROM `$userActivitiesTable` u
+    JOIN `$activityTable` a ON u.activity_id = a.id
+    WHERE u.user_id = :user_id
+    GROUP BY a.id, a.name, a.type
+    ORDER BY usage_count DESC
+";
+
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['user_id' => $userId]);
@@ -54,6 +71,7 @@ function getActivityUsageStats(PDO $pdo, string $dbname, string $userActivitiesT
             'activity_id'    => $activity['activity_id'],
             'activity_name'  => $activity['activity_name'],
             'activity_type'  => $activity['activity_type'],
+            'user_activity_date'  => $activity['user_activity_date'],
             'usage_count'    => $usage,
             'last_used'      => $activity['last_used'],
             'percentage'     => $totalUsage > 0 ? round(($usage / $totalUsage) * 100, 2) : 0

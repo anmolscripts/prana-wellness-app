@@ -65,6 +65,7 @@ try {
         foreach ($userAddedActivity as $activity) {
             $userid = $activity['userId'];
             $activity_id = $activity['id'];
+            $userActvivityDate = $activity['actvityDate'] ;
             // $value = $activity['value'];
     
             $logged_duration = "";
@@ -92,14 +93,15 @@ try {
             }
     
             $datetime = date('Y-m-d H:i:s');
-            $stmt = $conn->prepare("INSERT INTO user_activities (user_id, activity_id, logged_duration, logged_value, score, activity_date) VALUES (:user_id, :activity_id, :logged_duration, :logged_value, :score, :activity_date)");
+            $stmt = $conn->prepare("INSERT INTO user_activities (user_id, activity_id, logged_duration, logged_value, score, activity_date , userActivityDate) VALUES (:user_id, :activity_id, :logged_duration, :logged_value, :score, :activity_date , :userActivityDate)");
     $insert = $stmt->execute([
         'user_id'     => $userid,
         'activity_id'    => $activity_id,
         'logged_duration' => $logged_duration,
         'logged_value' => $logged_value,
         'score' => $score,
-        'activity_date' => $datetime
+        'activity_date' => $datetime ,
+        'userActivityDate' =>  $userActvivityDate
     ]);
 
     $lastId = $conn->lastInsertId();
