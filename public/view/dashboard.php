@@ -29,7 +29,34 @@ foreach ($getAllActivityes as $activity) {
 <script>
   console.log('Activity Table', <?php echo json_encode($getAllActivityes); ?>)
 </script>
+<style>
+  .alert-container {
+    top: -5rem;
+    animation: slideIn 3s ease 1 forwards;
+  }
 
+  @keyframes slideIn {
+    0% {
+      top: -5rem;
+    }
+
+    15% {
+      top: 0px;
+    }
+
+    85% {
+      top: 0px;
+    }
+
+    100% {
+      top: -5rem;
+    }
+  }
+
+  .accordion .accordion-button:not(.collapsed)::after {
+    background: #fff !important;
+  }
+</style>
 <!-- Content wrapper -->
 <div class="content-wrapper">
   <!-- Content -->
@@ -60,21 +87,21 @@ foreach ($getAllActivityes as $activity) {
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img class="d-block w-100" src="https://picsum.photos/1080/720" alt="First slide" />
+              <img class="d-block w-100" src="public/assets/img/yoga/1.jpg" loading="lazy" decoding="async" alt="First slide" />
               <div class="carousel-caption d-none d-md-block">
                 <h3>First slide</h3>
                 <p>Eos mutat malis maluisset et, agam ancillae quo te, in vim congue pertinacia.</p>
               </div>
             </div>
             <div class="carousel-item">
-              <img class="d-block w-100" src="https://picsum.photos/1080/720?efqefqd" alt="Second slide" />
+              <img class="d-block w-100" src="public/assets/img/yoga/2.jpg" loading="lazy" decoding="async" alt="Second slide" />
               <div class="carousel-caption d-none d-md-block">
                 <h3>Second slide</h3>
                 <p>In numquam omittam sea.</p>
               </div>
             </div>
             <div class="carousel-item">
-              <img class="d-block w-100" src="https://picsum.photos/1080/720?fwdffd" alt="Third slide" />
+              <img class="d-block w-100" src="public/assets/img/yoga/3.jpg" loading="lazy" decoding="async" alt="Third slide" />
               <div class="carousel-caption d-none d-md-block">
                 <h3>Third slide</h3>
                 <p>Lorem ipsum dolor sit amet, virtute consequat ea qui, minim graeco mel no.</p>
@@ -100,23 +127,60 @@ foreach ($getAllActivityes as $activity) {
           <div class="d-flex align-items-start row">
             <div class="col-sm-7">
               <div class="card-body">
-                <h5 class="card-title fs-3 text-primary mb-3">Congratulations John! 🎉</h5>
+                <div class="card overflow-hidden" style="max-height: 500px">
+                  <div class="d-flex justify-content-between align-items-center gap-3 px-5 shadow-lg">
+                    <h5 class="card-title fs-3 text-primary mb-3">Congratulations John! 🎉</h5>
 
-                <a href="javascript:;" data-bs-toggle="modal"
-                  data-bs-target="#addGoalsModal" class="btn btn-sm btn-outline-primary mt-3">Add Goles</a>
-                <?php if (!empty($userGoals)): ?>
-                  <?php foreach ($userGoals as $gols): ?>
-                    <div class="alert alert-primary" role="alert"><?= $goals['activity_name']; ?></div>
-                  <?php endforeach; ?>
-                <?php else: ?>
-                  <div class="alert alert-danger mt-5" role="alert">No Goals is Set, Please add goals</div>
-                <?php endif; ?>
+                    <a href="javascript:;" data-bs-toggle="modal"
+                      data-bs-target="#addGoalsModal" class="btn btn-warning my-3">Add Goles</a>
+                  </div>
+                  <div class="card-body" id="vertical-example">
+
+
+
+
+                    <?php if (!empty($userGoals)): ?>
+                      <div class="accordion" id="accordionExample">
+                        <?php foreach ($userGoals as $index => $gols): ?>
+                          <div class="accordion-item shadow-lg <?= $index == 0 ? 'active' : ''; ?>">
+                            <h2 class="accordion-header" id="heading<?= $gols['activity_id']; ?>">
+                              <button
+                                type="button"
+                                class="accordion-button bg-primary text-white"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordian<?= $gols['activity_id']; ?>"
+                                aria-expanded="true"
+                                aria-controls="accordian<?= $gols['activity_id']; ?>">
+                                <?= $gols['activity_name']; ?>
+                              </button>
+                            </h2>
+
+                            <div
+                              id="accordian<?= $gols['activity_id']; ?>"
+                              class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
+                              data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
+                                marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
+                                soufflé. Wafer gummi bears marshmallow pastry pie.
+                              </div>
+                            </div>
+                          </div>
+                        <?php endforeach; ?>
+                      </div>
+                    <?php else: ?>
+                      <div class="alert alert-danger mt-5" role="alert">No Goals is Set, Please add goals</div>
+                    <?php endif; ?>
+                  </div>
+                </div>
+
+
 
               </div>
             </div>
-            <div class="col-sm-5 text-center text-sm-left">
+            <div class="col-sm-5 text-center text-sm-left align-self-center">
               <div class="card-body pb-0 px-0 px-md-6">
-                <img src="public/assets/img/illustrations/yoga.png" height="175"
+                <img src="public/assets/img/illustrations/yoga.png" class="w-100 h-auto"
                   alt="View Badge User" />
               </div>
             </div>
@@ -149,7 +213,6 @@ foreach ($getAllActivityes as $activity) {
                   <th>Time Duration</th>
                   <th>Yes/No</th>
                   <th>Score</th>
-                  <th>Activity Perform  Date</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Actions</th>
@@ -208,15 +271,6 @@ foreach ($getAllActivityes as $activity) {
                   </div>
                 </div>
 
-
-
-                <div class="w-25" id="actvityDateContainer" style="display:none;">
-                  <div class="">
-                    <label for="activityDate" class="form-label">Date</label>
-                    <input type="Date" id="activityDate" class="form-control" placeholder="Enter Date" />
-                  </div>
-                </div>
-
               </div>
 
               <div style="display: none;" id="addActivity">
@@ -253,9 +307,9 @@ foreach ($getAllActivityes as $activity) {
 
       <!-- Goals Modal -->
       <div class="modal fade" id="addGoalsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header shadow-xl pb-3">
               <h5 class="modal-title" id="exampleModalLabel3">Add Daily Goals</h5>
               <button type="button" class="btn-close  text-white bg-dark" data-bs-dismiss="modal"
                 aria-label="Close"></button>
@@ -263,19 +317,46 @@ foreach ($getAllActivityes as $activity) {
             <div class="modal-body">
               <div class="row ">
                 <?php if (!empty($getAllActivityes)): ?>
-                  <?php foreach ($getAllActivityes as $activity): ?>
-                    <div class="form-check col-12">
-                      <input class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
-                      <label class="form-check-label" for="checkBox<?= $activity['activity_id'] ?>">
-                        <?= $activity['activity_name'] ?> </label>
-                    </div>
-                  <?php endforeach; ?>
+                  <div class="accordion" id="accordionUpdateGoals">
+                    <?php foreach ($getAllActivityes as $index => $activity): ?>
+                      <div class="accordion-item shadow-lg <?= $index == 0 ? 'active' : ''; ?>">
+                        <h2 class="accordion-header" id="headi  ng<?= $activity['activity_id']; ?>">
+
+                          <button
+                            type="button"
+                            class="accordion-button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accordian<?= $activity['activity_id']; ?>"
+                            aria-expanded="true"
+                            aria-controls="accordian<?= $activity['activity_id']; ?>">
+                            <div class="form-check col-12">
+                              <input class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
+                             <?= $activity['activity_name'] ?>
+                            </div>
+                          </button>
+                        </h2>
+
+                        <div
+                          id="accordian<?= $activity['activity_id']; ?>"
+                          class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
+                          data-bs-parent="#accordionUpdateGoals">
+                          <div class="accordion-body">
+                            Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
+                            marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
+                            soufflé. Wafer gummi bears marshmallow pastry pie.
+                          </div>
+                        </div>
+                      </div>
+                    <?php endforeach; ?>
+                  </div>
                 <?php endif; ?>
+
+
               </div>
 
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer shadow-xl pt-3">
               <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
                 Close
               </button>
@@ -358,11 +439,21 @@ foreach ($getAllActivityes as $activity) {
 
     </div>
 
+    <div id="aleartContainer" class="position-fixed d-flex justify-content-center w-100 pt-5 alert-container d-none"
+      style="z-index: 9999;">
+      <div class="alert alert-primary shadow-lg" role="alert">This is a primary alert — check it out!</div>
+    </div>
+
   </div>
   <!-- / Content -->
 
 
   <?php include_once '../layout/footer.php'; ?>
+
+
+
+  <script src="public/assets/js/extended-ui-perfect-scrollbar.js"></script>
+
   <script>
     const logout = () => {
       fetch('api/auth/logout.php', {
@@ -386,8 +477,6 @@ foreach ($getAllActivityes as $activity) {
     const timeOptionContainer = document.getElementById("timeOptionContainer")
     const yesNoBox = document.getElementById("yesNoBox")
     const addActivityBtn = document.getElementById("addActivity")
-    const actvityDateContainer = document.getElementById("actvityDateContainer")
-
 
     const activityTime = document.getElementById("minTime")
 
@@ -443,16 +532,12 @@ foreach ($getAllActivityes as $activity) {
           yesNoBox.style.display = "block"
           timeOptionContainer.style.display = "none"
           addActivityBtn.style.display = "block"
+
         }
-
-        actvityDateContainer.style.display = "block"
-
       } else {
         timeOptionContainer.style.display = "none"
         yesNoBox.style.display = "none"
         addActivityBtn.style.display = "none"
-        actvityDateContainer.style.display = "none"
-
 
       }
 
@@ -468,19 +553,16 @@ foreach ($getAllActivityes as $activity) {
 
       }
 
+
+
+
       const activityYesNo = document.getElementById("status").value
       let type = selectedOption.getAttribute('type');
       let activityName = selectedOption.innerHTML;
       let activityId = selectedOption.value;
 
-      let activityDate = document.getElementById("activityDate").value
-      if (!activityDate) {
-        alert("Please select a date.");
-        return;
-      }
-
       let activityTypeValue = ""
-      let activitydata = ""
+      let activitydata
       let actvityType = ""
 
       if (type == "time") {
@@ -488,6 +570,7 @@ foreach ($getAllActivityes as $activity) {
           alert("Please enter activity duration")
           return
         }
+
 
         let value = activityTime.value
         activityTypeValue = `<input type="text"   activity-id="${activityId}" class="form-control me-2"  value="${value}" readonly />`
@@ -500,19 +583,13 @@ foreach ($getAllActivityes as $activity) {
         actvityType = "boolean"
       }
 
-      let readonlyInputDate = `<input type="text" class="form-control" value=" ${activityDate}" readonly />`;
       userAddedActivity.innerHTML += `
   <div data-activityId = "${activityId}" class="row w-100 mb-2">
-  <div class="col-6">
-    <input  type="text" activity-add-date = ${activityDate} activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control  me-2 userAddedActivities" readonly /> 
+  <div class="col-9">
+    <input  type="text" activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control  me-2 userAddedActivities" readonly /> 
   </div>
   <div class="col-2"> 
   ${activityTypeValue}
-  </div>
-  <div class="col-3"> 
- 
-  ${readonlyInputDate}
-   
   </div>
 
   <div class="col-1" > 
@@ -534,7 +611,6 @@ foreach ($getAllActivityes as $activity) {
 
       timeOptionContainer.style.display = "none"
       yesNoBox.style.display = "none"
-      actvityDateContainer.style.display = "none"
 
     }
 
@@ -543,13 +619,10 @@ foreach ($getAllActivityes as $activity) {
       const session = <?php echo json_encode($_SESSION['user']); ?>;
       const userAddedActivity = Array.from(inputs).map(input => ({
         activity: input.getAttribute('data-activity'),
-        actvityDate: input.getAttribute("activity-add-date") ,
         id: input.id,
         value: input.value,
         userId: session.id,
       }));
-
-      console.log(userAddedActivity)
 
       try {
         let result = await fetch("api/activities/addUser.php", {
@@ -566,14 +639,11 @@ foreach ($getAllActivityes as $activity) {
         })
 
         result = await result.json()
-        console.log(result);
         alert("actvity successfully added")
-        // window.location.reload()
-        // 
+        window.location.reload()
+        // console.log(result);
 
       } catch (error) {
-
-        console.log(error)
 
       }
 
@@ -716,6 +786,7 @@ foreach ($getAllActivityes as $activity) {
 
   <!-- activity uses -->
   <script>
+    console.log('testing', <?= json_encode($getActivityUsageData) ?>);
     const getActivityUsageData = <?php echo json_encode($getActivityUsageData); ?>;
     var options = {
       chart: {
@@ -740,50 +811,58 @@ foreach ($getAllActivityes as $activity) {
       }
     };
 
-
-    // document.addEventListener('DOMContentLoaded', function () {
-    //   var elems = document.querySelectorAll('#activityDate');
-    //   M.Datepicker.init(elems, {
-    //     format: 'yyyy-mm-dd', // you can customize this
-    //     autoClose: true
-    //   });
-    // });
     var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
     chart.render();
   </script>
 
 
-<script>
-  const updateGoals = async () => {
-    
-    const checkboxes = document.querySelectorAll('input[type="checkbox"].goalsCheckbox');
-    
-    const selectedGoals = Array.from(checkboxes)
-      .filter(checkbox => checkbox.checked)
-      .map(checkbox => checkbox.value);
-console.log(selectedGoals);
+  <script>
+    const displayNone = (element, time) => {
+      setTimeout(() => {
+        element.classList.add("d-none");
+      }, time);
+    };
+    const updateGoals = async () => {
 
-    const session = <?= json_encode($_SESSION['user']); ?>;
+      const checkboxes = document.querySelectorAll('input[type="checkbox"].goalsCheckbox');
+      const aleartContainer = document.getElementById("aleartContainer");
 
-    try {
-      let result = await fetch("api/activities/updateGoals.php", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          user_id: session.id,
-          goals: JSON.stringify(selectedGoals)
+      const selectedGoals = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+      console.log(JSON.stringify(selectedGoals));
+
+      const session = <?= json_encode($_SESSION['user']); ?>;
+
+      try {
+        let result = await fetch("api/activities/updateGoals.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            user_id: session.id,
+            goals: JSON.stringify(selectedGoals)
+          })
         })
-      })
 
-      result = await result.json();
-      console.log(result);
-      alert(result.message);
-      // window.location.reload()
+        result = await result.json();
+        if (result.success) {
+          const aleart = aleartContainer.querySelector('[role="alert"]');
+          aleart.classList.remove("alert-danger");
+          aleart.classList.add("alert-primary");
+          aleart.innerText = "Goals Updated successfully!";
+          aleartContainer.classList.remove("d-none");
+          displayNone(aleartContainer, 2000);
+          location.reload();
+        }
 
-    } catch (error) {
 
+        // alert(result.message);
+        // window.location.reload()
+
+      } catch (error) {
+
+      }
     }
-  }
-</script>
+  </script>
