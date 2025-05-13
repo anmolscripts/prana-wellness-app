@@ -145,4 +145,42 @@ MODIFY COLUMN activity_date DATETIME NOT NULL;";
     echo "Connection failed: " . $e->getMessage();
     exit;
 }
+
+
+
+$goalsTable = "goals";
+try {
+    $stmt = $conn->prepare("
+        SELECT TABLE_NAME 
+        FROM INFORMATION_SCHEMA.TABLES 
+        WHERE TABLE_SCHEMA = :dbname 
+          AND TABLE_NAME = :table
+    ");
+    $stmt->execute([
+        ':dbname' => $dbname,
+        ':table' => $goalsTable
+    ]);
+
+    if ($stmt->rowCount() > 0) {
+        echo "<br>✅ Table '$goalsTable' exists in database '$dbname'. \n";
+    } else {
+        echo "<br>❌ Table '$goalsTable' does not exist in database '$dbname'. \n";
+        $createGoalsSQL = "
+            CREATE TABLE `$goalsTable` (
+                goal_id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                activity_id INT(3) ZEROFILL NOT NULL,
+                goal_date DATETIME NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES `$userTable`(id) ON DELETE CASCADE,
+                FOREIGN KEY (activity_id) REFERENCES `$activityTable`(id) ON DELETE CASCADE
+            );
+        ";
+        $conn->exec($createGoalsSQL);
+        echo "<br>✅ Table '$goalsTable' created successfully.\n";
+    }
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    exit;
+}
 ?>

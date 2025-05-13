@@ -13,32 +13,110 @@ $getActivityUsageData = getUserActivityUsageData($pdo, $userId);
 
 
 $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities', 'activity', $userId);
-
 // $userCount = getUsersCount($pdo, $dbname, 'users');
 
 // $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_activities', 'activity');
+$getAllActivityes = getAllActivityes($pdo, $dbname, $userId, 'activity');
+
+$userGoals = [];
+foreach ($getAllActivityes as $activity) {
+  if ($activity['is_goal_set']) {
+    array_push($userGoals, $activity);
+  }
+}
 ?>
 
-
+<script>
+  console.log('Activity Table', <?php echo json_encode($getAllActivityes); ?>)
+</script>
 
 <!-- Content wrapper -->
 <div class="content-wrapper">
   <!-- Content -->
   <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
+
+
+      <div class="col-xxl-12 mb-6">
+        <div id="carouselExample" class="carousel slide rounded-3 shadow-lg overflow-hidden" style="height: 500px;" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Slide 1"></button>
+            <button
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide-to="1"
+              aria-label="Slide 2"></button>
+            <button
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide-to="2"
+              aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="https://picsum.photos/1080/720" alt="First slide" />
+              <div class="carousel-caption d-none d-md-block">
+                <h3>First slide</h3>
+                <p>Eos mutat malis maluisset et, agam ancillae quo te, in vim congue pertinacia.</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="https://picsum.photos/1080/720?efqefqd" alt="Second slide" />
+              <div class="carousel-caption d-none d-md-block">
+                <h3>Second slide</h3>
+                <p>In numquam omittam sea.</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="https://picsum.photos/1080/720?fwdffd" alt="Third slide" />
+              <div class="carousel-caption d-none d-md-block">
+                <h3>Third slide</h3>
+                <p>Lorem ipsum dolor sit amet, virtute consequat ea qui, minim graeco mel no.</p>
+              </div>
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExample" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExample" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </a>
+        </div>
+
+      </div>
+
+
+
       <div class="col-xxl-12 mb-6 order-0">
         <div class="card">
           <div class="d-flex align-items-start row">
             <div class="col-sm-7">
               <div class="card-body">
-                <h5 class="card-title text-primary mb-3">Congratulations John! 🎉</h5>
+                <h5 class="card-title fs-3 text-primary mb-3">Congratulations John! 🎉</h5>
 
-                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
+                <a href="javascript:;" data-bs-toggle="modal"
+                  data-bs-target="#addGoalsModal" class="btn btn-sm btn-outline-primary mt-3">Add Goles</a>
+                <?php if (!empty($userGoals)): ?>
+                  <?php foreach ($userGoals as $gols): ?>
+                    <div class="alert alert-primary" role="alert"><?= $goals['activity_name']; ?></div>
+                  <?php endforeach; ?>
+                <?php else: ?>
+                  <div class="alert alert-danger mt-5" role="alert">No Goals is Set, Please add goals</div>
+                <?php endif; ?>
+
               </div>
             </div>
             <div class="col-sm-5 text-center text-sm-left">
               <div class="card-body pb-0 px-0 px-md-6">
-                <img src="public/assets/img/illustrations/man-with-laptop.png" height="175"
+                <img src="public/assets/img/illustrations/yoga.png" height="175"
                   alt="View Badge User" />
               </div>
             </div>
@@ -170,6 +248,48 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
           </div>
         </div>
       </div>
+
+
+
+      <!-- Goals Modal -->
+      <div class="modal fade" id="addGoalsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel3">Add Daily Goals</h5>
+              <button type="button" class="btn-close  text-white bg-dark" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row ">
+                <?php if (!empty($getAllActivityes)): ?>
+                  <?php foreach ($getAllActivityes as $activity): ?>
+                    <div class="form-check col-12">
+                      <input class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
+                      <label class="form-check-label" for="checkBox<?= $activity['activity_id'] ?>">
+                        <?= $activity['activity_name'] ?> </label>
+                    </div>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </div>
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="button" onclick="updateGoals(this)" class="btn btn-primary d-grid w-25">
+                <div class="spinner-border text-light d-none" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="text">Submit</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Model -->
 
 
       <!-- delete pop up show -->
@@ -631,3 +751,39 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
     var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
     chart.render();
   </script>
+
+
+<script>
+  const updateGoals = async () => {
+    
+    const checkboxes = document.querySelectorAll('input[type="checkbox"].goalsCheckbox');
+    
+    const selectedGoals = Array.from(checkboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+console.log(selectedGoals);
+
+    const session = <?= json_encode($_SESSION['user']); ?>;
+
+    try {
+      let result = await fetch("api/activities/updateGoals.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          user_id: session.id,
+          goals: JSON.stringify(selectedGoals)
+        })
+      })
+
+      result = await result.json();
+      console.log(result);
+      alert(result.message);
+      // window.location.reload()
+
+    } catch (error) {
+
+    }
+  }
+</script>
