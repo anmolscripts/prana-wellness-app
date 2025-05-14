@@ -575,7 +575,7 @@
                         <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
                       </div>
                     </div>
-                    <form id="formAccountDeactivation" onsubmit="return false">
+                    <form id="formAccountDeactivation" >
                       <div class="form-check my-8 ms-2">
                         <input
                           class="form-check-input"
@@ -722,6 +722,57 @@
     }
 
     getProfileData()
+
+
+    document.getElementById('formAccountDeactivation').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const isConfirmed = document.getElementById('accountActivation').checked;
+
+    if (!isConfirmed) {
+      alert('Please confirm account deactivation.');
+      return;
+    }
+
+    // Example API endpoint (replace with your actual API)
+    const apiUrl = '../api/auth/deactivate.php'; 
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+         'Content-Type': 'application/x-www-form-urlencoded',
+        },
+
+        body: new URLSearchParams({
+            email: session.email ,
+            deactivate: true ,
+          })
+      });
+
+      const result = await response.json();
+      console.log(result)
+
+      if (response.ok) {
+        alert('Account deactivated successfully!');
+        // Optional: Redirect or perform some UI update
+      } else {
+        alert(result.message || 'Deactivation failed.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong. Please try again later.');
+    }
+  });
+
+
+
+
+
+
+
+
+
+
   </script>
 
 
