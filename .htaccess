@@ -5,7 +5,7 @@ RewriteBase /prana-wellness-app/
 RewriteCond %{REQUEST_URI} ^/prana-wellness-app/?$
 RewriteRule ^$ public/view/ [L]
 
-# If the requested file exists (HTML, CSS, JS, images), do nothing
+# Skip rewriting if file or directory exists
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
@@ -14,5 +14,9 @@ RewriteRule ^ - [L]
 RewriteCond %{DOCUMENT_ROOT}/prana-wellness-app/public/view/$1.php -f
 RewriteRule ^(.*)$ public/view/$1.php [L]
 
-# Finally, serve normal public/view/ files (non-PHP)
+# Try to serve non-PHP files (HTML, CSS, JS, images) inside public/view/
+RewriteCond %{DOCUMENT_ROOT}/prana-wellness-app/public/view/$1 -f
 RewriteRule ^(.*)$ public/view/$1 [L]
+
+# If still not found, route to 404.php
+RewriteRule ^.*$ public/view/404.php [L]

@@ -1,3 +1,16 @@
+
+<?php 
+
+require_once('../../../functions/auth.php'); 
+
+requireLogin();
+if(!is_admin()){
+    http_response_code(403);
+    header('Location: /prana-wellness-app/403');
+    exit;
+}
+
+?>
 <?php include_once '../../layout/header.php'; ?>
 <?php
 

@@ -1,4 +1,15 @@
-<?php session_start() ?>
+<?php 
+
+require_once('../../../functions/auth.php'); 
+
+requireLogin();
+if(!is_admin()){
+    http_response_code(403);
+    header('Location: /prana-wellness-app/403');
+    exit;
+}
+
+?>
 
 <!doctype html>
 
@@ -701,22 +712,22 @@
 
         })
         adminDetails = await adminDetails.json()
-        
-        let img = `http://localhost/prana-wellness-app/public/uploads/${adminDetails.message.imgPath}`
-        profilePic.src = img
-        phone.value = adminDetails.message.phoneNo
-        adminEmail.value = adminDetails.message.email
-        adminName.value = adminDetails.message.name
+        const baseUrl = window.location.origin;
+        let img = `${baseUrl}/prana-wellness-app/public/uploads/${adminDetails.message.imgPath}`;
+        profilePic.src = img;
+        phone.value = adminDetails.message.phoneNo;
+        adminEmail.value = adminDetails.message.email;
+        adminName.value = adminDetails.message.name;
         // countryName.value = adminDetails.message.country;
         $('#countryName').selectpicker('val', [adminDetails.message.country]);
         // countryName.querySelector(`[value="${adminDetails.message.country}`).setAttribute('selected','');
-        console.log(adminDetails.message)
+        console.log(adminDetails.message);
         console.log(countryName.querySelector(`[value="${adminDetails.message.country}`));
 
         // window.location.reload()
 
       } catch (error) {
-        console.log("varun" , error)
+        console.log("varun" , error);
       }
 
     }

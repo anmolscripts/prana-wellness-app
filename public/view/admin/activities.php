@@ -1,3 +1,18 @@
+<?php 
+
+require_once('../../../functions/auth.php'); 
+
+requireLogin();
+if(!is_admin()){
+    http_response_code(403);
+    header('Location: /prana-wellness-app/403');
+    exit;
+}
+
+?>
+
+
+
 <!doctype html>
 <html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="../../public/assets/"
     data-template="vertical-menu-template-free">
@@ -167,8 +182,7 @@
                             <div class="d-flex justify-content-between align-items-center pe-5">
                                 <h5 class="card-header">Activities Table</h5>
 
-                                <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#addActiviteModal">
+                                <button type="button" class="btn rounded-pill btn-primary" onclick="openAddModel(this)">
                                     <span class="icon-base bx bx-plus icon-sm me-2"></span>Add Activite
 
                                 </button>
@@ -300,6 +314,7 @@
                             </span>
                         </div>
                         <div id="editor" class="rounded-bottom-3">
+                            
                         </div>
                     </div>
 
@@ -308,7 +323,7 @@
                     <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" onclick="activities.add(this, quill)" class="btn btn-primary d-grid w-25">
+                    <button id="subminBtn" type="button" onclick="activities.add(this, quill)" class="btn btn-primary d-grid w-25">
                         <div class="spinner-border text-light d-none" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
@@ -316,7 +331,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div>  
     </div>
 
     <!-- Delete Model -->
@@ -367,6 +382,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
 "></script>
 
     <script src="/prana-wellness-app/public/js/bindActivitys.js"></script>
+    <script src="/prana-wellness-app/public/js/activity.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
@@ -386,17 +402,10 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
         const openEditModel = (btn) => {
             const id = btn.getAttribute('data-id');
             const activity = activitysData.filter(item => item.id == id)[0];
-            const addActiviteModal = document.getElementById('addActiviteModal');
-            addActiviteModal.querySelector('.modal-title').innerText = 'Edit Activity';
-            addActiviteModal.querySelector('#nameLarge').value = activity.name;
-            addActiviteModal.querySelector('#type').value = activity.type;
-            activity.type == 'time' ? addActiviteModal.querySelector('#timeOptionContainer').classList.remove('d-none') : addActiviteModal.querySelector('#timeOptionContainer').classList.add('d-none');
-            addActiviteModal.querySelector('#status').value = activity.state;
-            addActiviteModal.querySelector('#minTime').value = activity.min_duration;
-            addActiviteModal.querySelector('#maxTime').value = activity.max_duration;
-            addActiviteModal.querySelector('#editor').innerHTML = activity.description;
-            var myModal = new bootstrap.Modal(document.getElementById('addActiviteModal'));
-            myModal.show();
+            openModel('addActiviteModal', quill, 'edit', activity, id);
+        }
+        const openAddModel = (btn) => {
+            openModel('addActiviteModal', quill);
         }
     </script>
 
@@ -504,7 +513,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
             // $('#activitesTable').DataTable();
         });
         const logout = () => {
-            fetch('api/auth/logout.php', {
+            fetch('/prana-wellness-app/api/auth/logout.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

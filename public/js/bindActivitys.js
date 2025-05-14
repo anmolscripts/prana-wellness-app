@@ -80,6 +80,83 @@ const activities = {
         text.classList.remove("d-none");
       });
   },
+  update: (btn, quill) => {
+  const id = btn.getAttribute("data-id");
+  const contentHtml = quill.root.innerHTML;
+  const name = document.getElementById("nameLarge");
+  const status = document.getElementById("status");
+  const minTime = document.getElementById("minTime");
+  const maxTime = document.getElementById("maxTime");
+  const type = document.getElementById("type");
+  const aleartContainer = document.getElementById("aleartContainer");
+
+  if (name.value === "") {
+    name.classList.add("is-invalid");
+    return;
+  } else {
+    name.classList.remove("is-invalid");
+  }
+
+  const typeValue = type.value;
+  if (typeValue === "time") {
+    if (minTime.value === "") {
+      minTime.classList.add("is-invalid");
+      return;
+    } else {
+      minTime.classList.remove("is-invalid");
+    }
+
+    if (maxTime.value === "") {
+      maxTime.classList.add("is-invalid");
+      return;
+    } else {
+      maxTime.classList.remove("is-invalid");
+    }
+  }
+
+  const spinner = btn.querySelector(".spinner-border");
+  const text = btn.querySelector(".text");
+
+  spinner.classList.remove("d-none");
+  text.classList.add("d-none");
+
+  fetch("../api/activities/update.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      id: id,
+      name: name.value,
+      type: typeValue,
+      status: status.value,
+      minTime: minTime.value,
+      maxTime: maxTime.value,
+      description: contentHtml,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      spinner.classList.add("d-none");
+      text.classList.remove("d-none");
+      if (data.success) {
+        const aleart = aleartContainer.querySelector('[role="alert"]');
+        aleart.classList.remove("alert-danger");
+        aleart.classList.add("alert-primary");
+        aleart.innerText = "Activity updated successfully!";
+        aleartContainer.classList.remove("d-none");
+        displayNone(aleartContainer, 2000);
+        location.reload();
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(() => {
+      spinner.classList.add("d-none");
+      text.classList.remove("d-none");
+    });
+},
   getAll: () => {
     fetch("../api/activities/get.php", {
       method: "GET",
