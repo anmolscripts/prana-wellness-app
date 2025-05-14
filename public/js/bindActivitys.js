@@ -6,7 +6,8 @@ const displayNone = (element, time) => {
 
 const activitysData = [];
 const activities = {
-  add: (btn) => {
+  add: (btn, quill) => {
+    const contentHtml = quill.root.innerHTML; // Get HTML content
     const name = document.getElementById("nameLarge");
     const status = document.getElementById("status");
     const minTime = document.getElementById("minTime");
@@ -52,6 +53,7 @@ const activities = {
         status: status.value,
         minTime: minTime.value,
         maxTime: maxTime.value,
+        description: contentHtml,
       }),
     })
       .then((response) => response.json())
@@ -185,15 +187,23 @@ const bindActivitys = (activitys, tbody) => {
                 <td>${element.max_duration}</td>
                 <td>${date}</td>
                 <td>${time}</td>
-                <td>
+                <td class="text-center">
                 <div class="dropdown">
-                    <button data-name="${element.name}" data-id="${
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="icon-base bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a data-id="${element.id}" onclick="openEditModel(this)" data-name="${element.name}" class="dropdown-item" href="javascript:void(0);"
+                                ><i class="icon-base bx bx-edit-alt me-1"></i> Edit</a
+                              >
+                              <a data-name="${element.name}" data-id="${
         element.id
-      }" onclick="openDeleteModal(this)" type="button" class="btn btn-danger">
-                         <i class="icon-base bx bx-trash me-1 text-white"></i> 
-                            Delete
-                    </button>
-                </div>
+      }" onclick="openDeleteModal(this)" class="dropdown-item" href="javascript:void(0);"
+                                ><i class="icon-base bx bx-trash me-1"></i> Delete</a
+                              >
+                            </div>
+                          </div>
+                
                </td>
             `;
       tbody.appendChild(tr);
@@ -216,7 +226,9 @@ const openDeleteModal = (element) => {
   const model = document.getElementById("deleteModel");
   model.querySelector("#deleteActiviteName").innerText =
     element.getAttribute("data-name");
-  model.querySelector("#deleteBtn").setAttribute("data-id", element.getAttribute("data-id"));
+  model
+    .querySelector("#deleteBtn")
+    .setAttribute("data-id", element.getAttribute("data-id"));
   const myModal = new bootstrap.Modal(model);
   myModal.show();
 };

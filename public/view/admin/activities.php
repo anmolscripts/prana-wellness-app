@@ -26,6 +26,10 @@
 
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
 
     <style>
         .alert-container {
@@ -197,38 +201,6 @@
                                 </table>
                             </div>
                         </div>
-
-
-                        <!-- <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6 total-revenue mt-5">
-                            <div class="card">
-                                <div class="row row-bordered g-0">
-                                    <div class="col-lg-8">
-                                        <div class="card-header d-flex align-items-center justify-content-between">
-                                            <div class="card-title mb-0">
-                                                <h5 class="m-0 me-2">Activity Used</h5>
-                                            </div>
-                                            <div class="dropdown"><button class="btn p-0" type="button"
-                                                    id="totalRevenue" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false"><i
-                                                        class="icon-base bx bx-dots-vertical-rounded icon-lg text-body-secondary"></i></button>
-                                                <div class="dropdown-menu dropdown-menu-end"
-                                                    aria-labelledby="totalRevenue"><a class="dropdown-item"
-                                                        href="javascript:void(0);">Select All</a><a
-                                                        class="dropdown-item" href="javascript:void(0);">Refresh</a><a
-                                                        class="dropdown-item" href="javascript:void(0);">Share</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="card-body px-xl-9 py-12 d-flex align-items-center flex-column">
-                                            <canvas id="activityChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -239,7 +211,7 @@
 
     <!-- Large Modal -->
     <div class="modal fade" id="addActiviteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel3">Add Activity</h5>
@@ -270,7 +242,7 @@
                             </select>
                         </div>
                     </div>
-                    <div id="timeOptionContainer" style="display:none;">
+                    <div id="timeOptionContainer" class="d-none">
                         <div class="row align-items-center">
                             <div class="col-md-6 mb-6">
                                 <label for="minTime" class="form-label">Min Time</label>
@@ -285,12 +257,58 @@
 
                         </div>
                     </div>
+                    <div class="col-md-12 mb-6">
+                        <label for="status" class="form-label">Description</label>
+                        <div id="toolbar-container" class="rounded-top-3">
+                            <span class="ql-formats">
+                                <select class="ql-font"></select>
+                                <select class="ql-size"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-script" value="sub"></button>
+                                <button class="ql-script" value="super"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-header" value="1"></button>
+                                <button class="ql-header" value="2"></button>
+                                <button class="ql-blockquote"></button>
+                                <button class="ql-code-block"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-indent" value="-1"></button>
+                                <button class="ql-indent" value="+1"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-direction" value="rtl"></button>
+                                <select class="ql-align"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                <button class="ql-formula"></button>
+                            </span>
+                        </div>
+                        <div id="editor" class="rounded-bottom-3">
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-label-secondary text-danger" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" onclick="activities.add(this)" class="btn btn-primary d-grid w-25">
+                    <button type="button" onclick="activities.add(this, quill)" class="btn btn-primary d-grid w-25">
                         <div class="spinner-border text-light d-none" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
@@ -312,9 +330,9 @@
                 </div>
                 <div class="modal-body">
                     Are you shure you want to delete <strong>
-                    `<span id="deleteActiviteName" class="text-danger"></span>`
+                        `<span id="deleteActiviteName" class="text-danger"></span>`
                     </strong> activity? <br>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button id="deleteBtn" onclick="activities.delete(this)" class="btn btn-primary" data-bs-dismiss="modal">
@@ -349,54 +367,84 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
 "></script>
 
     <script src="/prana-wellness-app/public/js/bindActivitys.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
 
     <script>
-        async function loadActivityChart() {
-            const res = await fetch('../api/activities/getUser.php');
-            const data = await res.json();
-            // console.log(data);
-            if (data.error) {
-                alert('Error fetching data: ' + data.error);
-                return;
-            }
-            let activityes = data.activity;
-            const labels = activityes.map(item => item.name);
-            const counts = activityes.map(item => item.total_logs);
+        const quill = new Quill('#editor', {
+            modules: {
+                syntax: true,
+                toolbar: '#toolbar-container',
+            },
+            placeholder: 'Compose an epic...',
+            theme: 'snow',
+        });
 
-            const colors = labels.map((_, i) =>
-                `hsl(${(i * 360 / labels.length)}, 70%, 60%)`
-            );
 
-            const ctx = document.getElementById('activityChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Logged Activities',
-                        data: counts,
-                        backgroundColor: colors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Activity Usage Summary'
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
+        const openEditModel = (btn) => {
+            const id = btn.getAttribute('data-id');
+            const activity = activitysData.filter(item => item.id == id)[0];
+            const addActiviteModal = document.getElementById('addActiviteModal');
+            addActiviteModal.querySelector('.modal-title').innerText = 'Edit Activity';
+            addActiviteModal.querySelector('#nameLarge').value = activity.name;
+            addActiviteModal.querySelector('#type').value = activity.type;
+            activity.type == 'time' ? addActiviteModal.querySelector('#timeOptionContainer').classList.remove('d-none') : addActiviteModal.querySelector('#timeOptionContainer').classList.add('d-none');
+            addActiviteModal.querySelector('#status').value = activity.state;
+            addActiviteModal.querySelector('#minTime').value = activity.min_duration;
+            addActiviteModal.querySelector('#maxTime').value = activity.max_duration;
+            addActiviteModal.querySelector('#editor').innerHTML = activity.description;
+            var myModal = new bootstrap.Modal(document.getElementById('addActiviteModal'));
+            myModal.show();
         }
+    </script>
 
-        loadActivityChart();
+    <script>
+        // async function loadActivityChart() {
+        //     const res = await fetch('../api/activities/getUser.php');
+        //     const data = await res.json();
+        //     // console.log(data);
+        //     if (data.error) {
+        //         alert('Error fetching data: ' + data.error);
+        //         return;
+        //     }
+        //     let activityes = data.activity;
+        //     const labels = activityes.map(item => item.name);
+        //     const counts = activityes.map(item => item.total_logs);
+
+        //     const colors = labels.map((_, i) =>
+        //         `hsl(${(i * 360 / labels.length)}, 70%, 60%)`
+        //     );
+
+        //     const ctx = document.getElementById('activityChart').getContext('2d');
+        //     new Chart(ctx, {
+        //         type: 'doughnut',
+        //         data: {
+        //             labels: labels,
+        //             datasets: [{
+        //                 label: 'Logged Activities',
+        //                 data: counts,
+        //                 backgroundColor: colors,
+        //                 borderWidth: 1
+        //             }]
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             plugins: {
+        //                 title: {
+        //                     display: true,
+        //                     text: 'Activity Usage Summary'
+        //                 },
+        //                 legend: {
+        //                     position: 'bottom'
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
+
+        // loadActivityChart();
     </script>
 
     <!-- <script>
