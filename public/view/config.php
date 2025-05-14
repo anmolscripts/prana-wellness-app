@@ -30,12 +30,14 @@ try {
 $userTable = "users";
 try {
     $conn->exec("USE `$dbname`");
-    $stmt = $conn->prepare(
-        "SELECT TABLE_NAME 
+
+    // Check if table exists
+    $stmt = $conn->prepare("
+        SELECT TABLE_NAME 
         FROM INFORMATION_SCHEMA.TABLES 
         WHERE TABLE_SCHEMA = :dbname 
-          AND TABLE_NAME = :table"
-    );
+          AND TABLE_NAME = :table
+    ");
     $stmt->execute([
         ':dbname' => $dbname,
         ':table' => $userTable
@@ -43,8 +45,41 @@ try {
 
     if ($stmt->rowCount() > 0) {
         echo "<br>✅ Table '$userTable' exists in database '$dbname'. \n";
+
+        // Define new columns to be checked and added if missing
+        $newColumns = [
+            'phoneNo'     => "VARCHAR(20) NULL",
+            'otpExpire'   => "DATETIME NULL",
+            'imgPath'     => "VARCHAR(255) NULL",
+            'country'     => "VARCHAR(100) NULL",
+            'modifyDate'  => "DATETIME NULL"
+        ];
+
+        foreach ($newColumns as $col => $type) {
+            $checkCol = $conn->prepare("
+                SELECT COLUMN_NAME 
+                FROM INFORMATION_SCHEMA.COLUMNS 
+                WHERE TABLE_SCHEMA = :dbname 
+                  AND TABLE_NAME = :table 
+                  AND COLUMN_NAME = :column
+            ");
+            $checkCol->execute([
+                ':dbname' => $dbname,
+                ':table' => $userTable,
+                ':column' => $col
+            ]);
+
+            if ($checkCol->rowCount() === 0) {
+                $conn->exec("ALTER TABLE `$userTable` ADD COLUMN `$col` $type");
+                echo "<br>🆕 Column `$col` added to `$userTable`.\n";
+            } else {
+                echo "<br>✅ Column `$col` already exists in `$userTable`.\n";
+            }
+        }
+
     } else {
         echo "<br>❌ Table '$userTable' does not exist in database '$dbname'. \n";
+
         $createTableSQL = "
             CREATE TABLE `$userTable` (
                 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -54,18 +89,25 @@ try {
                 permission ENUM('user', 'admin') NOT NULL,
                 status ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
                 otp INT NOT NULL,
-                created_at DATETIME NOT NULL
+                created_at DATETIME NOT NULL,
+                phoneNo VARCHAR(20) NULL,
+                otpExpire DATETIME NULL,
+                imgPath VARCHAR(255) NULL,
+                country VARCHAR(100) NULL,
+                modifyDate DATETIME NULL
             ) ENGINE=InnoDB
               DEFAULT CHARSET=utf8mb4
               COLLATE=utf8mb4_unicode_ci;
         ";
         $conn->exec($createTableSQL);
-        echo "<br>✅ Table '$userTable' created successfully.\n";
+        echo "<br>✅ Table '$userTable' created successfully with all required columns.\n";
     }
+
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
     exit;
 }
+
 
 // -- ACTIVITY TABLE
 $activityTable = "activity";

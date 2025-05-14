@@ -34,8 +34,20 @@ try {
     $exists = $stmt->fetchColumn() > 0;
 
     if ($exists) {
-        $updateStmt = $conn->prepare("UPDATE users SET phoneNo = ?, country = ?, name = ?, imgPath = ?, modifyDate = ? WHERE id = ? AND email = ?");
+
+        if($path == "")
+        {
+            $updateStmt = $conn->prepare("UPDATE users SET phoneNo = ?, country = ?, name = ?,  modifyDate = ? WHERE id = ? AND email = ?");
+        $updateStmt->execute([$phone, $country, $fullName,  $datetime, $userid, $email]);
+        }
+        
+        else
+        {
+            $updateStmt = $conn->prepare("UPDATE users SET phoneNo = ?, country = ?, name = ?, imgPath = ?, modifyDate = ? WHERE id = ? AND email = ?");
         $updateStmt->execute([$phone, $country, $fullName, $path, $datetime, $userid, $email]);
+
+        }
+        
 
         echo json_encode(['success' => true, 'message' => 'User updated successfully.']);
     } else {
