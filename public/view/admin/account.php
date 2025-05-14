@@ -1,3 +1,5 @@
+<?php session_start() ?>
+
 <!doctype html>
 
 <html
@@ -228,10 +230,10 @@
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-6 pb-4 border-bottom">
                         <img
-                          src="../public/assets/img/avatars/1.png"
+                          src=""
                           alt="user-avatar"
                           class="d-block w-px-100 h-px-100 rounded"
-                          id="uploadedAvatar" />
+                          id="profilePic" />
                         <div class="button-wrapper">
                           <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>
@@ -262,7 +264,7 @@
                             type="text"
                             id="firstName"
                             name="firstName"
-                            value="John"
+
                             autofocus />
                         </div>
                         <div class="col-md-6">
@@ -273,7 +275,7 @@
                             id="email"
                             name="email"
                             value=""
-                            placeholder="john.doe@example.com" />
+                            readonly />
                         </div>
 
                         <div class="col-md-6">
@@ -294,8 +296,8 @@
                           <label for="countryName" class="form-label">Country Name</label>
                           <div>
                             <select name="country" id="countryName" class="selectpicker countrypicker" data-style="btn-primary" data-flag="true" data-live-search="true">
-                            <option data-tokens="TV Tuvalu" data-icon="inline-flag flag tv" class="option-with-flag" value="TV">Tuvalu</option>
-                          </select>
+                              <option data-tokens="TV Tuvalu" data-icon="inline-flag flag tv" class="option-with-flag" value="TV">Tuvalu</option>
+                            </select>
 
                           </div>
 
@@ -388,37 +390,79 @@
     })
   </script>
 
-<script>
-document.getElementById("formAccountSettings").addEventListener("submit", async function (e) {
-  e.preventDefault();
+  <script>
+    document.getElementById("formAccountSettings").addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-  const form = document.getElementById("formAccountSettings");
-  const formData = new FormData(form);
+      const form = document.getElementById("formAccountSettings");
+      const formData = new FormData(form);
+      const session = <?php echo json_encode($_SESSION['user']); ?>;
 
-  // Add image file manually
-  const imageFile = document.getElementById("upload").files[0];
-  if (imageFile) {
-    formData.append("image", imageFile);
-  }
+      console.log(session.email)
 
-  try {
-    const response = await fetch("../api/auth/updateProfile.php", {
-      method: "POST",
-      body: formData
+      // Add image file manually
+      const imageFile = document.getElementById("upload").files[0];
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+      formData.append("adminId", session.id)
+
+
+      try {
+        const response = await fetch("../api/auth/updateProfile.php", {
+          method: "POST",
+          body: formData
+        });
+
+        console.log(formData)
+
+        const result = await response.json();
+        console.log("result", result);
+
+        alert(result.message);
+      } catch (error) {
+        // console.error("Error:", error);
+        alert("Something went wrong!");
+      }
     });
 
-    console.log(formData)
+    const session = <?php echo json_encode($_SESSION['user']); ?>;
+    const adminEmail = document.getElementById("email")
+    const adminName = document.getElementById("firstName")
+    const profilePic = document.getElementById("profilePic")
+    adminEmail.value = session.email
+    adminName.value = session.name
 
-    const result = await response.json();
-    console.log( "result", result );
 
-    alert(result.message);
-  } catch (error) {
-    // console.error("Error:", error);
-    alert("Something went wrong!");
-  }
-});
-</script>
+    const getProfileData = async () => {
+
+      try {
+        let adminDetails = await fetch("../api/auth/getProfileData.php", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+
+          body: new URLSearchParams({
+            email: session.email
+          })
+
+        })
+        adminDetails = await adminDetails.json()
+        
+        // let imgpath = adminDetails.message.imgPath
+        
+        let a = `http://localhost/prana-wellness-app/public/uploads/${adminDetails.message.imgPath}`
+        profilePic.src = a
+
+      } catch (error) {
+        console.log("varun" , error)
+      }
+
+    }
+
+    getProfileData()
+  </script>
 
 
 
