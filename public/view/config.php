@@ -52,8 +52,10 @@ try {
             'otpExpire'   => "DATETIME NULL",
             'imgPath'     => "VARCHAR(255) NULL",
             'country'     => "VARCHAR(100) NULL",
-            'modifyDate'  => "DATETIME NULL"
+            'modifyDate'  => "DATETIME NULL",
+            'activate'    => "TINYINT(1) NOT NULL DEFAULT 1"
         ];
+
 
         foreach ($newColumns as $col => $type) {
             $checkCol = $conn->prepare("
@@ -76,33 +78,32 @@ try {
                 echo "<br>✅ Column `$col` already exists in `$userTable`.\n";
             }
         }
-
     } else {
         echo "<br>❌ Table '$userTable' does not exist in database '$dbname'. \n";
 
         $createTableSQL = "
-            CREATE TABLE `$userTable` (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) UNIQUE NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                permission ENUM('user', 'admin') NOT NULL,
-                status ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
-                otp INT NOT NULL,
-                created_at DATETIME NOT NULL,
-                phoneNo VARCHAR(20) NULL,
-                otpExpire DATETIME NULL,
-                imgPath VARCHAR(255) NULL,
-                country VARCHAR(100) NULL,
-                modifyDate DATETIME NULL
-            ) ENGINE=InnoDB
-              DEFAULT CHARSET=utf8mb4
-              COLLATE=utf8mb4_unicode_ci;
-        ";
+    CREATE TABLE `$userTable` (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        permission ENUM('user', 'admin') NOT NULL,
+        status ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
+        otp INT NOT NULL,
+        created_at DATETIME NOT NULL,
+        phoneNo VARCHAR(20) NULL,
+        otpExpire DATETIME NULL,
+        imgPath VARCHAR(255) NULL,
+        country VARCHAR(100) NULL,
+        modifyDate DATETIME NULL,
+        activate TINYINT(1) NOT NULL DEFAULT 1
+    ) ENGINE=InnoDB
+      DEFAULT CHARSET=utf8mb4
+      COLLATE=utf8mb4_unicode_ci;
+";
         $conn->exec($createTableSQL);
         echo "<br>✅ Table '$userTable' created successfully with all required columns.\n";
     }
-
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
     exit;
@@ -165,7 +166,6 @@ try {
         } else {
             echo "<br>✅ Column `modified_datetime` already exists in `$activityTable`.\n";
         }
-
     } else {
         echo "<br>❌ Table '$activityTable' does not exist in database '$dbname'. \n";
         $createActivitySQL = "
@@ -236,7 +236,6 @@ try {
         } else {
             echo "<br>✅ Column `userActivityDate` already exists in `$userActivitiesTable`.\n";
         }
-
     } else {
         echo "<br>❌ Table '$userActivitiesTable' does not exist in database '$dbname'. \n";
         $createUserActivitiesSQL = "
