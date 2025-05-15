@@ -29,13 +29,18 @@ try {
     $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(mode: PDO::FETCH_ASSOC);
+
+    $activateFlag = $_POST['activate'] ?? null;
+
     if ($user) {
+        if (!$user['activate'] && $activateFlag !== 'true') {
+            echo json_encode(['success' => false, 'message' => 'Account is deactivated', 'activate' => false]);
+            exit;
+        }
         $updateStmt = $conn->prepare("UPDATE users SET otp = ? WHERE id = ?");
-        $insertOtp = $updateStmt->execute([$otp,$user['id']]);
+        $insertOtp = $updateStmt->execute([$otp, $user['id']]);
         if ($insertOtp) {
-            // Send OTP to email (pseudo code)
-            // mail($email, "Your OTP", "Your OTP is: $otp");
-            echo json_encode(['success' => true, 'message' => 'OTP sent to your email.']);
+            echo json_encode(value: ['success' => true, 'message' => 'OTP sent to your email.']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to send OTP.']);
         }
@@ -46,4 +51,3 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
-?>

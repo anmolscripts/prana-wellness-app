@@ -435,7 +435,7 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
 
     <script>
         const logout = () => {
-            fetch('api/auth/logout.php', {
+            fetch('../api/auth/logout.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
