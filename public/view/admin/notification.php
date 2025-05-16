@@ -1,3 +1,5 @@
+<?php session_start() ?>
+
 <!doctype html>
 
 <html
@@ -221,100 +223,106 @@
                                             <span class="notificationRequest"><span class="text-primary">Request Permission</span></span></span>
                                         <div class="error"></div>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-nowrap">Type</th>
-                                                    <th class="text-nowrap text-center">Email</th>
-                                                    <th class="text-nowrap text-center">Browser</th>
-                                                    <th class="text-nowrap text-center">App</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-nowrap text-heading">New for you</td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck1" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck2" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck3" checked />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-nowrap text-heading">Account activity</td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck4" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck5" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck6" checked />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-nowrap text-heading">A new browser used to sign in</td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck7" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck8" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck9" />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-nowrap text-heading">A new device is linked</td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck10" checked />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck11" />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                            <input class="form-check-input" type="checkbox" id="defaultCheck12" />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="text-body mb-6">When should we send you notifications?</h6>
-                                        <form action="javascript:void(0);">
+
+                                    <!-- <form id="notificationTable" action="">
+
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-nowrap">Type</th>
+                                                        <th class="text-nowrap text-center">Email</th>
+                                                        <th class="text-nowrap text-center">In Prana Website Account</th>
+                                                        <th class="text-nowrap text-center">Push Notification</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">Miss Daily Goals</td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck1" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck2" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck3" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">Remainder for daily Goals</td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck4" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck5" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck6" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">New Activity Added</td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck7" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck8" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck9" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">Newslatter</td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck10" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck11" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="defaultCheck12" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                        <div class="card-body">
+                                            <h6 class="text-body mb-6">When should we send you notifications?</h6>
+
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <select id="sendNotification" class="form-select" name="sendNotification">
-                                                        <option selected>Only when I'm online</option>
-                                                        <option>Anytime</option>
+                                                        <option value="online" selected>Only when I'm online</option>
+                                                        <option value="anytime">Anytime</option>
                                                     </select>
                                                 </div>
                                                 <div class="mt-6">
@@ -322,8 +330,128 @@
                                                     <button type="reset" class="btn btn-outline-secondary">Discard</button>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+
+                                        </div>
+
+                                    </form> -->
+
+                                    <form id="notificationTable" action="">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-nowrap">Type</th>
+                                                        <th class="text-nowrap text-center">Email</th>
+                                                        <th class="text-nowrap text-center">In Prana Website Account</th>
+                                                        <th class="text-nowrap text-center">Push Notification</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">Miss Daily Goals</td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0001" class="form-check-input" type="checkbox" data-type="miss_daily_goals" data-position="email" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0001" class="form-check-input" type="checkbox" data-type="miss_daily_goals" data-position="account" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0001" class="form-check-input" type="checkbox" data-type="miss_daily_goals" data-position="push" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">Reminder for Daily Goals</td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0002" class="form-check-input" type="checkbox" data-type="reminder_daily_goals" data-position="email" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0002" class="form-check-input" type="checkbox" data-type="reminder_daily_goals" data-position="account" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0002" class="form-check-input" type="checkbox" data-type="reminder_daily_goals" data-position="push" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">New Activity Added</td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0003" class="form-check-input" type="checkbox" data-type="new_activity" data-position="email" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0003" class="form-check-input" type="checkbox" data-type="new_activity" data-position="account" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0003" class="form-check-input" type="checkbox" data-type="new_activity" data-position="push" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap text-heading">Newsletter</td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0004" class="form-check-input" type="checkbox" data-type="newsletter" data-position="email" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0004" class="form-check-input" type="checkbox" data-type="newsletter" data-position="account" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check d-flex justify-content-center align-items-center">
+                                                                <input notification-id="0004" class="form-check-input" type="checkbox" data-type="newsletter" data-position="push" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <h6 class="text-body mb-6">When should we send you notifications?</h6>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <select id="sendNotification" class="form-select" name="sendNotification">
+                                                        <option value="online">Only when I'm online</option>
+                                                        <option value="anytime">Anytime</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- ✅ Select All Checkbox -->
+                                            <div class="mt-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="selectAllCheckbox" />
+                                                    <label class="form-check-label" for="selectAllCheckbox">Select All / Unselect All</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-4">
+                                                <button type="submit" class="btn btn-primary me-3">Save changes</button>
+                                                <button type="reset" class="btn btn-outline-secondary">Discard</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+
+
                                     <!-- /Notifications -->
                                 </div>
                             </div>
@@ -344,7 +472,7 @@
     </div>
     <!-- / Layout wrapper -->
 
-    
+
 
     <!-- Core JS -->
 
@@ -369,6 +497,233 @@
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+    <!-- <script>
+       form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // Grouped object
+    const groupedData = {};
+
+    checkboxes.forEach(cb => {
+        const notificationId = cb.getAttribute("notification-id");
+        const type = cb.getAttribute("data-type");
+        const position = cb.getAttribute("data-position");
+        const value = cb.checked;
+
+        if (!groupedData[notificationId]) {
+            groupedData[notificationId] = {
+                notificationId,
+                type,
+                positions: []
+            };
+        }
+
+        groupedData[notificationId].positions.push({
+            position,
+            value
+        });
+    });
+
+    const selectedData = Object.values(groupedData);
+    const notificationPreference = document.getElementById("sendNotification").value;
+
+    const finalPayload = {
+        notifications: selectedData,
+        preference: notificationPreference
+    };
+
+    console.log("Sending to API:", finalPayload);
+
+    const session = <?php echo json_encode($_SESSION['user']); ?>;
+    let userEmail = session.email;
+    let userId = session.id;
+
+    // ✅ Send API Call using Fetch
+    fetch("../api/auth/notificationSettings.php", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            email: userEmail,
+            userId: userId,
+            finalPayload: JSON.stringify(finalPayload)
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+    })
+    .then(data => {
+        console.log("Success:", data);
+        alert("Settings saved successfully!");
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Failed to save settings.");
+    });
+});
+
+    </script> -->
+
+
+    <script>
+        const session = <?php echo json_encode($_SESSION['user']); ?>;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById("notificationTable");
+            const selectAll = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('input.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
+
+            // ✅ Select All / Unselect All
+            selectAll.addEventListener('change', function() {
+                checkboxes.forEach(cb => {
+                    cb.checked = selectAll.checked;
+                });
+            });
+
+            // ✅ Keep Select All in sync if user manually unchecks/changes
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    if (!cb.checked) {
+                        selectAll.checked = false;
+                    } else {
+                        const allChecked = Array.from(checkboxes).every(c => c.checked);
+                        selectAll.checked = allChecked;
+                    }
+                });
+            });
+
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                // Collect selected checkboxes
+                const groupedData = {};
+
+                checkboxes.forEach(cb => {
+                    const notificationId = cb.getAttribute("notification-id");
+                    const type = cb.getAttribute("data-type");
+                    const position = cb.getAttribute("data-position");
+                    const value = cb.checked;
+
+                    if (!groupedData[notificationId]) {
+                        groupedData[notificationId] = {
+                            notificationId,
+                            type,
+                        };
+                    }
+
+                    groupedData[notificationId][position] = value;
+                });
+
+                const selectedData = Object.values(groupedData);
+                const notificationPreference = document.getElementById("sendNotification").value;
+
+
+                const finalPayload = {
+                    notifications: selectedData,
+                    preference: notificationPreference,
+                    email: session.email,
+                    userId: session.id,
+                };
+
+                console.log("Sending to API:", finalPayload);
+
+                // ✅ Send API Call using Fetch
+                fetch("../api/auth/notificationSettings.php", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+
+                        body: new URLSearchParams({
+
+                            finalPayload: JSON.stringify(finalPayload)
+
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Success:", data);
+                        alert("Settings saved successfully!");
+                        window.location.reload()
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Failed to save settings.");
+                    });
+            });
+        });
+
+
+
+
+        const notificationData = async () => {
+
+            try {
+                let result = await fetch("../api/auth/getNotificationData.php", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+
+                    body: new URLSearchParams({
+                        email: session.email,
+                        userId: session.id
+                    })
+                })
+                result = await result.json()
+                let notificateionData = result.message
+                const notificationTimings = notificateionData[0]?.notificationTimings;
+                const selectElement = document.getElementById("sendNotification");
+
+                if (notificationTimings && selectElement) {
+                    selectElement.value = notificationTimings;
+                }
+
+                notificateionData.forEach(item => {
+                    const {
+                        notificationId,
+                        email,
+                        account,
+                        push
+                    } = item;
+
+                    const positionMap = {
+                        email,
+                        account,
+                        push
+                    };
+
+                    // For each position (email/account/push)
+                    Object.entries(positionMap).forEach(([position, value]) => {
+                        const checkbox = document.querySelector(
+                            `input[type="checkbox"][notification-id="${notificationId}"][data-position="${position}"]`
+                        );
+                        if (checkbox) {
+                            checkbox.checked = value === 1;
+                        }
+                    });
+                });
+                // window.location.reload()
+
+            } catch (error) {
+                console.log("error", error)
+            }
+
+        }
+
+        notificationData()
+    </script>
+
+
+
 </body>
 
 </html>

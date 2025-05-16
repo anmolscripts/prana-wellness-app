@@ -14,8 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 require_once '../../functions/db.php';
 
 // Validate input
+
+
+
 $email = trim($_POST['email'] ?? '');
-$accountStatus = trim($_POST['deactivate'] ?? '');
+$userId = trim($_POST['userId'] ?? '');
 
 
 if (empty($email)) {
@@ -23,23 +26,23 @@ if (empty($email)) {
     exit;
 }
 
-// echo json_encode(['success' => false, 'message' => $accountStatus]);
-
+// echo json_encode(['success' => false, 'message' => $_POST]);
 // exit;
+
+
 
 try {
     $conn->exec("USE $dbname");
 
-    $stmt = $conn->prepare("UPDATE users SET activate = ? WHERE email = ?");
-    $result = $stmt->execute([$accountStatus, $email]);
+   
+
+$stmt = $conn->prepare("SELECT * FROM notification WHERE userEmail = ? AND userId = ?");
+$stmt->execute([$email, $userId]);
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
     if ($result) {
-          
-            session_start();
-            session_unset();
-            session_destroy();
-            echo json_encode(['success' => true, 'message' => "session detroyed"]);
-        
+            echo json_encode(['success' => true, 'message' => $result]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Email not registered.']);
         exit;

@@ -213,6 +213,7 @@ foreach ($getAllActivityes as $activity) {
                   <th>Time Duration</th>
                   <th>Yes/No</th>
                   <th>Score</th>
+                  <!-- <th>Activity Performance Date</th> -->
                   <th>Date</th>
                   <th>Time</th>
                   <th>Actions</th>
@@ -228,6 +229,98 @@ foreach ($getAllActivityes as $activity) {
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-lg-4 col-md-6">
+        <!-- <small class="fw-medium">Toggle Between Modals</small> -->
+        <div class="mt-4">
+          <!-- <button
+                              type="button"
+                              class="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalToggle">
+                              Launch modal
+                            </button> -->
+
+          <!-- Modal 1-->
+          <div
+            class="modal fade"
+            id="modalToggle"
+            aria-labelledby="modalToggleLabel"
+            tabindex="-1"
+            style="display: none"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div style="padding: 2rem;" class="modal-content">
+                <div class="modal-header">
+
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                </div>
+                <div style="text-align: center; font-size: 20px;" class="modal-body">
+                  Are You Sure  , You Want to delete Activity
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; column-gap: 2rem;"  class="">
+                  <button
+                  onclick="deleteUserActivity()"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-dismiss="modal">
+                    Delete
+                    
+                  </button>
+
+                  <button
+                    class="btn btn-primary "
+                  
+                    data-bs-toggle="modal"
+                    data-bs-dismiss="modal">
+                    Cancel
+                  </button>
+
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal 2-->
+          <div
+            class="modal fade"
+            id="modalToggle2"
+            aria-hidden="true"
+            aria-labelledby="modalToggleLabel2"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalToggleLabel2">Modal 2</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Hide this modal and show the first with the button below.
+                </div>
+                <div class="modal-footer">
+                  <button
+                    class="btn btn-primary"
+                    data-bs-target="#modalToggle"
+                    data-bs-toggle="modal"
+                    data-bs-dismiss="modal">
+                    Back to first
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -331,7 +424,7 @@ foreach ($getAllActivityes as $activity) {
                             aria-controls="accordian<?= $activity['activity_id']; ?>">
                             <div class="form-check col-12">
                               <input class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
-                             <?= $activity['activity_name'] ?>
+                              <?= $activity['activity_name'] ?>
                             </div>
                           </button>
                         </h2>

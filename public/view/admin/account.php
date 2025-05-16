@@ -297,14 +297,14 @@
                           <div>
                             <select name="country" id="countryName" class="selectpicker countrypicker" data-style="btn-primary" data-flag="true" data-live-search="true" value="">
                               <!-- <option data-tokens="TV Tuvalu" data-icon="inline-flag flag tv" class="option-with-flag" value="TV">Tuvalu</option> -->
-                              <option data-tokens="AF Afghanistan" data-icon="inline-flag flag af" class="option-with-flag" value="AF" >Afghanistan</option>
+                              <option data-tokens="AF Afghanistan" data-icon="inline-flag flag af" class="option-with-flag" value="AF">Afghanistan</option>
                               <option data-tokens="AL Albania" data-icon="glyphicon inline-flag flag al" class="option-with-flag" value="AL">Albania</option>
                               <option data-tokens="DZ Algeria" data-icon="inline-flag flag dz" class="option-with-flag" value="DZ">Algeria</option>
                               <option data-tokens="AS American Samoa" data-icon="inline-flag flag as" class="option-with-flag" value="AS">American Samoa</option>
                               <option data-tokens="AD Andorra" data-icon="inline-flag flag ad" class="option-with-flag" value="AD">Andorra</option>
                               <option data-tokens="AO Angola" data-icon="inline-flag flag ao" class="option-with-flag" value="AO">Angola</option>
                               <option data-tokens="AI Anguilla" data-icon="inline-flag flag ai" class="option-with-flag" value="AI">Anguilla</option>
-                              <option data-tokens="AQ Antarctica" data-icon="inline-flag flag aq" class="option-with-flag" value="AQ"  >Antarctica</option>
+                              <option data-tokens="AQ Antarctica" data-icon="inline-flag flag aq" class="option-with-flag" value="AQ">Antarctica</option>
                               <option data-tokens="AG Antigua and Barbuda" data-icon="inline-flag flag ag" class="option-with-flag" value="AG">Antigua and Barbuda</option>
                               <option data-tokens="AR Argentina" data-icon="inline-flag flag ar" class="option-with-flag" value="AR">Argentina</option>
                               <option data-tokens="AM Armenia" data-icon="inline-flag flag am" class="option-with-flag" value="AM">Armenia</option>
@@ -575,7 +575,7 @@
                         <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
                       </div>
                     </div>
-                    <form id="formAccountDeactivation" >
+                    <form id="formAccountDeactivation">
                       <div class="form-check my-8 ms-2">
                         <input
                           class="form-check-input"
@@ -669,7 +669,7 @@
         const result = await response.json();
         console.log("result", result);
 
-        alert(result.message);
+
 
         location.reload()
       } catch (error) {
@@ -684,7 +684,7 @@
     const profilePic = document.getElementById("profilePic")
     const phone = document.getElementById("phone")
     const countryName = document.getElementById("countryName")
-    
+
 
     const getProfileData = async () => {
 
@@ -701,7 +701,7 @@
 
         })
         adminDetails = await adminDetails.json()
-        
+
         let img = `http://localhost/prana-wellness-app/public/uploads/${adminDetails.message.imgPath}`
         profilePic.src = img
         phone.value = adminDetails.message.phoneNo
@@ -716,7 +716,7 @@
         // window.location.reload()
 
       } catch (error) {
-        console.log("varun" , error)
+        console.log("varun", error)
       }
 
     }
@@ -724,55 +724,52 @@
     getProfileData()
 
 
-    document.getElementById('formAccountDeactivation').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const isConfirmed = document.getElementById('accountActivation').checked;
+    document.getElementById('formAccountDeactivation').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const isConfirmed = document.getElementById('accountActivation').checked;
 
-    if (!isConfirmed) {
-      alert('Please confirm account deactivation.');
-      return;
-    }
-
-    // Example API endpoint (replace with your actual API)
-    const apiUrl = '../api/auth/deactivate.php'; 
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-         'Content-Type': 'application/x-www-form-urlencoded',
-        },
-
-        body: new URLSearchParams({
-            email: session.email ,
-            deactivate: true ,
-          })
-      });
-
-      const result = await response.json();
-      console.log(result)
-
-      if (response.ok) {
-        alert('Account deactivated successfully!');
-        // Optional: Redirect or perform some UI update
-      } else {
-        alert(result.message || 'Deactivation failed.');
+      if (!isConfirmed) {
+        alert('Please confirm account deactivation.');
+        return;
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong. Please try again later.');
-    }
-  });
+
+      // Example API endpoint (replace with your actual API)
+      const apiUrl = '../api/auth/deactivate.php';
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+
+          body: new URLSearchParams({
+            email: session.email,
+            deactivate: true,
+          })
+        });
+
+        const result = await response.json();
+        console.log(result)
+
+        const pathSegments = window.location.pathname.split('/');
+        const basePath = '/' + pathSegments[1] + '/'; // e.g., "prana-wellness-app"
+        const baseUrl = window.location.origin + basePath;
+        console.log(baseUrl);
+
+        // window.location.href = `${baseUrl}/auth/signup`;
+
+        if(result.success)
+        {
+          window.location.href = `${baseUrl}/auth/signup`;
+        }
 
 
-
-
-
-
-
-
-
-
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong. Please try again later.');
+      }
+    });
   </script>
 
 

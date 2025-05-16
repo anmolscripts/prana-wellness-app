@@ -69,7 +69,6 @@ const bindActivitys = (activitys, tbody) => {
                   <td class="text-center"><span class="badge ${stateBadge} me-1">${logged_duration}</span></td>
                   <td>${logged_value}</td>
                   <td>${element.score}</td>
-                  <td>${element.userActivityDate}</td>
                   <td>${date}</td>
                   <td>${time}</td>
                   <td>
@@ -97,3 +96,4 @@ const bindActivitys = (activitys, tbody) => {
         tbody.appendChild(tr);
     }
 };
+//<td>${element.userActivityDate}</td>
