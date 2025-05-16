@@ -1,4 +1,4 @@
-<?php session_start();
+<?php #session_start();
 
 define('BASE_URL', '/prana-wellness-app/');
 define('ADMIN_URL', '/prana-wellness-app/admin/');

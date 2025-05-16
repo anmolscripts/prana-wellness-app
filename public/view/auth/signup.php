@@ -38,6 +38,24 @@
     <script src="../public/assets/vendor/js/helpers.js"></script>
     <script src="../public/assets/vendor/js/template-customizer.js"></script>
     <script src="../public/assets/js/config.js"></script>
+    <style>
+        .form-error-message {
+            height: 0;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+
+            to {
+                height: 2.5rem;
+                padding: .5rem;
+                margin: .5rem 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -59,14 +77,16 @@
                                     <h4 class="mb-1 text-center text-dark">Adventure starts here 🚀</h4>
                                     <form id="formAuthentication" class="mb-6" action="index.html" method="GET">
                                         <div class="mb-6 form-control-validation"><label for="username"
-                                                class="form-label">Name</label><input type="text" class="form-control"
+                                                class="form-label">Name</label><input type="text" class="form-control signup-input"
                                                 id="username" name="username" placeholder="Enter your username"
                                                 autofocus /></div>
                                         <div class="mb-6 form-control-validation"><label for="email"
-                                                class="form-label">Email</label><input type="text" class="form-control"
+                                                class="form-label">Email</label><input type="text" class="form-control signup-input"
                                                 id="email" name="email" placeholder="Enter your email" /></div>
                                         <div class="my-7 form-control-validation">
-                                        </div><button type="button" onclick="sendOtp(this)"
+                                        </div>
+                                        <div id="signupErrorMessage" class="alert alert-danger form-error-message d-none" role="alert">This is a danger alert — check it out!</div>
+                                        <button name="signup-submit-btn" type="button" onclick="sendOtp(this)"
                                             class="btn btn-primary d-grid w-100">
                                             <div class="spinner-border text-light d-none" role="status">
                                                 <span class="visually-hidden">Loading...</span>
@@ -104,16 +124,16 @@
                                                 class="auth-input-wrapper d-flex align-items-center justify-content-between numeral-mask-wrapper">
                                                 <input type="tel"
                                                     class="form-control auth-input h-px-50 text-center numeral-mask mx-sm-1 mt-2 otp-input"
-                                                    maxlength="1" autofocus required/>
+                                                    maxlength="1" autofocus required />
                                                 <input type="tel"
                                                     class="form-control auth-input h-px-50 text-center numeral-mask mx-sm-1 mt-2 otp-input"
-                                                    maxlength="1"required />
+                                                    maxlength="1" required />
                                                 <input type="tel"
                                                     class="form-control auth-input h-px-50 text-center numeral-mask mx-sm-1 mt-2 otp-input"
-                                                    maxlength="1"required />
+                                                    maxlength="1" required />
                                                 <input type="tel"
                                                     class="form-control auth-input h-px-50 text-center numeral-mask mx-sm-1 mt-2 otp-input"
-                                                    maxlength="1"required />
+                                                    maxlength="1" required />
                                                 <input type="tel"
                                                     class="form-control auth-input h-px-50 text-center numeral-mask mx-sm-1 mt-2 otp-input"
                                                     maxlength="1" required />
@@ -124,7 +144,8 @@
                                             <!-- Create a hidden field which is combined by 3 fields above -->
                                             <input type="hidden" name="otp" />
                                         </div>
-                                        <button type="button" onclick="varifySignUp(this)" class="btn btn-primary d-grid w-100 mb-6">Verify my account</button>
+                                        <div id="OTPErrorMessage" class="alert alert-danger form-error-message d-none" role="alert">This is a danger alert — check it out!</div>
+                                        <button name="varify-OTP-submit-btn" type="button" onclick="varifySignUp(this)" class="btn btn-primary d-grid w-100 mb-6">Verify my account</button>
                                         <div class="text-center">
                                             Didn't get the code?
                                             <a href="javascript:void(0);">Resend</a>
@@ -153,6 +174,9 @@
     <script src="../public/assets/vendor/libs/@form-validation/auto-focus.js"></script>
     <script src="../public/assets/js/main.js"></script>
     <script src="../public/assets/js/form-validation.js"></script>
+
+
+    <script src="../public/js/utility.js"></script>
 
 
     <script>
@@ -192,8 +216,9 @@
         const sendOtp = (e) => {
             // e.preventDefault();
 
-            const name = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
+            const name = document.getElementById('username');
+            const email = document.getElementById('email');
+            const signupErrorMessage = document.getElementById('signupErrorMessage');
             formValdate();
             e.querySelector('.spinner-border').classList.remove('d-none');
             e.querySelector('.text').classList.add('d-none');
@@ -203,21 +228,29 @@
                 // You can use AJAX or Fetch API to send the OTP request to your server
                 // For example:
                 fetch(' ../api/auth/signup.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        name,
-                        email,
-                        permission: 'user'
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            name: name.value,
+                            email: email.value,
+                            permission: 'user'
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
                         if (data.success) {
+                            email.classList.remove('is-invalid');
+                            email.classList.add('is-valid');
+                            signupErrorMessage.classList.add('d-none');
                             carousel.to(1);
+                        } else {
+                            email.classList.add('is-invalid');
+                            email.classList.remove('is-valid');
+                            signupErrorMessage.innerText = data.message;
+                            signupErrorMessage.classList.remove('d-none');
+                            email.focus();
                         }
 
                     })
@@ -240,8 +273,11 @@
             const otps = document.querySelectorAll('.otp-input');
             console.log(otps);
             otpValue = [];
-            if(otps.length > 0) {
-                otps.forEach(otp => {otpValue.push(otp.value); console.log(otp.value)});
+            if (otps.length > 0) {
+                otps.forEach(otp => {
+                    otpValue.push(otp.value);
+                    console.log(otp.value)
+                });
             }
 
             const otp = otpValue.join('');
@@ -253,29 +289,63 @@
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     body: new URLSearchParams({
-                        email:email,
+                        email: email,
                         otp: otp
                     })
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        if (data.success) {
-                            // Redirect to the desired page after successful verification
-                            window.location.href = '../';
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        otps.forEach(otp => {
+                            otp.classList.remove('is-invalid');
+                            otp.classList.add('is-valid');
+                        });
+                        OTPErrorMessage.classList.add('d-none');
+                        if (data.user.permission === 'admin') {
+                            localStorage.setItem('user', JSON.stringify(data.user));
+                            window.location.href = '../admin/dashboard';
                         } else {
-                            alert(data.message);
+                            localStorage.setItem('user', JSON.stringify(data.user));
+                            window.location.href = '../dashboard';
                         }
-
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    }).finally(() => {
-                        e.querySelector('.spinner-border').classList.add('d-none');
-                        e.querySelector('.text').classList.remove('d-none');
-                        e.removeAttribute('disabled');
-                    });
+                    } else {
+                        otps.forEach(otp => {
+                            otp.classList.add('is-invalid');
+                            otp.classList.remove('is-valid');
+                        });
+                        OTPErrorMessage.innerText = data.message;
+                        OTPErrorMessage.classList.remove('d-none');
+                        otps[otps.length - 1].focus();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                }).finally(() => {
+                    e.querySelector('.spinner-border').classList.add('d-none');
+                    e.querySelector('.text').classList.remove('d-none');
+                    e.removeAttribute('disabled');
+                });
         }
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handel Email input
+            const email = Array.from(document.querySelectorAll('.signup-input'));
+            const emailSubmitBtn = document.querySelector('[name="signup-submit-btn"]');
+            setupFieldNavigator(email, emailSubmitBtn, {
+                mode: 'text',
+                autoAdvance: true
+            });
+            // Handel varify-OTP-submit-btn
+            const otpFields = Array.from(document.querySelectorAll('.otp-input'));
+            const otpSubmit = document.querySelector('[name="varify-OTP-submit-btn"]');
+            setupFieldNavigator(otpFields, otpSubmit, {
+                mode: 'numeric',
+                autoAdvance: true
+            });
+        });
     </script>
 </body>
 

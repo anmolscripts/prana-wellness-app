@@ -20,6 +20,20 @@ function checkLogin() {
     return true;
 }
 
+function is_admin() {
+    // Check if user is admin
+    if (!isset($_SESSION['user'])) {
+        return false;
+    }
+
+    if($_SESSION['user']['permission'] === 'admin') {
+        return true;
+    }
+
+    return false;
+
+}
+
 function requireLogin($redirectUrl = 'auth/login') {
     if (!checkLogin()) {
         header("Location: $redirectUrl");

@@ -45,7 +45,7 @@ try {
         echo json_encode(['success' => true, 'user' =>  $_SESSION['user']]);
     } else {
         // OTP not matched
-        echo json_encode(['success' => false, 'message' => 'Invalid OTP or Email.']);     
+        echo json_encode(['success' => false, 'message' => 'Invalid OTP.']);     
     }
 
 } catch (PDOException $e) {
