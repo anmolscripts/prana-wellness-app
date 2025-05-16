@@ -29,9 +29,25 @@ try {
     $user = $stmt->fetch(mode: PDO::FETCH_ASSOC);
 
     if ($user) {
+        $activateFlag = $_POST['activate'] ?? null;
         // OTP matched, update user status to active
-        $updateStmt = $conn->prepare("UPDATE users SET status = 'active' WHERE id = ?");
-        $updateStmt->execute([$user['id']]);
+        if ($activateFlag === 'true') {
+            $updateStmt = $conn->prepare("
+    UPDATE users
+    SET status   = :status,
+        activate = :activate
+    WHERE id = :id
+");
+            $updateStmt->execute([
+                ':status'   => 'active',
+                ':activate' => 1,           // or true, but 1 is safest for MySQL TINYINT(1)
+                ':id'       => $user['id'],
+            ]);
+        } else {
+            $updateStmt = $conn->prepare("UPDATE users SET status = 'active' WHERE id = ?");
+            $updateStmt->execute([$user['id']]);
+        }
+
 
         // Set session
         $_SESSION['user'] = [
@@ -45,9 +61,8 @@ try {
         echo json_encode(['success' => true, 'user' =>  $_SESSION['user']]);
     } else {
         // OTP not matched
-        echo json_encode(['success' => false, 'message' => 'Invalid OTP.']);     
+        echo json_encode(['success' => false, 'message' => 'Invalid OTP.']);
     }
-
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);           
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }

@@ -377,6 +377,10 @@
                 email.classList.remove('is-invalid');
                 email.classList.add('is-valid');
                 emailErrorMessage.classList.add('d-none');
+                if(activeAccount) {
+                  document.querySelector('[name="varify-OTP-submit-btn"]').setAttribute('onclick', 'varifySignUp(this, true)');
+                }
+
                 carousel.to(1);
               } else if (data.activate === false) {
                 email.classList.remove('is-invalid');
@@ -407,7 +411,7 @@
 
 
       let otpValue = [];
-      const varifySignUp = (e) => {
+      const varifySignUp = (e, activeateAccount = false) => {
         // e.preventDefault();
         const otps = document.querySelectorAll('.otp-input');
         const OTPErrorMessage = document.getElementById('OTPErrorMessage');
@@ -422,16 +426,25 @@
 
         const otp = otpValue.join('');
         const email = document.getElementById('email').value;
-
+       let data = {};
+        if (activeateAccount) {
+          data = {
+            email: email,
+            otp: otp,
+            activate: activeateAccount
+          }
+        } else {
+          data = {
+            email: email,
+            otp: otp
+          }
+        }
         fetch('../api/auth/verify-otp.php', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-              email: email,
-              otp: otp
-            })
+            body: new URLSearchParams(data)
           })
           .then(response => response.json())
           .then(data => {
