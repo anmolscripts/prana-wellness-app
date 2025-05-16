@@ -731,19 +731,20 @@ foreach ($getAllActivityes as $activity) {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
-
-
             userAddedActivity: JSON.stringify(userAddedActivity)
 
           })
         })
 
         result = await result.json()
+
         alert("actvity successfully added")
         window.location.reload()
-        // console.log(result);
+        console.log( "activity" , result);
 
       } catch (error) {
+
+        console.log("error" , error)
 
       }
 

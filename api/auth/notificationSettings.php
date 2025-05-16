@@ -40,8 +40,21 @@ if (empty($userEmail)) {
 try {
     $conn->exec("USE $dbname");
 
-    
-$result = "" ;
+
+    $result = "";
+
+        $checkStmt = $conn->prepare("SELECT * FROM notification WHERE userId = ?");
+        $checkStmt->execute([$userid]);
+        $chek_user = $checkStmt->rowCount();
+
+
+        if ($chek_user  > 1) {
+            $deleteStmt = $conn->prepare("DELETE FROM notification WHERE userId = ?");
+            $deleteStmt->execute([$userid]);
+        }
+
+
+
     foreach ($notificationData as $notification) {
         $notificationId = $notification['notificationId'];
         $type = $notification['type'];
@@ -53,7 +66,63 @@ $result = "" ;
         $notificationid = $notification['notificationId'];
         $notificationName =  $notification['type'];
 
+        
+
+        //  if ($chek_user  > 1) {
+        //     $deleteStmt = $conn->prepare("DELETE FROM notification WHERE userId = ?");
+        //     $deleteStmt->execute([$userid]);
+        // }
+
+        // if ($chek_user > 0) {
+        //     $updateStmt = $conn->prepare("UPDATE notification SET 
+        // notificationName = ?, 
+        // notificationId = ?, 
+        // email = ?, 
+        // account = ?, 
+        // push = ?, 
+        // notificationTimings = ?, 
+        // modify_date = NOW() 
+        // WHERE userId = ?");
+
+        //     $result = $updateStmt->execute([
+        //         $notificationName,
+        //         $notificationid,
+        //         $email,
+        //         $account,
+        //         $push,
+        //         $preference,
+        //         $userid
+        //     ]);
+        // } else {
+
+        //     $stmt = $conn->prepare("INSERT INTO notification (notificationName, notificationId , userId , userEmail , email, account, push,  notificationTimings) VALUES (?, ?, ?, ?, ?, ?, ? , ?)");
+
+        //     $result = $stmt->execute([
+        //         $notificationName,
+        //         $notificationid,
+        //         $userid,
+        //         $userEmail,
+        //         $email,
+        //         $account,
+        //         $push,
+        //         $preference
+        //     ]);
+        // }
+
+        // echo json_encode(['success' => false, 'message' => $chek_user]);
+        // exit;
+
+
+
+        // if ($chek_user  > 1) {
+        //     $deleteStmt = $conn->prepare("DELETE FROM notification WHERE userId = ?");
+        //     $deleteStmt->execute([$userid]);
+        // }
+
+
+
         $stmt = $conn->prepare("INSERT INTO notification (notificationName, notificationId , userId , userEmail , email, account, push,  notificationTimings) VALUES (?, ?, ?, ?, ?, ?, ? , ?)");
+
         $result = $stmt->execute([
             $notificationName,
             $notificationid,

@@ -304,4 +304,43 @@ try {
     echo "Connection failed: " . $e->getMessage();
     exit;
 }
+
+
+
+// Check for notification table
+$notificationTable = "notification";
+try {
+    $stmt->execute([
+        ':dbname' => $dbname,
+        ':table' => $notificationTable
+    ]);
+
+    if ($stmt->rowCount() > 0) {
+        echo "<br>✅ Table '$notificationTable' exists in database '$dbname'. \n";
+    } else {
+        echo "<br>❌ Table '$notificationTable' does not exist in database '$dbname'. \n";
+        $createNotificationSQL = "
+            CREATE TABLE `$notificationTable` (
+                id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                userId INT(11) NOT NULL,
+                notificationName VARCHAR(255) NOT NULL,
+                userEmail VARCHAR(255) NOT NULL,
+                email TINYINT(1) DEFAULT 1,
+                account TINYINT(1) DEFAULT 1,
+                push TINYINT(1) DEFAULT 1,
+                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                notificationTimings VARCHAR(255) DEFAULT NULL,
+                notificationId VARCHAR(100) DEFAULT NULL,
+                modify_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB
+              DEFAULT CHARSET=utf8mb4
+              COLLATE=utf8mb4_unicode_ci;
+        ";
+        $conn->exec($createNotificationSQL);
+        echo "<br>✅ Table '$notificationTable' created successfully.\n";
+    }
+} catch (PDOException $e) {
+    echo "❌ Error: " . $e->getMessage();
+    exit;
+}
 ?>
