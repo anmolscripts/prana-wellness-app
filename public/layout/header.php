@@ -61,6 +61,21 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
         .max-w-500px {
             width: 500px !important;
         }
+
+        body {
+            background-image: url('<?= $publicPath ?>/assets/img/bg-2.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            /* backdrop-filter: brightness(0.2); */
+        }
+
+        .menu, .card {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
+
+        } 
     </style>
 </head>
 
@@ -78,7 +93,7 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                 <div class="menu-divider mt-0"></div>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                    <li class="menu-item active" data-aside="<?= $admin ? 'admin/' : '' ?>dashboard"><a href="<?= $admin ? ADMIN_URL : '' ?>dashboard" class="menu-link"><i
+                    <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>dashboard"><a href="<?= $admin ? ADMIN_URL : '' ?>dashboard" class="menu-link"><i
                                 class="menu-icon tf-icons bx bx-home-smile"></i>
                             <div class="text-truncate" data-i18n="Dashboards">Dashboards</div><span
                                 class="badge rounded-pill bg-danger ms-auto">5</span>
@@ -178,6 +193,7 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                     document.addEventListener("DOMContentLoaded", () => {
                         // Get current path without leading slash
                         let currentPath = window.location.pathname.replace(/^\/+/, '');
+                        currentPath = currentPath.split('/')[1];
 
                         // Select all menu items with data-aside
                         let menuItems = document.querySelectorAll('.menu-item[data-aside]');
