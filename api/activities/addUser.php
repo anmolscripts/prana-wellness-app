@@ -65,57 +65,50 @@ try {
         foreach ($userAddedActivity as $activity) {
             $userid = $activity['userId'];
             $activity_id = $activity['id'];
-            $userActvivityDate = $activity['actvityDate'] ;
+            $userActvivityDate = $activity['actvityDate'];
             // $value = $activity['value'];
-    
+
             $logged_duration = "";
             $logged_value = "";
             $score = "";
-    
+
             $activityValue = trim($activity['activity'] ?? '');
-    
-    
-            if ($activityValue == "yes" ) {
+
+
+            if ($activityValue == "yes") {
                 $logged_value = true;
                 $score = 4;
                 $logged_duration = "";
-            } 
-            elseif ($activityValue ==  "no")
-            {
+            } elseif ($activityValue ==  "no") {
                 $logged_value = false;
-                $score = 5; 
+                $score = 5;
                 $logged_duration = "";
-            }
-            else {
+            } else {
                 $logged_duration = $activityValue;
                 $score = 6;
                 $logged_value = "";
             }
-    
+
             $datetime = date('Y-m-d H:i:s');
             $stmt = $conn->prepare("INSERT INTO user_activities (user_id, activity_id, logged_duration, logged_value, score, activity_date , userActivityDate) VALUES (:user_id, :activity_id, :logged_duration, :logged_value, :score, :activity_date , :userActivityDate)");
-    $insert = $stmt->execute([
-        'user_id'     => $userid,
-        'activity_id'    => $activity_id,
-        'logged_duration' => $logged_duration,
-        'logged_value' => $logged_value,
-        'score' => $score,
-        'activity_date' => $datetime ,
-        'userActivityDate' =>  $userActvivityDate
-    ]);
+            $insert = $stmt->execute([
+                'user_id'     => $userid,
+                'activity_id'    => $activity_id,
+                'logged_duration' => $logged_duration,
+                'logged_value' => $logged_value,
+                'score' => $score,
+                'activity_date' => $datetime,
+                'userActivityDate' =>  $userActvivityDate
+            ]);
 
-    $lastId = $conn->lastInsertId();
-    
-            
+            $lastId = $conn->lastInsertId();
+
+            echo json_encode(['success' => true, 'id' => $lastId]);
         }
     } else {
         echo "Invalid activity data";
     }
-    
 
-
-
-    
     echo json_encode(['success' => true, 'id' => $lastId]);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

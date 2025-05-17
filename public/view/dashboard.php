@@ -736,11 +736,14 @@ foreach ($getAllActivityes as $activity) {
           })
         })
 
-        result = await result.json()
-
-        alert("actvity successfully added")
+         alert("actvity successfully added")
         window.location.reload()
-        console.log( "activity" , result);
+//  console.log( "activity" , result);
+//    alert("actvity successfully added")
+//         result = await result.json()
+
+       
+//         console.log( "activity" , result);
 
       } catch (error) {
 
