@@ -1,4 +1,16 @@
 <?php
+
+function getConnection()
+{
+    global $servername, $username, $password;
+    try {
+        $pdo = new PDO("mysql:host=$servername;dbname=prana_wellness", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    } catch (PDOException $e) {
+        die("Connection failed: " . $e->getMessage());
+    }
+}
 function getActivityUsageStats(PDO $pdo, string $dbname, string $userActivitiesTable, string $activityTable): array
 {
     // Step 1: Check if the user activity table exists
@@ -187,4 +199,28 @@ function getPercentageFromArray(array $array): array
     }
 
     return $percentages;
+}
+
+function getSliderSetting(PDO $pdo, string $dbname): array
+{
+    $pdo->exec("USE $dbname");
+    $layoutKey = 'homepage_carousel';
+
+    $stmt = $pdo->prepare("SELECT settings, is_active FROM layout_settings WHERE layout_key = ?");
+    $stmt->execute([$layoutKey]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $result = [];
+
+    if ($row) {
+        if ($row) {
+        $settings = json_decode($row['settings'], true);
+        $result = [
+            'is_active' => $row['is_active'],
+            'settings' => $settings
+        ];
+    }
+    }
+
+    return $result;
 }

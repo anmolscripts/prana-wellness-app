@@ -107,6 +107,7 @@ function getAllActivityes(PDO $pdo, string $dbname, int $user_id, string $activi
             a.name AS activity_name,
             a.type,
             a.state,
+            a.description AS activity_description,
             CASE 
                 WHEN g.goal_id IS NOT NULL THEN TRUE
                 ELSE FALSE
@@ -118,7 +119,7 @@ function getAllActivityes(PDO $pdo, string $dbname, int $user_id, string $activi
         FROM `$activityTable` a
         LEFT JOIN goals g 
             ON g.activity_id = a.id 
-            AND g.user_id = :user_id
+            AND g.user_id = :user_id    
             AND DATE(g.goal_date) = CURDATE()
         LEFT JOIN user_activities ua 
             ON ua.activity_id = a.id 

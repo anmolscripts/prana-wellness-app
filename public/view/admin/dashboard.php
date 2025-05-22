@@ -15,8 +15,10 @@ if(!is_admin()){
 <?php
 
 require_once '../../../functions/db.php';
-require_once '../../../functions/activity_added_chart.php';
 require_once '../../../functions/utility.php';
+require_once '../../../functions/activity_added_chart.php';
+require_once '../../../functions/fetchLayoutSetting.php';
+
 $pdo = getConnection();
 $result = getMonthlyActivityAdditions($pdo);
 
@@ -28,7 +30,12 @@ $getActivityUsageStats = getActivityUsageStats($pdo, $dbname, 'user_activities',
 $userCount = getUsersCount($pdo, $dbname, 'users');
 
 $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_activities', 'activity');
+
+
 ?>
+<script>
+    console.log('getSilderData', <?= json_encode($getSilderData); ?>)
+</script>
 
 
 

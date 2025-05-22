@@ -2,7 +2,9 @@
 // auth.php
 
 session_start();
-
+function get_base_url():string {
+    return 'http://localhost:9090/prana-wellness-app';
+}
 function checkLogin() {
     // Check if session exists
     if (!isset($_SESSION['user'])) {
@@ -34,9 +36,9 @@ function is_admin() {
 
 }
 
-function requireLogin($redirectUrl = 'auth/login') {
+function requireLogin() {
     if (!checkLogin()) {
-        header("Location: $redirectUrl");
+        header("Location: ".get_base_url()."/auth/login");
         exit;
     }
 }

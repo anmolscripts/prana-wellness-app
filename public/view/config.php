@@ -343,4 +343,38 @@ try {
     echo "❌ Error: " . $e->getMessage();
     exit;
 }
+
+
+// Layout Settings 
+$layoutTable = "layout_settings";
+try {
+    $stmt->execute([
+        ':dbname' => $dbname,
+        ':table' => $layoutTable
+    ]);
+
+    if ($stmt->rowCount() > 0) {
+        echo "<br>✅ Table '$layoutTable' exists in database '$dbname'. \n";
+    } else {
+        echo "<br>❌ Table '$layoutTable' does not exist in database '$dbname'. \n";
+        $createLayoutSQL = "
+            CREATE TABLE `$layoutTable` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    layout_key VARCHAR(100) NOT NULL,     -- unique identifier (e.g. 'homepage_carousel', 'footer_tabs')
+    component_type VARCHAR(50) NOT NULL,  -- e.g. 'carousel', 'tab', 'banner'
+    settings JSON NOT NULL,               -- dynamic configuration
+    is_active TINYINT(1) DEFAULT 1,       -- toggle visibility
+    sort_order INT DEFAULT 0,             -- order of rendering
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE(layout_key)
+);;
+        ";
+        $conn->exec($createLayoutSQL);
+        echo "<br>✅ Table '$layoutTable' created successfully.\n";
+    }
+} catch (PDOException $e) {
+    echo "❌ Error: " . $e->getMessage();
+    exit;
+}
 ?>

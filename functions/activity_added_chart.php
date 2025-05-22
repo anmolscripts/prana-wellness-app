@@ -1,15 +1,4 @@
 <?php
-function getConnection() {
-    global $servername, $username, $password;
-    try {
-      $pdo = new PDO("mysql:host=$servername;dbname=prana_wellness", $username, $password);
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      return $pdo;
-    } catch (PDOException $e) {
-      die("Connection failed: " . $e->getMessage());
-    }
-  }
-
 
 function getMonthlyActivityAdditions(PDO $pdo, int $userId = null): array {
   $labels = [];

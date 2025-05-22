@@ -63,9 +63,9 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
         }
 
         body {
-            background-image: url('<?= $publicPath ?>/assets/img/bg-2.jpg');
+            /* background-image: url('<?= $publicPath ?>/assets/img/bg-2.jpg');
             background-size: cover;
-            background-attachment: fixed;
+            background-attachment: fixed; */
             /* backdrop-filter: brightness(0.2); */
         }
 
@@ -102,6 +102,13 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                         <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>activities"><a href="<?= $admin ? ADMIN_URL : '' ?>activities" class="menu-link"><i
                                     class="menu-icon tf-icons bx bx-run"></i>
                                 <div class="text-truncate" data-i18n="Dashboards">Activities</div><span
+                                    class="badge rounded-pill bg-danger ms-auto">5</span>
+                            </a></li>
+                    <?php endif; ?>
+                    <?php if ($admin) : ?>
+                        <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>appearance"><a href="<?= $admin ? ADMIN_URL : '' ?>appearance" class="menu-link"><i
+                                    class="menu-icon tf-icons bx bx-layout"></i>
+                                <div class="text-truncate" data-i18n="Dashboards">Appearance</div><span
                                     class="badge rounded-pill bg-danger ms-auto">5</span>
                             </a></li>
                     <?php endif; ?>

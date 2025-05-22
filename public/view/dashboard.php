@@ -1,7 +1,8 @@
-<?php #session_start(); ?>
-<?php 
+<?php #session_start(); 
+?>
+<?php
 
-require_once('../../functions/auth.php'); 
+require_once('../../functions/auth.php');
 
 requireLogin();
 ?>
@@ -11,6 +12,7 @@ requireLogin();
 require_once '../../functions/db.php';
 require_once '../../functions/userFunctions/activity_user_chart.php';
 require_once '../../functions/userFunctions/userUtility.php';
+require_once '../../functions/fetchLayoutSetting.php';
 
 $userId = $_SESSION['user']['id'];
 $pdo = getConnection();
@@ -31,10 +33,11 @@ foreach ($getAllActivityes as $activity) {
     array_push($userGoals, $activity);
   }
 }
+$getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/layout/get.php");
 ?>
 
 <script>
-  console.log('Activity Table', <?php echo json_encode($getAllActivityes); ?>)
+  console.log('getSilderData', <?php echo json_encode($getSilderData); ?>)
 </script>
 <style>
   .alert-container {
@@ -63,6 +66,16 @@ foreach ($getAllActivityes as $activity) {
   .accordion .accordion-button:not(.collapsed)::after {
     background: #fff !important;
   }
+
+  .slider-height {
+    height: 12rem;
+  }
+
+  @media (min-width:767px) {
+    .slider-height {
+      height: 35rem;
+    }
+  }
 </style>
 <!-- Content wrapper -->
 <div class="content-wrapper">
@@ -71,61 +84,40 @@ foreach ($getAllActivityes as $activity) {
     <div class="row">
 
 
-      <div class="col-xxl-12 mb-6">
-        <div id="carouselExample" class="carousel slide rounded-3 shadow-lg overflow-hidden" style="height: 500px;" data-bs-ride="carousel">
-          <div class="carousel-indicators">
-            <button
-              type="button"
-              data-bs-target="#carouselExample"
-              data-bs-slide-to="0"
-              class="active"
-              aria-current="true"
-              aria-label="Slide 1"></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExample"
-              data-bs-slide-to="1"
-              aria-label="Slide 2"></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExample"
-              data-bs-slide-to="2"
-              aria-label="Slide 3"></button>
-          </div>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img class="d-block w-100" src="public/assets/img/yoga/1.jpg" loading="lazy" decoding="async" alt="First slide" />
-              <div class="carousel-caption d-none d-md-block">
-                <h3>First slide</h3>
-                <p>Eos mutat malis maluisset et, agam ancillae quo te, in vim congue pertinacia.</p>
-              </div>
+      <?php if ($getSilderData['success'] && isset($getSilderData['data']) && $getSilderData['data']['is_active']): ?>
+        <div class="col-xxl-12 mb-6">
+          <div id="carouselExample" class="carousel slide rounded-3 shadow-lg overflow-hidden slider-height" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <?php foreach ($getSilderData['data']['settings']['images'] as $i => $img): ?>
+                <button
+                  type="button"
+                  data-bs-target="#carouselExample"
+                  data-bs-slide-to="<?= $i ?>"
+                  class="<?= $i === 0 ? 'active' : ''; ?>"
+                  aria-current="true"
+                  aria-label="Slide <?= $i ?>"></button>
+              <?php endforeach; ?>
             </div>
-            <div class="carousel-item">
-              <img class="d-block w-100" src="public/assets/img/yoga/2.jpg" loading="lazy" decoding="async" alt="Second slide" />
-              <div class="carousel-caption d-none d-md-block">
-                <h3>Second slide</h3>
-                <p>In numquam omittam sea.</p>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img class="d-block w-100" src="public/assets/img/yoga/3.jpg" loading="lazy" decoding="async" alt="Third slide" />
-              <div class="carousel-caption d-none d-md-block">
-                <h3>Third slide</h3>
-                <p>Lorem ipsum dolor sit amet, virtute consequat ea qui, minim graeco mel no.</p>
-              </div>
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExample" role="button" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExample" role="button" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </a>
-        </div>
+            <div class="carousel-inner">
+              <?php foreach ($getSilderData['data']['settings']['images'] as $i => $img): ?>
+                <div class="carousel-item <?= $i === 0 ? 'active' : ''; ?>">
+                  <img class="d-block w-100" src="http://localhost:9090/<?= BASE_URL ?>public/uploads/layout/<?= $img ?>" loading="lazy" decoding="async" alt="First slide" />
+                </div>
+              <?php endforeach; ?>
 
-      </div>
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExample" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExample" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>
+        </div>
+      <?php endif; ?>
 
 
 
@@ -133,7 +125,7 @@ foreach ($getAllActivityes as $activity) {
         <div class="card">
           <div class="d-flex align-items-start row">
             <div class="col-sm-7">
-              <div class="card-body">
+              <div class="card-body p-0 p-md-4">
                 <div class="card overflow-hidden" style="max-height: 500px">
                   <div class="d-flex justify-content-between align-items-center gap-3 px-5 shadow-lg">
                     <h5 class="card-title fs-3 text-primary mb-3">Congratulations John! 🎉</h5>
@@ -141,7 +133,7 @@ foreach ($getAllActivityes as $activity) {
                     <a href="javascript:;" data-bs-toggle="modal"
                       data-bs-target="#addGoalsModal" class="btn btn-warning my-3">Add Goles</a>
                   </div>
-                  <div class="card-body" id="vertical-example">
+                  <div class="card-body p-1 m-md-4" id="vertical-example">
 
 
 
@@ -167,11 +159,14 @@ foreach ($getAllActivityes as $activity) {
                               class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
                               data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
-                                marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
-                                soufflé. Wafer gummi bears marshmallow pastry pie.
+                                <?php if ($gols['activity_description']): ?>
+                                  <?= $gols['activity_description']; ?>
+                                <?php else: ?>
+                                  <div class="alert alert-dark mt-5" role="alert">Description will add soon.</div>
+                                <?php endif; ?>
                               </div>
                             </div>
+
                           </div>
                         <?php endforeach; ?>
                       </div>
@@ -272,27 +267,27 @@ foreach ($getAllActivityes as $activity) {
                     aria-label="Close"></button>
                 </div>
                 <div style="text-align: center; font-size: 20px;" class="modal-body">
-                  Are You Sure  , You Want to delete Activity
+                  Are You Sure , You Want to delete Activity
                 </div>
-                <div style="display: flex; align-items: center; justify-content: center; column-gap: 2rem;"  class="">
+                <div style="display: flex; align-items: center; justify-content: center; column-gap: 2rem;" class="">
                   <button
-                  onclick="deleteUserActivity()"
+                    onclick="deleteUserActivity()"
                     class="btn btn-danger"
                     data-bs-toggle="modal"
                     data-bs-dismiss="modal">
                     Delete
-                    
+
                   </button>
 
                   <button
                     class="btn btn-primary "
-                  
+
                     data-bs-toggle="modal"
                     data-bs-dismiss="modal">
                     Cancel
                   </button>
 
-                 
+
                 </div>
               </div>
             </div>
@@ -441,9 +436,11 @@ foreach ($getAllActivityes as $activity) {
                           class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
                           data-bs-parent="#accordionUpdateGoals">
                           <div class="accordion-body">
-                            Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
-                            marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
-                            soufflé. Wafer gummi bears marshmallow pastry pie.
+                            <?php if ($activity['activity_description']): ?>
+                              <?= $activity['activity_description'] ?>
+                            <?php else: ?>
+                              <div class="alert alert-dark mt-5" role="alert">Description will add soon.</div>
+                            <?php endif; ?>
                           </div>
                         </div>
                       </div>
@@ -740,11 +737,11 @@ foreach ($getAllActivityes as $activity) {
 
         alert("actvity successfully added")
         window.location.reload()
-        console.log( "activity" , result);
+        console.log("activity", result);
 
       } catch (error) {
 
-        console.log("error" , error)
+        console.log("error", error)
 
       }
 
