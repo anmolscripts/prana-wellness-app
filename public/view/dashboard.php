@@ -733,11 +733,18 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
           })
         })
 
-        result = await result.json()
-
-        alert("actvity successfully added")
+         alert("actvity successfully added")
         window.location.reload()
+<<<<<<< HEAD
         console.log("activity", result);
+=======
+//  console.log( "activity" , result);
+//    alert("actvity successfully added")
+//         result = await result.json()
+
+       
+//         console.log( "activity" , result);
+>>>>>>> 9a994e16c6f221ed4ae8fec42ef33668f3620f1f
 
       } catch (error) {
 
