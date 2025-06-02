@@ -31,117 +31,6 @@ requireLogin();
                         <div class="error"></div>
                     </div>
 
-                    <!-- <form id="notificationTable" action="">
-
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-nowrap">Type</th>
-                                                        <th class="text-nowrap text-center">Email</th>
-                                                        <th class="text-nowrap text-center">In Prana Website Account</th>
-                                                        <th class="text-nowrap text-center">Push Notification</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-nowrap text-heading">Miss Daily Goals</td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck1" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck2" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck3" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-nowrap text-heading">Remainder for daily Goals</td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck4" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck5" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck6" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-nowrap text-heading">New Activity Added</td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck7" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck8" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck9" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-nowrap text-heading">Newslatter</td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck10" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck11" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check mb-0 d-flex justify-content-center align-items-center">
-                                                                <input class="form-check-input" type="checkbox" id="defaultCheck12" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-
-
-                                        <div class="card-body">
-                                            <h6 class="text-body mb-6">When should we send you notifications?</h6>
-
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <select id="sendNotification" class="form-select" name="sendNotification">
-                                                        <option value="online" selected>Only when I'm online</option>
-                                                        <option value="anytime">Anytime</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mt-6">
-                                                    <button type="submit" class="btn btn-primary me-3">Save changes</button>
-                                                    <button type="reset" class="btn btn-outline-secondary">Discard</button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </form> -->
-
                     <form id="notificationTable" action="">
                         <div class="table-responsive">
                             <table class="table">
@@ -264,20 +153,12 @@ requireLogin();
             </div>
         </div>
     </div>
-    <!-- / Content -->
+</div>
+<!-- / Content -->
+<?php include_once '../layout/footer.php'; ?>
 
 
-    <div class="content-backdrop fade"></div>
-</div>
-<!-- Content wrapper -->
-</div>
-<!-- / Layout page -->
-</div>
 
-<!-- Overlay -->
-<div class="layout-overlay layout-menu-toggle"></div>
-</div>
-<!-- / Layout wrapper -->
 
 
 
@@ -304,76 +185,6 @@ requireLogin();
 
 <!-- Place this tag before closing body tag for github widget button. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-
-<!-- <script>
-       form.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    // Grouped object
-    const groupedData = {};
-
-    checkboxes.forEach(cb => {
-        const notificationId = cb.getAttribute("notification-id");
-        const type = cb.getAttribute("data-type");
-        const position = cb.getAttribute("data-position");
-        const value = cb.checked;
-
-        if (!groupedData[notificationId]) {
-            groupedData[notificationId] = {
-                notificationId,
-                type,
-                positions: []
-            };
-        }
-
-        groupedData[notificationId].positions.push({
-            position,
-            value
-        });
-    });
-
-    const selectedData = Object.values(groupedData);
-    const notificationPreference = document.getElementById("sendNotification").value;
-
-    const finalPayload = {
-        notifications: selectedData,
-        preference: notificationPreference
-    };
-
-    console.log("Sending to API:", finalPayload);
-
-    const session = <?php echo json_encode($_SESSION['user']); ?>;
-    let userEmail = session.email;
-    let userId = session.id;
-
-    // ✅ Send API Call using Fetch
-    fetch("../api/auth/notificationSettings.php", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            email: userEmail,
-            userId: userId,
-            finalPayload: JSON.stringify(finalPayload)
-        })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.json();
-    })
-    .then(data => {
-        console.log("Success:", data);
-        alert("Settings saved successfully!");
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("Failed to save settings.");
-    });
-});
-
-    </script> -->
 
 
 <script>
@@ -528,9 +339,3 @@ requireLogin();
 
     notificationData()
 </script>
-
-
-
-</body>
-
-</html>

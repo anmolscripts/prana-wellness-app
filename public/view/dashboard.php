@@ -414,7 +414,7 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                 <?php if (!empty($getAllActivityes)): ?>
                   <div class="accordion" id="accordionUpdateGoals">
                     <?php foreach ($getAllActivityes as $index => $activity): ?>
-                      <div class="accordion-item shadow-lg <?= $index == 0 ? 'active' : ''; ?>">
+                      <div class="accordion-item goals-item shadow-lg <?= $index == 0 ? 'active' : ''; ?>">
                         <h2 class="accordion-header" id="headi  ng<?= $activity['activity_id']; ?>">
 
                           <button
@@ -424,9 +424,11 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                             data-bs-target="#accordian<?= $activity['activity_id']; ?>"
                             aria-expanded="true"
                             aria-controls="accordian<?= $activity['activity_id']; ?>">
-                            <div class="form-check col-12">
-                              <input class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
-                              <?= $activity['activity_name'] ?>
+                            <div class="row">
+                              <div class="form-check col-12">
+                                <input onclick="handelCheckboxClick(this);" class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
+                                <?= $activity['activity_name'] ?>
+                              </div>
                             </div>
                           </button>
                         </h2>
@@ -436,6 +438,11 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                           class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
                           data-bs-parent="#accordionUpdateGoals">
                           <div class="accordion-body">
+                            <div class="form-check form-switch mb-2">
+                              <input class="form-check-input notification-check" type="checkbox" id="flexSwitchCheckChecked" checked="">
+                              <label class="form-check-label" for="flexSwitchCheckChecked">Send Notification</label>
+                            </div>
+                            <hr>
                             <?php if ($activity['activity_description']): ?>
                               <?= $activity['activity_description'] ?>
                             <?php else: ?>
@@ -543,144 +550,145 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
   </div>
   <!-- / Content -->
+</div>
 
 
-  <?php include_once '../layout/footer.php'; ?>
-
-
-
-  <script src="public/assets/js/extended-ui-perfect-scrollbar.js"></script>
-
-  <script>
-    const logout = () => {
-      fetch('api/auth/logout.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
-          },
-        })
-        .then(response => response.json()) // or response.text() if PHP returns plain text
-        .then(data => {
-          // console.log('Success:', data);
-          window.location.href = '/prana-wellness-app'; // Redirect to index.php after logout
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
-
-    // fetch Activities
-    const select = document.getElementById('activitySelect');
-    const timeOptionContainer = document.getElementById("timeOptionContainer")
-    const yesNoBox = document.getElementById("yesNoBox")
-    const addActivityBtn = document.getElementById("addActivity")
-
-    const activityTime = document.getElementById("minTime")
-
-    let allactivityNames = "";
-
-    const fetchAllActvity = async () => {
-
-      try {
-        let allActvity = await fetch("api/activities/get.php")
-        allActvity = await allActvity.json()
-
-        allActvity = allActvity.activity
-        allactivityNames = allActvity
-
-
-        let options = '';
-        allActvity.map(activity => {
-          options += `<option type = "${activity.type}"  value="${activity.id}">${activity.name}</option>`;
-        });
-
-        select.innerHTML += options;
-      } catch (error) {
-
-        console.log("error", error)
-
-      }
-    }
-
-    fetchAllActvity()
+<?php include_once '../layout/footer.php'; ?>
 
 
 
-    select.addEventListener("change", () => {
+<script src="public/assets/js/extended-ui-perfect-scrollbar.js"></script>
+
+<script>
+  const logout = () => {
+    fetch('api/auth/logout.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
+        },
+      })
+      .then(response => response.json()) // or response.text() if PHP returns plain text
+      .then(data => {
+        // console.log('Success:', data);
+        window.location.href = '/prana-wellness-app'; // Redirect to index.php after logout
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+  // fetch Activities
+  const select = document.getElementById('activitySelect');
+  const timeOptionContainer = document.getElementById("timeOptionContainer")
+  const yesNoBox = document.getElementById("yesNoBox")
+  const addActivityBtn = document.getElementById("addActivity")
+
+  const activityTime = document.getElementById("minTime")
+
+  let allactivityNames = "";
+
+  const fetchAllActvity = async () => {
+
+    try {
+      let allActvity = await fetch("api/activities/get.php")
+      allActvity = await allActvity.json()
+
+      allActvity = allActvity.activity
+      allactivityNames = allActvity
 
 
+      let options = '';
+      allActvity.map(activity => {
+        options += `<option type = "${activity.type}"  value="${activity.id}">${activity.name}</option>`;
+      });
 
-      actvityAditionOnModal()
+      select.innerHTML += options;
+    } catch (error) {
 
-    });
-
-    const actvityAditionOnModal = () => {
-      let selectedOption = select.options[select.selectedIndex];
-      let type = selectedOption.getAttribute('type');
-      let selectedOptionValue = selectedOption.value
-      debugger;
-      if (selectedOptionValue != "none") {
-        if (type == "time") {
-          timeOptionContainer.style.display = "block"
-          yesNoBox.style.display = "none"
-          addActivityBtn.style.display = "block"
-
-        } else {
-          yesNoBox.style.display = "block"
-          timeOptionContainer.style.display = "none"
-          addActivityBtn.style.display = "block"
-
-        }
-      } else {
-        timeOptionContainer.style.display = "none"
-        yesNoBox.style.display = "none"
-        addActivityBtn.style.display = "none"
-
-      }
+      console.log("error", error)
 
     }
+  }
 
-    const userAddedActivity = document.getElementById("userAddedActivity")
-    const addActivity = () => {
-
-      let selectedOption = select.options[select.selectedIndex];
-      let selectedOptionValue = selectedOption.value
-      if (selectedOptionValue == "none") {
-        return
-
-      }
+  fetchAllActvity()
 
 
 
+  select.addEventListener("change", () => {
 
-      const activityYesNo = document.getElementById("status").value
-      let type = selectedOption.getAttribute('type');
-      let activityName = selectedOption.innerHTML;
-      let activityId = selectedOption.value;
 
-      let activityTypeValue = ""
-      let activitydata
-      let actvityType = ""
 
+    actvityAditionOnModal()
+
+  });
+
+  const actvityAditionOnModal = () => {
+    let selectedOption = select.options[select.selectedIndex];
+    let type = selectedOption.getAttribute('type');
+    let selectedOptionValue = selectedOption.value
+    debugger;
+    if (selectedOptionValue != "none") {
       if (type == "time") {
-        if (activityTime.value < 0 || activityTime.value == null || activityTime.value == "") {
-          alert("Please enter activity duration")
-          return
-        }
+        timeOptionContainer.style.display = "block"
+        yesNoBox.style.display = "none"
+        addActivityBtn.style.display = "block"
 
-
-        let value = activityTime.value
-        activityTypeValue = `<input type="text"   activity-id="${activityId}" class="form-control me-2"  value="${value}" readonly />`
-        activitydata = value
-        actvityType = "time"
       } else {
+        yesNoBox.style.display = "block"
+        timeOptionContainer.style.display = "none"
+        addActivityBtn.style.display = "block"
 
-        activityTypeValue = `<input type="text"  activity-id="${activityId}" value="${activityYesNo}" class="form-control me-2" readonly />`;
-        activitydata = activityYesNo
-        actvityType = "boolean"
+      }
+    } else {
+      timeOptionContainer.style.display = "none"
+      yesNoBox.style.display = "none"
+      addActivityBtn.style.display = "none"
+
+    }
+
+  }
+
+  const userAddedActivity = document.getElementById("userAddedActivity")
+  const addActivity = () => {
+
+    let selectedOption = select.options[select.selectedIndex];
+    let selectedOptionValue = selectedOption.value
+    if (selectedOptionValue == "none") {
+      return
+
+    }
+
+
+
+
+    const activityYesNo = document.getElementById("status").value
+    let type = selectedOption.getAttribute('type');
+    let activityName = selectedOption.innerHTML;
+    let activityId = selectedOption.value;
+
+    let activityTypeValue = ""
+    let activitydata
+    let actvityType = ""
+
+    if (type == "time") {
+      if (activityTime.value < 0 || activityTime.value == null || activityTime.value == "") {
+        alert("Please enter activity duration")
+        return
       }
 
-      userAddedActivity.innerHTML += `
+
+      let value = activityTime.value
+      activityTypeValue = `<input type="text"   activity-id="${activityId}" class="form-control me-2"  value="${value}" readonly />`
+      activitydata = value
+      actvityType = "time"
+    } else {
+
+      activityTypeValue = `<input type="text"  activity-id="${activityId}" value="${activityYesNo}" class="form-control me-2" readonly />`;
+      activitydata = activityYesNo
+      actvityType = "boolean"
+    }
+
+    userAddedActivity.innerHTML += `
   <div data-activityId = "${activityId}" class="row w-100 mb-2">
   <div class="col-9">
     <input  type="text" activity-type = "${actvityType}" data-activity = "${activitydata}" id="${activityId}" value="${activityName}" class="form-control  me-2 userAddedActivities" readonly /> 
@@ -698,276 +706,268 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
   </div>`;
 
 
-      const valueToRemove = activityId; // replace with the value you want to remove
+    const valueToRemove = activityId; // replace with the value you want to remove
 
-      const optionToRemove = Array.from(select.options).find(option => option.value === valueToRemove);
+    const optionToRemove = Array.from(select.options).find(option => option.value === valueToRemove);
 
-      if (optionToRemove) {
-        select.removeChild(optionToRemove);
-      }
+    if (optionToRemove) {
+      select.removeChild(optionToRemove);
+    }
 
-      timeOptionContainer.style.display = "none"
-      yesNoBox.style.display = "none"
+    timeOptionContainer.style.display = "none"
+    yesNoBox.style.display = "none"
+
+  }
+
+  const activitySubmit = async () => {
+    const inputs = document.querySelectorAll('input.userAddedActivities');
+    const session = <?php echo json_encode($_SESSION['user']); ?>;
+    const userAddedActivity = Array.from(inputs).map(input => ({
+      activity: input.getAttribute('data-activity'),
+      id: input.id,
+      value: input.value,
+      userId: session.id,
+    }));
+
+    try {
+      let result = await fetch("api/activities/addUser.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          userAddedActivity: JSON.stringify(userAddedActivity)
+
+        })
+      })
+
+      alert("actvity successfully added")
+      window.location.reload()
+      console.log("activity", result);
+
+    } catch (error) {
+
+      console.log("error", error)
 
     }
 
-    const activitySubmit = async () => {
-      const inputs = document.querySelectorAll('input.userAddedActivities');
-      const session = <?php echo json_encode($_SESSION['user']); ?>;
-      const userAddedActivity = Array.from(inputs).map(input => ({
-        activity: input.getAttribute('data-activity'),
-        id: input.id,
-        value: input.value,
-        userId: session.id,
-      }));
 
-      try {
-        let result = await fetch("api/activities/addUser.php", {
+  }
+
+
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('.minusBtn')) {
+      const icon = e.target;
+      const activityId = icon.getAttribute('activityId');
+      const parentDiv = document.querySelector(`[data-activityId="${activityId}"]`);
+      if (parentDiv) {
+
+        // console.log(parentDiv)
+
+        const activityId = parentDiv.getAttribute('data-activityId');
+        const input = document.getElementById(activityId);
+        const activityType = input.getAttribute('activity-type');
+        const id = input.id;
+        const value = input.value;
+        // console.log(input)
+
+        let options = `<option type = "${activityType}"  value="${id}">${value}</option>`
+        select.innerHTML += options;
+
+        parentDiv.remove();
+        console.log(`Removed div with activityId: ${activityId}`);
+      } else {
+        console.log(`No matching div found for activityId: ${activityId}`);
+      }
+    }
+  });
+
+
+  const userId = <?php echo json_encode($_SESSION['user']); ?>;
+
+  const activities = {
+
+    getAll: () => {
+      fetch('api/activities/userAddedActivity.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: new URLSearchParams({
-            userAddedActivity: JSON.stringify(userAddedActivity)
 
+          body: new URLSearchParams({
+            userId: userId.id
           })
         })
-
-         alert("actvity successfully added")
-        window.location.reload()
-<<<<<<< HEAD
-        console.log("activity", result);
-=======
-//  console.log( "activity" , result);
-//    alert("actvity successfully added")
-//         result = await result.json()
-
-       
-//         console.log( "activity" , result);
->>>>>>> 9a994e16c6f221ed4ae8fec42ef33668f3620f1f
-
-      } catch (error) {
-
-        console.log("error", error)
-
-      }
-
-
-    }
-
-
-    document.addEventListener('click', function(e) {
-      if (e.target.matches('.minusBtn')) {
-        const icon = e.target;
-        const activityId = icon.getAttribute('activityId');
-        const parentDiv = document.querySelector(`[data-activityId="${activityId}"]`);
-        if (parentDiv) {
-
-          // console.log(parentDiv)
-
-          const activityId = parentDiv.getAttribute('data-activityId');
-          const input = document.getElementById(activityId);
-          const activityType = input.getAttribute('activity-type');
-          const id = input.id;
-          const value = input.value;
-          // console.log(input)
-
-          let options = `<option type = "${activityType}"  value="${id}">${value}</option>`
-          select.innerHTML += options;
-
-          parentDiv.remove();
-          console.log(`Removed div with activityId: ${activityId}`);
-        } else {
-          console.log(`No matching div found for activityId: ${activityId}`);
-        }
-      }
-    });
-
-
-    const userId = <?php echo json_encode($_SESSION['user']); ?>;
-
-    const activities = {
-
-      getAll: () => {
-        fetch('api/activities/userAddedActivity.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-
-            body: new URLSearchParams({
-              userId: userId.id
-            })
-          })
-          .then(response => response.json())
-          .then(data => {
+        .then(response => response.json())
+        .then(data => {
 
 
 
-            userSavedActivity = data.activity
+          userSavedActivity = data.activity
 
-            const merged = userSavedActivity.map(itemB => {
-              const match = allactivityNames.find(itemA => itemA.id == itemB.activity_id);
-              return {
-                ...itemB,
-                name: match ? match.name : null,
-                type: match ? match.type : null
-
-
-              };
-            });
+          const merged = userSavedActivity.map(itemB => {
+            const match = allactivityNames.find(itemA => itemA.id == itemB.activity_id);
+            return {
+              ...itemB,
+              name: match ? match.name : null,
+              type: match ? match.type : null
 
 
-            // console.log(merged , "merged")
-
-            if (data.success) {
-              bindActivitys(merged, document.getElementById('actiityTbody'));
-              const aleart = aleartContainer.querySelector('[role="alert"]');
-              aleart.innerText = 'Activity added successfully!';
-              aleartContainer.classList.remove('d-none');
-              // location.reload();
-            } else {
-
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-
+            };
           });
-      }
-    }
 
 
 
-    let activity_id_delete = ""
-    document.addEventListener("click", function(e) {
-      const deleteBtn = e.target.closest("button[activity-id]");
+          if (data.success) {
+            bindActivitys(merged, document.getElementById('actiityTbody'));
+            const aleart = aleartContainer.querySelector('[role="alert"]');
+            aleart.innerText = 'Activity added successfully!';
+            aleartContainer.classList.remove('d-none');
+            // location.reload();
+          } else {
 
-      if (deleteBtn) {
-        activity_id_delete = deleteBtn.getAttribute("activity-id");
-
-        // deleteUserActivity(activityId);
-      }
-    });
-
-    const deleteUserActivity = async () => {
-
-      if (activity_id_delete == "") {
-        alert("something went wrong")
-        return;
-      }
-
-      try {
-        let result = await fetch("api/activities/deleteUserActivity.php", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            userId: userId.id,
-            activityId: activity_id_delete
-
-          })
-        })
-
-        result = await result.json()
-        console.log(result);
-        window.location.reload()
-
-
-      } catch (error) {
-
-      }
-
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize DataTable
-      activities.getAll();
-    });
-  </script>
-
-
-
-  <!-- activity uses -->
-  <script>
-    console.log('testing', <?= json_encode($getActivityUsageData) ?>);
-    const getActivityUsageData = <?php echo json_encode($getActivityUsageData); ?>;
-    var options = {
-      chart: {
-        type: 'donut',
-        height: 350
-      },
-      series: getActivityUsageData.data,
-      labels: getActivityUsageData.labels,
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 300
-          },
-          legend: {
-            position: 'bottom'
           }
-        }
-      }],
-      legend: {
-        show: false
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
-    chart.render();
-  </script>
-
-
-  <script>
-    const displayNone = (element, time) => {
-      setTimeout(() => {
-        element.classList.add("d-none");
-      }, time);
-    };
-    const updateGoals = async () => {
-
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].goalsCheckbox');
-      const aleartContainer = document.getElementById("aleartContainer");
-
-      const selectedGoals = Array.from(checkboxes)
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.value);
-      console.log(JSON.stringify(selectedGoals));
-
-      const session = <?= json_encode($_SESSION['user']); ?>;
-
-      try {
-        let result = await fetch("api/activities/updateGoals.php", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            user_id: session.id,
-            goals: JSON.stringify(selectedGoals)
-          })
         })
+        .catch(error => {
+          console.error('Error:', error);
 
-        result = await result.json();
-        if (result.success) {
-          const aleart = aleartContainer.querySelector('[role="alert"]');
-          aleart.classList.remove("alert-danger");
-          aleart.classList.add("alert-primary");
-          aleart.innerText = "Goals Updated successfully!";
-          aleartContainer.classList.remove("d-none");
-          displayNone(aleartContainer, 2000);
-          location.reload();
-        }
-
-
-        // alert(result.message);
-        // window.location.reload()
-
-      } catch (error) {
-
-      }
+        });
     }
-  </script>
+  }
+
+
+
+  let activity_id_delete = ""
+  document.addEventListener("click", function(e) {
+    const deleteBtn = e.target.closest("button[activity-id]");
+
+    if (deleteBtn) {
+      activity_id_delete = deleteBtn.getAttribute("activity-id");
+    }
+  });
+
+  const deleteUserActivity = async () => {
+
+    if (activity_id_delete == "") {
+      alert("something went wrong")
+      return;
+    }
+
+    try {
+      let result = await fetch("api/activities/deleteUserActivity.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          userId: userId.id,
+          activityId: activity_id_delete
+
+        })
+      })
+
+      result = await result.json()
+      console.log(result);
+      window.location.reload()
+
+
+    } catch (error) {
+
+    }
+
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize DataTable
+    activities.getAll();
+  });
+</script>
+
+
+
+<!-- activity uses -->
+<script>
+  console.log('testing', <?= json_encode($getActivityUsageData) ?>);
+  const getActivityUsageData = <?php echo json_encode($getActivityUsageData); ?>;
+  var options = {
+    chart: {
+      type: 'donut',
+      height: 350
+    },
+    series: getActivityUsageData.data,
+    labels: getActivityUsageData.labels,
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 300
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }],
+    legend: {
+      show: false
+    }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
+  chart.render();
+</script>
+
+
+<script>
+  const displayNone = (element, time) => {
+    setTimeout(() => {
+      element.classList.add("d-none");
+    }, time);
+  };
+  const updateGoals = async () => {
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"].goalsCheckbox');
+    const aleartContainer = document.getElementById("aleartContainer");
+
+    const selectedGoals = Array.from(checkboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+    console.log(JSON.stringify(selectedGoals));
+
+    const session = <?= json_encode($_SESSION['user']); ?>;
+
+    try {
+      let result = await fetch("api/activities/updateGoals.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          user_id: session.id,
+          goals: JSON.stringify(selectedGoals)
+        })
+      })
+
+      result = await result.json();
+      if (result.success) {
+        const aleart = aleartContainer.querySelector('[role="alert"]');
+        aleart.classList.remove("alert-danger");
+        aleart.classList.add("alert-primary");
+        aleart.innerText = "Goals Updated successfully!";
+        aleartContainer.classList.remove("d-none");
+        displayNone(aleartContainer, 2000);
+        location.reload();
+      }
+    } catch (error) {
+
+    }
+  }
+
+  const handelCheckboxClick = (check) => {
+    const accordian = check.closest('.goals-item');
+    debugger;
+    const notify = accordian.querySelector('.notification-check');
+    if(notify) {
+      check.checked ? notify.checked = true : notify.checked = false;
+    }
+  }
+</script>
