@@ -33,11 +33,11 @@ foreach ($getAllActivityes as $activity) {
     array_push($userGoals, $activity);
   }
 }
-$getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/layout/get.php");
+$getSilderData = fetchLayoutData('homepage_carousel', "http://localhost/prana-wellness-app/api/layout/get.php");
 ?>
 
 <script>
-  console.log('getSilderData', <?php echo json_encode($getSilderData); ?>)
+  console.log('$getActivityUsageStats', <?php echo json_encode($getActivityUsageStats); ?>)
 </script>
 <style>
   .alert-container {
@@ -86,22 +86,19 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
       <?php if ($getSilderData['success'] && isset($getSilderData['data']) && $getSilderData['data']['is_active']): ?>
         <div class="col-xxl-12 mb-6">
-          <div id="carouselExample" class="carousel slide rounded-3 shadow-lg overflow-hidden slider-height" data-bs-ride="carousel">
+          <div id="carouselExample" class="carousel slide rounded-3 shadow-lg overflow-hidden slider-height"
+            data-bs-ride="carousel">
             <div class="carousel-indicators">
               <?php foreach ($getSilderData['data']['settings']['images'] as $i => $img): ?>
-                <button
-                  type="button"
-                  data-bs-target="#carouselExample"
-                  data-bs-slide-to="<?= $i ?>"
-                  class="<?= $i === 0 ? 'active' : ''; ?>"
-                  aria-current="true"
-                  aria-label="Slide <?= $i ?>"></button>
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="<?= $i ?>"
+                  class="<?= $i === 0 ? 'active' : ''; ?>" aria-current="true" aria-label="Slide <?= $i ?>"></button>
               <?php endforeach; ?>
             </div>
             <div class="carousel-inner">
               <?php foreach ($getSilderData['data']['settings']['images'] as $i => $img): ?>
                 <div class="carousel-item <?= $i === 0 ? 'active' : ''; ?>">
-                  <img class="d-block w-100" src="http://localhost:9090/<?= BASE_URL ?>public/uploads/layout/<?= $img ?>" loading="lazy" decoding="async" alt="First slide" />
+                  <img class="d-block w-100" src="<?= BASE_URL ?>public/uploads/layout/<?= $img ?>" loading="lazy"
+                    decoding="async" alt="First slide" />
                 </div>
               <?php endforeach; ?>
 
@@ -130,8 +127,8 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                   <div class="d-flex justify-content-between align-items-center gap-3 px-5 shadow-lg">
                     <h5 class="card-title fs-3 text-primary mb-3">Congratulations John! 🎉</h5>
 
-                    <a href="javascript:;" data-bs-toggle="modal"
-                      data-bs-target="#addGoalsModal" class="btn btn-warning my-3">Add Goles</a>
+                    <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addGoalsModal"
+                      class="btn btn-warning my-3">Add Goles</a>
                   </div>
                   <div class="card-body p-1 m-md-4" id="vertical-example">
 
@@ -143,19 +140,14 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                         <?php foreach ($userGoals as $index => $gols): ?>
                           <div class="accordion-item shadow-lg <?= $index == 0 ? 'active' : ''; ?>">
                             <h2 class="accordion-header" id="heading<?= $gols['activity_id']; ?>">
-                              <button
-                                type="button"
-                                class="accordion-button bg-primary text-white"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#accordian<?= $gols['activity_id']; ?>"
-                                aria-expanded="true"
+                              <button type="button" class="accordion-button bg-primary text-white" data-bs-toggle="collapse"
+                                data-bs-target="#accordian<?= $gols['activity_id']; ?>" aria-expanded="true"
                                 aria-controls="accordian<?= $gols['activity_id']; ?>">
                                 <?= $gols['activity_name']; ?>
                               </button>
                             </h2>
 
-                            <div
-                              id="accordian<?= $gols['activity_id']; ?>"
+                            <div id="accordian<?= $gols['activity_id']; ?>"
                               class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
                               data-bs-parent="#accordionExample">
                               <div class="accordion-body">
@@ -182,8 +174,7 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
             </div>
             <div class="col-sm-5 text-center text-sm-left align-self-center">
               <div class="card-body pb-0 px-0 px-md-6">
-                <img src="public/assets/img/illustrations/yoga.png" class="w-100 h-auto"
-                  alt="View Badge User" />
+                <img src="public/assets/img/illustrations/yoga.png" class="w-100 h-auto" alt="View Badge User" />
               </div>
             </div>
           </div>
@@ -193,7 +184,7 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
       <!-- my activity -->
 
-      <div class="col-xxl-12 mb-6 order-0">
+      <div id="activityContainer" class="col-xxl-12 mb-6 order-0">
         <div class="card">
           <div class="d-flex justify-content-between align-items-center pe-5">
             <h5 class="card-header">Activities Table</h5>
@@ -249,41 +240,25 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                             </button> -->
 
           <!-- Modal 1-->
-          <div
-            class="modal fade"
-            id="modalToggle"
-            aria-labelledby="modalToggleLabel"
-            tabindex="-1"
-            style="display: none"
-            aria-hidden="true">
+          <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1"
+            style="display: none" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div style="padding: 2rem;" class="modal-content">
                 <div class="modal-header">
 
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div style="text-align: center; font-size: 20px;" class="modal-body">
                   Are You Sure , You Want to delete Activity
                 </div>
                 <div style="display: flex; align-items: center; justify-content: center; column-gap: 2rem;" class="">
-                  <button
-                    onclick="deleteUserActivity()"
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
+                  <button onclick="deleteUserActivity()" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-dismiss="modal">
                     Delete
 
                   </button>
 
-                  <button
-                    class="btn btn-primary "
-
-                    data-bs-toggle="modal"
-                    data-bs-dismiss="modal">
+                  <button class="btn btn-primary " data-bs-toggle="modal" data-bs-dismiss="modal">
                     Cancel
                   </button>
 
@@ -293,30 +268,19 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
             </div>
           </div>
           <!-- Modal 2-->
-          <div
-            class="modal fade"
-            id="modalToggle2"
-            aria-hidden="true"
-            aria-labelledby="modalToggleLabel2"
+          <div class="modal fade" id="modalToggle2" aria-hidden="true" aria-labelledby="modalToggleLabel2"
             tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="modalToggleLabel2">Modal 2</h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   Hide this modal and show the first with the button below.
                 </div>
                 <div class="modal-footer">
-                  <button
-                    class="btn btn-primary"
-                    data-bs-target="#modalToggle"
-                    data-bs-toggle="modal"
+                  <button class="btn btn-primary" data-bs-target="#modalToggle" data-bs-toggle="modal"
                     data-bs-dismiss="modal">
                     Back to first
                   </button>
@@ -363,6 +327,13 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                   <div class="">
                     <label for="minTime" class="form-label">Time Duration</label>
                     <input type="number" id="minTime" class="form-control" placeholder="Enter Time Duration" />
+                  </div>
+                </div>
+
+                <div class="w-25" id="timeOptionContainer">
+                  <div class="">
+                    <label for="minTime" class="form-label">Date</label>
+                    <input type="date" id="minTime" class="form-control" placeholder="Enter Time Duration" />
                   </div>
                 </div>
 
@@ -417,29 +388,27 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
                       <div class="accordion-item goals-item shadow-lg <?= $index == 0 ? 'active' : ''; ?>">
                         <h2 class="accordion-header" id="headi  ng<?= $activity['activity_id']; ?>">
 
-                          <button
-                            type="button"
-                            class="accordion-button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#accordian<?= $activity['activity_id']; ?>"
-                            aria-expanded="true"
+                          <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                            data-bs-target="#accordian<?= $activity['activity_id']; ?>" aria-expanded="true"
                             aria-controls="accordian<?= $activity['activity_id']; ?>">
                             <div class="row">
                               <div class="form-check col-12">
-                                <input onclick="handelCheckboxClick(this);" class="form-check-input goalsCheckbox" type="checkbox" value="<?= $activity['activity_id'] ?>" id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
+                                <input onclick="handelCheckboxClick(this);" class="form-check-input goalsCheckbox"
+                                  type="checkbox" value="<?= $activity['activity_id'] ?>"
+                                  id="checkBox<?= $activity['activity_id'] ?>" <?= $activity['is_goal_set'] ? 'checked' : '' ?>>
                                 <?= $activity['activity_name'] ?>
                               </div>
                             </div>
                           </button>
                         </h2>
 
-                        <div
-                          id="accordian<?= $activity['activity_id']; ?>"
+                        <div id="accordian<?= $activity['activity_id']; ?>"
                           class="accordion-collapse collapse <?= $index == 0 ? 'show' : ''; ?>"
                           data-bs-parent="#accordionUpdateGoals">
                           <div class="accordion-body">
                             <div class="form-check form-switch mb-2">
-                              <input class="form-check-input notification-check" type="checkbox" id="flexSwitchCheckChecked" checked="">
+                              <input class="form-check-input notification-check" type="checkbox" id="flexSwitchCheckChecked"
+                                checked="">
                               <label class="form-check-label" for="flexSwitchCheckChecked">Send Notification</label>
                             </div>
                             <hr>
@@ -479,63 +448,7 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
       <!-- delete pop up show -->
 
-      <!-- aactvitity histrory -->
-
-      <div cclass="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-5 ">
-        <div class="card">
-          <h3 class="fs-4 text-center">Activity Uses History</h3>
-          <div class="row g-0">
-
-
-            <div class="col-lg-8">
-              <div class="card-body">
-                <div class=" mt-0">
-
-                  <div class="card">
-                    <div id="activitesTable" class="table-responsive max-h-30 rounded-5">
-                      <table class="table table-dark table-borderless table-striped ">
-                        <thead class="position-sticky top-0 ">
-                          <tr>
-                            <th width="75px">S No.</th>
-                            <th>Activite</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">%</th>
-                          </tr>
-                        </thead>
-                        <tbody id="actiityTbody" class="table-border-bottom-0">
-
-                          <?php
-                          $activites = $getActivityUsageStats['activities'];
-                          if (!empty($activites)):
-                            foreach ($activites as $index => $activity):
-                          ?>
-                              <tr>
-                                <td><?php echo $index + 1; ?></td>
-                                <td><?php echo $activity['activity_name']; ?></td>
-                                <td class="text-center"> <span class="badge <?php echo $activity['activity_type'] == 'time' ? 'bg-label-warning' : 'bg-label-info'; ?> me-1"><?php echo strtoupper($activity['activity_type']); ?></span></td>
-                                <td>
-                                  <span class="badge rounded-pill bg-danger ms-auto fs-6"><?php echo $activity['percentage']; ?>%</span>
-                                </td>
-                              </tr>
-
-                          <?php endforeach;
-                          endif; ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 align-self-center">
-              <div class="card-body">
-                <div id="activityDonutChart"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      
 
       <!-- Total Revenue -->
 
@@ -559,24 +472,8 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
 <script src="public/assets/js/extended-ui-perfect-scrollbar.js"></script>
 
-<script>
-  const logout = () => {
-    fetch('api/auth/logout.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded', // or 'application/json' if you prefer
-        },
-      })
-      .then(response => response.json()) // or response.text() if PHP returns plain text
-      .then(data => {
-        // console.log('Success:', data);
-        window.location.href = '/prana-wellness-app'; // Redirect to index.php after logout
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }
 
+<script>
   // fetch Activities
   const select = document.getElementById('activitySelect');
   const timeOptionContainer = document.getElementById("timeOptionContainer")
@@ -755,7 +652,7 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
   }
 
 
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', function (e) {
     if (e.target.matches('.minusBtn')) {
       const icon = e.target;
       const activityId = icon.getAttribute('activityId');
@@ -788,44 +685,49 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
   const activities = {
 
     getAll: () => {
-      fetch('api/activities/userAddedActivity.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+      fetch('<?= BASE_URL ?>/api/activities/userAddedActivity.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
 
-          body: new URLSearchParams({
-            userId: userId.id
-          })
+        body: new URLSearchParams({
+          userId: userId.id
         })
+      })
         .then(response => response.json())
         .then(data => {
 
 
 
           userSavedActivity = data.activity
-
-          const merged = userSavedActivity.map(itemB => {
-            const match = allactivityNames.find(itemA => itemA.id == itemB.activity_id);
-            return {
-              ...itemB,
-              name: match ? match.name : null,
-              type: match ? match.type : null
-
-
-            };
-          });
+          let merged;
+          if (userSavedActivity) {
+            merged = userSavedActivity.map(itemB => {
+              const match = allactivityNames.find(itemA => itemA.id == itemB.activity_id);
+              return {
+                ...itemB,
+                name: match ? match.name : null,
+                type: match ? match.type : null
 
 
+              };
+            });
+          }
 
+
+          console.log('DATA', data);
           if (data.success) {
+            // document.getElementById('activityContainer').classList.remove('d-none');
             bindActivitys(merged, document.getElementById('actiityTbody'));
             const aleart = aleartContainer.querySelector('[role="alert"]');
             aleart.innerText = 'Activity added successfully!';
             aleartContainer.classList.remove('d-none');
             // location.reload();
           } else {
-
+            document.getElementById('actiityTbody').innerHTML = `
+<tr><td colspan="9"><div class="alert alert-danger mt-5" role="alert">Please add activity first</div></td></tr>
+`;
           }
         })
         .catch(error => {
@@ -838,7 +740,7 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
 
   let activity_id_delete = ""
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     const deleteBtn = e.target.closest("button[activity-id]");
 
     if (deleteBtn) {
@@ -877,44 +779,15 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
 
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // Initialize DataTable
     activities.getAll();
   });
-</script>
+</script> -->
 
 
 
-<!-- activity uses -->
-<script>
-  console.log('testing', <?= json_encode($getActivityUsageData) ?>);
-  const getActivityUsageData = <?php echo json_encode($getActivityUsageData); ?>;
-  var options = {
-    chart: {
-      type: 'donut',
-      height: 350
-    },
-    series: getActivityUsageData.data,
-    labels: getActivityUsageData.labels,
-    responsive: [{
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 300
-        },
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }],
-    legend: {
-      show: false
-    }
-  };
 
-  var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
-  chart.render();
-</script>
 
 
 <script>
@@ -966,8 +839,29 @@ $getSilderData = fetchLayoutData('homepage_carousel', get_base_url() . "/api/lay
     const accordian = check.closest('.goals-item');
     debugger;
     const notify = accordian.querySelector('.notification-check');
-    if(notify) {
+    if (notify) {
       check.checked ? notify.checked = true : notify.checked = false;
     }
   }
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const accordionButtons = document.querySelectorAll('#accordionExample .accordion-button');
+
+    accordionButtons.forEach(button => {
+      button.addEventListener('click', function (e) {
+        const targetId = button.getAttribute('data-bs-target');
+        const targetEl = document.querySelector(targetId);
+
+        // If already visible, prevent collapsing
+        if (targetEl.classList.contains('show')) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      });
+    });
+  });
 </script>

@@ -2,6 +2,7 @@
 
 define('BASE_URL', '/prana-wellness-app/');
 define('ADMIN_URL', '/prana-wellness-app/admin/');
+$user = $_SESSION['user'] ?? false;
 $admin = $_SESSION['user']['permission'] == 'admin' ? true : false;
 // $currentUrlPath = dirname($_SERVER['PHP_SELF']);
 
@@ -37,15 +38,16 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css" />
 
 
-    
+
 
     <!-- date picker -->
-     
+
     <script src="<?= $publicPath ?>/assets/vendor/js/helpers.js"></script>
     <script src="<?= $publicPath ?>/assets/js/config.js"></script>
 
     <style>
         body {
+            /*
             background: linear-gradient(45deg,
                     #f7fee7,
                     #f0fdf4,
@@ -57,6 +59,8 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                     #eef2ff,
                     #f5f3ff);
         }
+                    */
+                    background-color: #f1f5f9;
 
         .max-w-500px {
             width: 500px !important;
@@ -69,13 +73,14 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
             /* backdrop-filter: brightness(0.2); */
         }
 
-        .menu, .card {
-            background-color: rgba(255, 255, 255, 0.7);
+        .menu,
+        .card {
+            background-color: rgba(255, 255, 255, 1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            
 
-        } 
+
+        }
 
         .bg-blur-white {
             background-color: rgba(255, 255, 255, 0.8);
@@ -85,7 +90,7 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
 </head>
 
 <body>
-    
+
 
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -98,35 +103,40 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                 <div class="menu-divider mt-0"></div>
                 <div class="menu-inner-shadow"></div>
                 <ul class="menu-inner py-1">
-                    <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>dashboard"><a href="<?= $admin ? ADMIN_URL : '' ?>dashboard" class="menu-link"><i
+                    <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>dashboard"><a
+                            href="<?= $admin ? ADMIN_URL : '' ?>dashboard" class="menu-link"><i
                                 class="menu-icon tf-icons bx bx-home-smile"></i>
-                            <div class="text-truncate" data-i18n="Dashboards">Dashboards</div><span
-                                class="badge rounded-pill bg-danger ms-auto">5</span>
+                            <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
                         </a></li>
-                    <?php if ($admin) : ?>
-                        <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>activities"><a href="<?= $admin ? ADMIN_URL : '' ?>activities" class="menu-link"><i
-                                    class="menu-icon tf-icons bx bx-run"></i>
-                                <div class="text-truncate" data-i18n="Dashboards">Activities</div><span
-                                    class="badge rounded-pill bg-danger ms-auto">5</span>
-                            </a></li>
-                    <?php endif; ?>
-                    <?php if ($admin) : ?>
-                        <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>appearance"><a href="<?= $admin ? ADMIN_URL : '' ?>appearance" class="menu-link"><i
+
+                    <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>activities"><a
+                            href="<?= $admin ? ADMIN_URL : '' ?>activities" class="menu-link"><i
+                                class="menu-icon tf-icons bx bx-run"></i>
+                            <div class="text-truncate" data-i18n="Dashboards">Activities</div>
+                        </a></li>
+
+                    <?php if ($admin): ?>
+                        <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>appearance"><a
+                                href="<?= $admin ? ADMIN_URL : '' ?>appearance" class="menu-link"><i
                                     class="menu-icon tf-icons bx bx-layout"></i>
                                 <div class="text-truncate" data-i18n="Dashboards">Appearance</div><span
                                     class="badge rounded-pill bg-danger ms-auto">5</span>
                             </a></li>
                     <?php endif; ?>
 
-                    <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>account,<?= $admin ? 'admin/' : '' ?>notification"><a href="javascript:void(0);" class="menu-link menu-toggle"><i
+                    <li class="menu-item"
+                        data-aside="<?= $admin ? 'admin/' : '' ?>account,<?= $admin ? 'admin/' : '' ?>notification"><a
+                            href="javascript:void(0);" class="menu-link menu-toggle"><i
                                 class="menu-icon tf-icons bx bx-dock-top"></i>
                             <div class="text-truncate" data-i18n="Account Settings">Account Settings</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>account"><a href="<?= $admin ? ADMIN_URL : '' ?>account" class="menu-link">
+                            <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>account"><a
+                                    href="<?= $admin ? ADMIN_URL : '' ?>account" class="menu-link">
                                     <div class="text-truncate" data-i18n="Account">Account</div>
                                 </a></li>
-                            <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>notification"><a href="<?= $admin ? ADMIN_URL : '' ?>notification" class="menu-link">
+                            <li class="menu-item" data-aside="<?= $admin ? 'admin/' : '' ?>notification"><a
+                                    href="<?= $admin ? ADMIN_URL : '' ?>notification" class="menu-link">
                                     <div class="text-truncate" data-i18n="Notifications">Notifications</div>
                                 </a></li>
                         </ul>
@@ -134,28 +144,24 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                 </ul>
             </aside>
             <div class="layout-page">
-                <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+                <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme ps-3 pe-2"
                     id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none"><a
                             class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)"><i
                                 class="icon-base bx bx-menu icon-md"></i></a></div>
                     <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
                         <div class="navbar-nav align-items-center me-auto">
-                            <div class="nav-item d-flex align-items-center"><span class="w-px-22 h-px-22"><i
-                                        class="icon-base bx bx-search icon-md"></i></span><input type="text"
-                                    class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none"
-                                    placeholder="Search..." aria-label="Search..." /></div>
+                            <div class="nav-item d-flex align-items-center">
+                                <h2 class="fs-4 text-warning m-0">PRANTHON</h2>
+                            </div>
                         </div>
-                        <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                            <li class="nav-item lh-1 me-4"><a class="github-button"
-                                    href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
-                            </li>
+                        <ul class="navbar-nav flex-row align-items-center ms-md-auto gap-3 shadow-lg p-2 rounded-4">
+
                             <li class="nav-item navbar-dropdown dropdown-user dropdown"><a
                                     class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
-                                    <div class="avatar avatar-online"><img src="<?= $publicPath ?>/assets/img/avatars/1.png" alt
+                                    <div class="avatar avatar-online"><img
+                                            src="<?= $publicPath ?>/uploads/<?= $user['image_path']; ?>" alt
                                             class="w-px-40 h-auto rounded-circle" /></div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -167,8 +173,8 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                                                             class="w-px-40 h-auto rounded-circle" /></div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0">John Doe</h6><small
-                                                        class="text-body-secondary">Admin</small>
+                                                    <h6 class="mb-0"><?= $user['name'] ?></h6><small
+                                                        class="text-body-secondary"><?= $user['permission']; ?></small>
                                                 </div>
                                             </div>
                                         </a></li>
@@ -179,13 +185,7 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                                                 class="icon-base bx bx-user icon-md me-3"></i><span>My
                                                 Profile</span></a></li>
                                     <li><a class="dropdown-item" href="#"><i
-                                                class="icon-base bx bx-cog icon-md me-3"></i><span>Settings</span></a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="#"><span
-                                                class="d-flex align-items-center align-middle"><i
-                                                    class="flex-shrink-0 icon-base bx bx-credit-card icon-md me-3"></i><span
-                                                    class="flex-grow-1 align-middle">Billing Plan</span><span
-                                                    class="flex-shrink-0 badge rounded-pill bg-danger">4</span></span></a>
+                                                class="icon-base bx bx-cog icon-md me-3"></i><span>Notification</span></a>
                                     </li>
                                     <li>
                                         <div class="dropdown-divider my-1"></div>
@@ -194,6 +194,9 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
                                                 class="icon-base bx bx-power-off icon-md me-3"></i><span>Log
                                                 Out</span></a></li>
                                 </ul>
+                            </li>
+                            <li>
+                                <p class="fs-5 m-0 pe-3"><?= $_SESSION['user']['name']; ?></p>
                             </li>
                         </ul>
                     </div>
@@ -228,4 +231,3 @@ $publicPath = substr($currentUrlPath, 0, $publicPos + strlen('/public'));
 
                     });
                 </script>
-                

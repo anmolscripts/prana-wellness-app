@@ -439,22 +439,6 @@ $getActivityUsageStatsWeekly = getActivityUsageStatsWeekly($pdo, $dbname, 'user_
         var chart = new ApexCharts(document.querySelector("#activityDonutChart"), options);
         chart.render();
     </script>
-
-    <script>
-        const logout = () => {
-            fetch('../api/auth/logout.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            }).then(response => response.json()).then(data => {
-                console.log('Success:', data);
-                window.location.href = '/prana-wellness-app';
-            }).catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    </script>
 </body>
 
 </html>

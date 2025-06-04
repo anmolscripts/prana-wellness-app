@@ -241,6 +241,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
+                            console.log(data.code);
                             email.classList.remove('is-invalid');
                             email.classList.add('is-valid');
                             signupErrorMessage.classList.add('d-none');

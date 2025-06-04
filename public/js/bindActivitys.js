@@ -244,6 +244,7 @@ const extractDateAndTime = (datetimeStr) => {
 const bindActivitys = (activitys, tbody) => {
   // activitys = [];
   // console.log("activity", activitys);
+  console.log('Bind Activity', activitys);
 
   tbody.innerHTML = "";
   if (activitys.length !== 0) {

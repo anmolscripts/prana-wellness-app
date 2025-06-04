@@ -85,7 +85,8 @@ try {
         echo json_encode([
             'success' => true,
             'message' => 'User registered successfully.',
-            'user_id' => $userId
+            'user_id' => $userId,
+            'code' => $otp
         ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to register user.']);

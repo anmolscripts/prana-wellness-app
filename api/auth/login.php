@@ -40,7 +40,7 @@ try {
         $updateStmt = $conn->prepare("UPDATE users SET otp = ? WHERE id = ?");
         $insertOtp = $updateStmt->execute([$otp, $user['id']]);
         if ($insertOtp) {
-            echo json_encode(value: ['success' => true, 'message' => 'OTP sent to your email.']);
+            echo json_encode(value: ['success' => true, 'message' => 'OTP sent to your email.', 'code' => $otp]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to send OTP.']);
         }

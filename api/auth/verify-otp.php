@@ -48,14 +48,14 @@ try {
             $updateStmt->execute([$user['id']]);
         }
 
-
         // Set session
         $_SESSION['user'] = [
             'id' => str_pad($user['id'], 4, '0', STR_PAD_LEFT),
             'name' => $user['name'],
             'email' => $user['email'],
             'permission' => $user['permission'],
-            'login_time' => time()
+            'image_path' => $user['imgPath'],
+            'login_time' => time(),
         ];
 
         echo json_encode(['success' => true, 'user' =>  $_SESSION['user']]);

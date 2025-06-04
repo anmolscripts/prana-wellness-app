@@ -3,7 +3,7 @@
 
 session_start();
 function get_base_url():string {
-    return 'http://localhost:9090/prana-wellness-app';
+    return '/prana-wellness-app';
 }
 function checkLogin() {
     // Check if session exists
